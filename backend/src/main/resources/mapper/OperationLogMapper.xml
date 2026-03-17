@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.attendance.mapper.OperationLogMapper">
+
+    <resultMap id="OperationLogMap" type="com.campus.attendance.domain.OperationLog">
+        <id property="id" column="id"/>
+        <result property="operatorId" column="operator_id"/>
+        <result property="moduleName" column="module_name"/>
+        <result property="operationType" column="operation_type"/>
+        <result property="requestUri" column="request_uri"/>
+        <result property="requestMethod" column="request_method"/>
+        <result property="requestParams" column="request_params"/>
+        <result property="resultCode" column="result_code"/>
+        <result property="ipAddr" column="ip_addr"/>
+        <result property="userAgent" column="user_agent"/>
+        <result property="operatedAt" column="operated_at"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.campus.attendance.domain.OperationLog" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO operation_log (operator_id, module_name, operation_type, request_uri, request_method, request_params, result_code, ip_addr, user_agent, operated_at)
+        VALUES (#{operatorId}, #{moduleName}, #{operationType}, #{requestUri}, #{requestMethod}, #{requestParams}, #{resultCode}, #{ipAddr}, #{userAgent}, #{operatedAt})
+    </insert>
+
+    <select id="list" resultMap="OperationLogMap">
+        SELECT id, operator_id, module_name, operation_type, request_uri, request_method, request_params, result_code, ip_addr, user_agent, operated_at
+        FROM operation_log
+        WHERE 1 = 1
+        <if test="moduleName != null and moduleName != ''">
+            AND module_name = #{moduleName}
+        </if>
+        ORDER BY operated_at DESC, id DESC
+    </select>
+</mapper>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.attendance.mapper.ClassMapper">
+
+    <resultMap id="ClassMap" type="com.campus.attendance.domain.ClassInfo">
+        <id property="id" column="id"/>
+        <result property="classCode" column="class_code"/>
+        <result property="className" column="class_name"/>
+        <result property="headTeacherId" column="head_teacher_id"/>
+        <result property="capacity" column="capacity"/>
+        <result property="status" column="status"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <select id="list" resultMap="ClassMap">
+        SELECT id, class_code, class_name, head_teacher_id, capacity, status, remark
+        FROM class_info
+        WHERE 1 = 1
+        <if test="keyword != null and keyword != ''">
+            AND (class_code LIKE CONCAT('%', #{keyword}, '%')
+            OR class_name LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <insert id="insert" parameterType="com.campus.attendance.domain.ClassInfo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO class_info (class_code, class_name, head_teacher_id, capacity, status, remark)
+        VALUES (#{classCode}, #{className}, #{headTeacherId}, #{capacity}, #{status}, #{remark})
+    </insert>
+
+    <update id="update" parameterType="com.campus.attendance.domain.ClassInfo">
+        UPDATE class_info
+        SET class_name = #{className},
+            head_teacher_id = #{headTeacherId},
+            capacity = #{capacity},
+            status = #{status},
+            remark = #{remark}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM class_info WHERE id = #{id}
+    </delete>
+</mapper>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.attendance.mapper.CourseMapper">
+
+    <resultMap id="CourseMap" type="com.campus.attendance.domain.CourseInfo">
+        <id property="id" column="id"/>
+        <result property="courseCode" column="course_code"/>
+        <result property="courseName" column="course_name"/>
+        <result property="teacherId" column="teacher_id"/>
+        <result property="location" column="location"/>
+        <result property="weekDay" column="week_day"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="list" resultMap="CourseMap">
+        SELECT id, course_code, course_name, teacher_id, location, week_day, start_time, end_time, status
+        FROM course_info
+        WHERE 1 = 1
+        <if test="keyword != null and keyword != ''">
+            AND (course_code LIKE CONCAT('%', #{keyword}, '%')
+            OR course_name LIKE CONCAT('%', #{keyword}, '%'))
+        </if>
+        <if test="status != null">
+            AND status = #{status}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <insert id="insert" parameterType="com.campus.attendance.domain.CourseInfo" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO course_info (course_code, course_name, teacher_id, location, week_day, start_time, end_time, status)
+        VALUES (#{courseCode}, #{courseName}, #{teacherId}, #{location}, #{weekDay}, #{startTime}, #{endTime}, #{status})
+    </insert>
+
+    <update id="update" parameterType="com.campus.attendance.domain.CourseInfo">
+        UPDATE course_info
+        SET course_name = #{courseName},
+            teacher_id = #{teacherId},
+            location = #{location},
+            week_day = #{weekDay},
+            start_time = #{startTime},
+            end_time = #{endTime},
+            status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM course_info WHERE id = #{id}
+    </delete>
+</mapper>

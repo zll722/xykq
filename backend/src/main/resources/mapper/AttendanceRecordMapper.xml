@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.attendance.mapper.AttendanceRecordMapper">
+
+    <resultMap id="RecordMap" type="com.campus.attendance.domain.AttendanceRecord">
+        <id property="id" column="id"/>
+        <result property="scheduleId" column="schedule_id"/>
+        <result property="courseId" column="course_id"/>
+        <result property="classId" column="class_id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="attendanceDate" column="attendance_date"/>
+        <result property="signedAt" column="signed_at"/>
+        <result property="status" column="status"/>
+        <result property="source" column="source"/>
+        <result property="makeupReason" column="makeup_reason"/>
+        <result property="operatorId" column="operator_id"/>
+    </resultMap>
+
+    <select id="findOne" resultMap="RecordMap">
+        SELECT id, schedule_id, course_id, class_id, student_id, attendance_date, signed_at, status, source, makeup_reason, operator_id
+        FROM attendance_record
+        WHERE schedule_id = #{scheduleId}
+          AND student_id = #{studentId}
+          AND attendance_date = #{attendanceDate}
+        LIMIT 1
+    </select>
+
+    <select id="findById" resultMap="RecordMap">
+        SELECT id, schedule_id, course_id, class_id, student_id, attendance_date, signed_at, status, source, makeup_reason, operator_id
+        FROM attendance_record
+        WHERE id = #{id}
+        LIMIT 1
+    </select>
+
+    <insert id="insert" parameterType="com.campus.attendance.domain.AttendanceRecord" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO attendance_record
+        (schedule_id, course_id, class_id, student_id, attendance_date, signed_at, status, source, makeup_reason, operator_id)
+        VALUES
+        (#{scheduleId}, #{courseId}, #{classId}, #{studentId}, #{attendanceDate}, #{signedAt}, #{status}, #{source}, #{makeupReason}, #{operatorId})
+    </insert>
+
+    <update id="updateSignResult">
+        UPDATE attendance_record
+        SET status = #{status},
+            signed_at = #{signedAt}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateStatusById">
+        UPDATE attendance_record
+        SET status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <select id="listMyRecords" resultType="com.campus.attendance.dto.user.MyAttendanceRecordItem">
+        SELECT
+            ar.id,
+            ar.schedule_id,
+            ci.course_name,
+            DATE_FORMAT(ar.attendance_date, '%Y-%m-%d') AS attendance_date,
+            DATE_FORMAT(ar.signed_at, '%Y-%m-%d %H:%i:%s') AS signed_at,
+            ar.status
+        FROM attendance_record ar
+        INNER JOIN course_info ci ON ci.id = ar.course_id
+        WHERE ar.student_id = #{studentId}
+        ORDER BY ar.attendance_date DESC, ar.id DESC
+    </select>
+
+    <select id="myOverview" resultType="com.campus.attendance.dto.user.MyOverviewStats">
+        SELECT
+            COUNT(*) AS total_count,
+            SUM(CASE WHEN status = 'PRESENT' THEN 1 ELSE 0 END) AS present_count,
+            SUM(CASE WHEN status = 'LATE' THEN 1 ELSE 0 END) AS late_count,
+            SUM(CASE WHEN status = 'ABSENT' THEN 1 ELSE 0 END) AS absent_count,
+            ROUND(SUM(CASE WHEN status = 'PRESENT' THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(*), 0), 2) AS present_rate
+        FROM attendance_record
+        WHERE student_id = #{studentId}
+    </select>
+
+    <select id="myCalendar" resultType="com.campus.attendance.dto.user.MyCalendarItem">
+        SELECT
+            DATE_FORMAT(ar.attendance_date, '%Y-%m-%d') AS attendance_date,
+            ar.status,
+            ci.course_name
+        FROM attendance_record ar
+        INNER JOIN course_info ci ON ci.id = ar.course_id
+        WHERE ar.student_id = #{studentId}
+        <if test="startDate != null">
+            AND ar.attendance_date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND ar.attendance_date &lt;= #{endDate}
+        </if>
+        ORDER BY ar.attendance_date DESC, ar.id DESC
+    </select>
+
+    <select id="listAdminRecords" resultType="com.campus.attendance.dto.admin.AdminAttendanceRecordItem">
+        SELECT
+            ar.id,
+            ar.course_id,
+            ci.course_name,
+            ar.class_id,
+            cl.class_name,
+            ar.student_id,
+            DATE_FORMAT(ar.attendance_date, '%Y-%m-%d') AS attendance_date,
+            DATE_FORMAT(ar.signed_at, '%Y-%m-%d %H:%i:%s') AS signed_at,
+            ar.status
+        FROM attendance_record ar
+        INNER JOIN course_info ci ON ci.id = ar.course_id
+        INNER JOIN class_info cl ON cl.id = ar.class_id
+        WHERE 1 = 1
+        <if test="courseId != null">
+            AND ar.course_id = #{courseId}
+        </if>
+        <if test="classId != null">
+            AND ar.class_id = #{classId}
+        </if>
+        <if test="attendanceDate != null">
+            AND ar.attendance_date = #{attendanceDate}
+        </if>
+        <if test="status != null and status != ''">
+            AND ar.status = #{status}
+        </if>
+        ORDER BY ar.attendance_date DESC, ar.id DESC
+    </select>
+
+    <select id="listAdminRecordsByRange" resultType="com.campus.attendance.dto.admin.AdminAttendanceRecordItem">
+        SELECT
+            ar.id,
+            ar.course_id,
+            ci.course_name,
+            ar.class_id,
+            cl.class_name,
+            ar.student_id,
+            DATE_FORMAT(ar.attendance_date, '%Y-%m-%d') AS attendance_date,
+            DATE_FORMAT(ar.signed_at, '%Y-%m-%d %H:%i:%s') AS signed_at,
+            ar.status
+        FROM attendance_record ar
+        INNER JOIN course_info ci ON ci.id = ar.course_id
+        INNER JOIN class_info cl ON cl.id = ar.class_id
+        WHERE 1 = 1
+        <if test="courseId != null">
+            AND ar.course_id = #{courseId}
+        </if>
+        <if test="classId != null">
+            AND ar.class_id = #{classId}
+        </if>
+        <if test="startDate != null">
+            AND ar.attendance_date &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND ar.attendance_date &lt;= #{endDate}
+        </if>
+        ORDER BY ar.attendance_date DESC, ar.id DESC
+    </select>
+</mapper>

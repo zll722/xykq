@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.attendance.mapper.RoleMapper">
+
+    <resultMap id="RoleMap" type="com.campus.attendance.domain.SysRole">
+        <id property="id" column="id"/>
+        <result property="roleCode" column="role_code"/>
+        <result property="roleName" column="role_name"/>
+        <result property="remark" column="remark"/>
+    </resultMap>
+
+    <resultMap id="PermMap" type="com.campus.attendance.domain.SysPermission">
+        <id property="id" column="id"/>
+        <result property="permCode" column="perm_code"/>
+        <result property="permName" column="perm_name"/>
+        <result property="permType" column="perm_type"/>
+    </resultMap>
+
+    <select id="listRoles" resultMap="RoleMap">
+        SELECT id, role_code, role_name, remark
+        FROM sys_role
+        ORDER BY id ASC
+    </select>
+
+    <insert id="insertRole" parameterType="com.campus.attendance.domain.SysRole" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_role (role_code, role_name, remark)
+        VALUES (#{roleCode}, #{roleName}, #{remark})
+    </insert>
+
+    <update id="updateRole" parameterType="com.campus.attendance.domain.SysRole">
+        UPDATE sys_role
+        SET role_name = #{roleName},
+            remark = #{remark}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteRole">
+        DELETE FROM sys_role WHERE id = #{id}
+    </delete>
+
+    <select id="listAllPermissions" resultMap="PermMap">
+        SELECT id, perm_code, perm_name, perm_type
+        FROM sys_permission
+        ORDER BY id ASC
+    </select>
+
+    <select id="listPermissionIdsByRoleId" resultType="java.lang.Long">
+        SELECT permission_id
+        FROM sys_role_permission
+        WHERE role_id = #{roleId}
+        ORDER BY permission_id ASC
+    </select>
+
+    <delete id="deleteRolePermissions">
+        DELETE FROM sys_role_permission WHERE role_id = #{roleId}
+    </delete>
+
+    <insert id="insertRolePermission">
+        INSERT INTO sys_role_permission (role_id, permission_id)
+        VALUES (#{roleId}, #{permissionId})
+    </insert>
+</mapper>

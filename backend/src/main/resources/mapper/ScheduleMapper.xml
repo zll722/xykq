@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.attendance.mapper.ScheduleMapper">
+
+    <resultMap id="ScheduleMap" type="com.campus.attendance.domain.CourseSchedule">
+        <id property="id" column="id"/>
+        <result property="courseId" column="course_id"/>
+        <result property="classId" column="class_id"/>
+        <result property="weekNo" column="week_no"/>
+        <result property="weekDay" column="week_day"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="location" column="location"/>
+    </resultMap>
+
+    <select id="list" resultMap="ScheduleMap">
+        SELECT id, course_id, class_id, week_no, week_day, start_time, end_time, location
+        FROM course_schedule
+        WHERE 1 = 1
+        <if test="courseId != null">
+            AND course_id = #{courseId}
+        </if>
+        <if test="classId != null">
+            AND class_id = #{classId}
+        </if>
+        ORDER BY id DESC
+    </select>
+
+    <select id="findById" resultMap="ScheduleMap">
+        SELECT id, course_id, class_id, week_no, week_day, start_time, end_time, location
+        FROM course_schedule
+        WHERE id = #{id}
+        LIMIT 1
+    </select>
+
+    <select id="listMySchedules" resultType="com.campus.attendance.dto.user.MyScheduleItem">
+        SELECT
+            cs.id AS schedule_id,
+            cs.course_id,
+            cs.class_id,
+            ci.course_name,
+            cs.week_day,
+            TIME_FORMAT(cs.start_time, '%H:%i:%s') AS start_time,
+            TIME_FORMAT(cs.end_time, '%H:%i:%s') AS end_time,
+            cs.location
+        FROM course_schedule cs
+        INNER JOIN course_info ci ON ci.id = cs.course_id
+        INNER JOIN student_profile sp ON sp.class_id = cs.class_id
+        WHERE sp.user_id = #{userId}
+        ORDER BY cs.week_day ASC, cs.start_time ASC
+    </select>
+
+    <insert id="insert" parameterType="com.campus.attendance.domain.CourseSchedule" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO course_schedule (course_id, class_id, week_no, week_day, start_time, end_time, location)
+        VALUES (#{courseId}, #{classId}, #{weekNo}, #{weekDay}, #{startTime}, #{endTime}, #{location})
+    </insert>
+
+    <update id="update" parameterType="com.campus.attendance.domain.CourseSchedule">
+        UPDATE course_schedule
+        SET course_id = #{courseId},
+            class_id = #{classId},
+            week_no = #{weekNo},
+            week_day = #{weekDay},
+            start_time = #{startTime},
+            end_time = #{endTime},
+            location = #{location}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM course_schedule WHERE id = #{id}
+    </delete>
+</mapper>

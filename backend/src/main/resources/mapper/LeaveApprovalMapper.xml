@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.attendance.mapper.LeaveApprovalMapper">
+
+    <resultMap id="LeaveApprovalMap" type="com.campus.attendance.domain.LeaveApproval">
+        <id property="id" column="id"/>
+        <result property="leaveRequestId" column="leave_request_id"/>
+        <result property="approverId" column="approver_id"/>
+        <result property="action" column="action"/>
+        <result property="comment" column="comment"/>
+        <result property="actedAt" column="acted_at"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.campus.attendance.domain.LeaveApproval" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO leave_approval (leave_request_id, approver_id, action, comment)
+        VALUES (#{leaveRequestId}, #{approverId}, #{action}, #{comment})
+    </insert>
+
+    <select id="listByRequestId" resultMap="LeaveApprovalMap">
+        SELECT id, leave_request_id, approver_id, action, comment, acted_at
+        FROM leave_approval
+        WHERE leave_request_id = #{leaveRequestId}
+        ORDER BY acted_at DESC
+    </select>
+
+    <select id="listAll" resultMap="LeaveApprovalMap">
+        SELECT id, leave_request_id, approver_id, action, comment, acted_at
+        FROM leave_approval
+        ORDER BY acted_at DESC
+    </select>
+</mapper>

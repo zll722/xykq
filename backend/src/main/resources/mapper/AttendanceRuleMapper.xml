@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.attendance.mapper.AttendanceRuleMapper">
+
+    <resultMap id="RuleMap" type="com.campus.attendance.domain.AttendanceRule">
+        <id property="id" column="id"/>
+        <result property="ruleName" column="rule_name"/>
+        <result property="signInStartOffsetMin" column="sign_in_start_offset_min"/>
+        <result property="signInEndOffsetMin" column="sign_in_end_offset_min"/>
+        <result property="lateThresholdMin" column="late_threshold_min"/>
+        <result property="absentThresholdMin" column="absent_threshold_min"/>
+        <result property="allowMakeup" column="allow_makeup"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+    <select id="listAll" resultMap="RuleMap">
+        SELECT id, rule_name, sign_in_start_offset_min, sign_in_end_offset_min, late_threshold_min, absent_threshold_min, allow_makeup, status
+        FROM attendance_rule
+        ORDER BY id DESC
+    </select>
+
+    <select id="getActiveRule" resultMap="RuleMap">
+        SELECT id, rule_name, sign_in_start_offset_min, sign_in_end_offset_min, late_threshold_min, absent_threshold_min, allow_makeup, status
+        FROM attendance_rule
+        WHERE status = 1
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+    <insert id="insert" parameterType="com.campus.attendance.domain.AttendanceRule" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO attendance_rule
+        (rule_name, sign_in_start_offset_min, sign_in_end_offset_min, late_threshold_min, absent_threshold_min, allow_makeup, status)
+        VALUES
+        (#{ruleName}, #{signInStartOffsetMin}, #{signInEndOffsetMin}, #{lateThresholdMin}, #{absentThresholdMin}, #{allowMakeup}, #{status})
+    </insert>
+
+    <update id="update" parameterType="com.campus.attendance.domain.AttendanceRule">
+        UPDATE attendance_rule
+        SET rule_name = #{ruleName},
+            sign_in_start_offset_min = #{signInStartOffsetMin},
+            sign_in_end_offset_min = #{signInEndOffsetMin},
+            late_threshold_min = #{lateThresholdMin},
+            absent_threshold_min = #{absentThresholdMin},
+            allow_makeup = #{allowMakeup},
+            status = #{status}
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateStatus">
+        UPDATE attendance_rule SET status = #{status} WHERE id = #{id}
+    </update>
+</mapper>
