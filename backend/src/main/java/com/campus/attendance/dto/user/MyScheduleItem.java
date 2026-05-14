@@ -4,6 +4,7 @@ public class MyScheduleItem {
     private Long scheduleId;
     private Long courseId;
     private Long classId;
+    private String className;
     private String courseName;
     private Integer weekDay;
     private String startTime;
@@ -32,6 +33,14 @@ public class MyScheduleItem {
 
     public void setClassId(Long classId) {
         this.classId = classId;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public String getCourseName() {

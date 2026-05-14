@@ -14,7 +14,21 @@
         <result property="proofUrl" column="proof_url"/>
         <result property="status" column="status"/>
         <result property="submittedAt" column="submitted_at"/>
-        <result property="updatedAt" column="updated_at"/>
+    </resultMap>
+
+    <resultMap id="AdminLeavePendingItemMap" type="com.campus.attendance.dto.leave.AdminLeavePendingItem">
+        <id property="id" column="id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="studentName" column="student_name"/>
+        <result property="className" column="class_name"/>
+        <result property="counselorName" column="counselor_name"/>
+        <result property="leaveType" column="leave_type"/>
+        <result property="reason" column="reason"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="proofUrl" column="proof_url"/>
+        <result property="status" column="status"/>
+        <result property="submittedAt" column="submitted_at"/>
     </resultMap>
 
     <insert id="insert" parameterType="com.campus.attendance.domain.LeaveRequest" useGeneratedKeys="true" keyProperty="id">
@@ -23,51 +37,56 @@
     </insert>
 
     <select id="findById" resultMap="LeaveRequestMap">
-        SELECT id, student_id, leave_type, reason, start_time, end_time, proof_url, status, submitted_at, updated_at
-        FROM leave_request
-        WHERE id = #{id}
-        LIMIT 1
+        SELECT * FROM leave_request WHERE id = #{id}
     </select>
 
     <select id="listMy" resultMap="LeaveRequestMap">
-        SELECT id, student_id, leave_type, reason, start_time, end_time, proof_url, status, submitted_at, updated_at
-        FROM leave_request
+        SELECT * FROM leave_request
         WHERE student_id = #{studentId}
-        ORDER BY submitted_at DESC
+        ORDER BY id DESC
     </select>
 
     <select id="listMyProgress" resultType="com.campus.attendance.dto.leave.LeaveProgressItem">
-        SELECT
-            lr.id AS request_id,
-            lr.status,
-            lr.leave_type,
-            DATE_FORMAT(lr.start_time, '%Y-%m-%d %H:%i:%s') AS start_time,
-            DATE_FORMAT(lr.end_time, '%Y-%m-%d %H:%i:%s') AS end_time,
-            DATE_FORMAT(lr.submitted_at, '%Y-%m-%d %H:%i:%s') AS submitted_at,
-            la.action AS latest_action,
-            la.comment AS latest_comment,
-            DATE_FORMAT(la.acted_at, '%Y-%m-%d %H:%i:%s') AS latest_acted_at
+        SELECT id,
+               leave_type,
+               reason,
+               DATE_FORMAT(start_time, '%Y-%m-%d %H:%i') AS start_time,
+               DATE_FORMAT(end_time, '%Y-%m-%d %H:%i') AS end_time,
+               status,
+               DATE_FORMAT(submitted_at, '%Y-%m-%d %H:%i') AS submitted_at
+        FROM leave_request
+        WHERE student_id = #{studentId}
+        ORDER BY id DESC
+    </select>
+
+    <select id="listPendingReadable" resultMap="AdminLeavePendingItemMap">
+        SELECT lr.id,
+               lr.student_id,
+               su.real_name                                  AS student_name,
+               ci.class_name,
+               counselor.real_name                          AS counselor_name,
+               lr.leave_type,
+               lr.reason,
+               DATE_FORMAT(lr.start_time, '%Y-%m-%d %H:%i') AS start_time,
+               DATE_FORMAT(lr.end_time, '%Y-%m-%d %H:%i')   AS end_time,
+               lr.proof_url,
+               lr.status,
+               DATE_FORMAT(lr.submitted_at, '%Y-%m-%d %H:%i') AS submitted_at
         FROM leave_request lr
-        LEFT JOIN leave_approval la ON la.id = (
-            SELECT id FROM leave_approval x
-            WHERE x.leave_request_id = lr.id
-            ORDER BY x.acted_at DESC LIMIT 1
-        )
-        WHERE lr.student_id = #{studentId}
-        ORDER BY lr.submitted_at DESC
+                 LEFT JOIN sys_user su ON su.id = lr.student_id
+                 LEFT JOIN student_profile sp ON sp.user_id = lr.student_id
+                 LEFT JOIN class_info ci ON ci.id = sp.class_id
+                 LEFT JOIN sys_user counselor ON counselor.id = ci.head_teacher_id
+        WHERE lr.status = 'PENDING'
+        ORDER BY lr.id DESC
     </select>
 
-    <select id="listPending" resultMap="LeaveRequestMap">
-        SELECT id, student_id, leave_type, reason, start_time, end_time, proof_url, status, submitted_at, updated_at
-        FROM leave_request
-        WHERE status = 'PENDING'
-        ORDER BY submitted_at ASC
-    </select>
-
-    <select id="listAll" resultMap="LeaveRequestMap">
-        SELECT id, student_id, leave_type, reason, start_time, end_time, proof_url, status, submitted_at, updated_at
-        FROM leave_request
-        ORDER BY submitted_at DESC
+    <select id="findTeacherIdsByClassAndTimeRange" resultType="java.lang.Long">
+        SELECT DISTINCT co.teacher_id
+        FROM course_schedule cs
+                 JOIN course_info co ON co.id = cs.course_id
+        WHERE cs.class_id = #{classId}
+          AND cs.week_day = DAYOFWEEK(#{leaveDate}) - 1
     </select>
 
     <update id="updateStatus">

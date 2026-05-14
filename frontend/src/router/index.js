@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { adminRoutes } from './modules/admin';
 import { userRoutes } from './modules/user';
+import { teacherRoutes } from './modules/teacher';
+import counselorRoutes from './modules/counselor';
 import { useAuthStore } from '../stores/auth';
 
 const LoginPage = () => import('../views/common/LoginPage.vue');
@@ -11,6 +13,8 @@ const routes = [
   { path: '/login', component: LoginPage },
   { path: '/403', component: ForbiddenPage },
   ...adminRoutes,
+  ...teacherRoutes,
+  ...counselorRoutes,
   ...userRoutes
 ];
 
@@ -39,9 +43,13 @@ router.beforeEach(async (to, from, next) => {
     }
   }
   const routeRole = to.meta?.role;
-  if (routeRole && authStore.userInfo.roleCode !== routeRole) {
-    next('/403');
-    return;
+  if (routeRole) {
+    const userRole = authStore.userInfo.roleCode;
+    const allowed = userRole === routeRole || userRole === 'ADMIN';
+    if (!allowed) {
+      next('/403');
+      return;
+    }
   }
   next();
 });

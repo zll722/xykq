@@ -10,9 +10,7 @@ import AdminStats from '../../views/admin/AdminStats.vue';
 import AdminSystemLogs from '../../views/admin/AdminSystemLogs.vue';
 import AdminAttendanceAdjustments from '../../views/admin/AdminAttendanceAdjustments.vue';
 import AdminAttendanceExceptions from '../../views/admin/AdminAttendanceExceptions.vue';
-import AdminSystemConfig from '../../views/admin/AdminSystemConfig.vue';
 import AdminUsers from '../../views/admin/AdminUsers.vue';
-import AdminRoles from '../../views/admin/AdminRoles.vue';
 
 export const adminRoutes = [
   {
@@ -34,11 +32,6 @@ export const adminRoutes = [
         path: 'users',
         component: AdminUsers,
         meta: { title: '用户管理' }
-      },
-      {
-        path: 'roles',
-        component: AdminRoles,
-        meta: { title: '角色权限' }
       },
       {
         path: 'courses',
@@ -84,11 +77,6 @@ export const adminRoutes = [
         path: 'system-logs',
         component: AdminSystemLogs,
         meta: { title: '操作日志' }
-      },
-      {
-        path: 'system-config',
-        component: AdminSystemConfig,
-        meta: { title: '系统配置' }
       }
     ]
   }

@@ -1,0 +1,92 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e7]
+      - generic [ref=e11]: 校园云考勤系统
+    - menubar [ref=e12]:
+      - menuitem "首页" [ref=e13] [cursor=pointer]:
+        - img [ref=e15]
+        - generic [ref=e17]: 首页
+      - menuitem "个人中心" [ref=e18] [cursor=pointer]:
+        - img [ref=e20]
+        - generic [ref=e22]: 个人中心
+      - menuitem "我的课程" [ref=e23] [cursor=pointer]:
+        - img [ref=e25]
+        - generic [ref=e28]: 我的课程
+      - menuitem "在线签到" [ref=e29] [cursor=pointer]:
+        - img [ref=e31]
+        - generic [ref=e34]: 在线签到
+      - menuitem "我的考勤" [ref=e35] [cursor=pointer]:
+        - img [ref=e37]
+        - generic [ref=e39]: 我的考勤
+      - menuitem "请假申请" [ref=e40] [cursor=pointer]:
+        - img [ref=e42]
+        - generic [ref=e44]: 请假申请
+      - menuitem "审批进度" [ref=e45] [cursor=pointer]:
+        - img [ref=e47]
+        - generic [ref=e49]: 审批进度
+      - menuitem "请假记录" [ref=e50] [cursor=pointer]:
+        - img [ref=e52]
+        - generic [ref=e54]: 请假记录
+      - menuitem "消息通知" [ref=e55] [cursor=pointer]:
+        - img [ref=e57]
+        - generic [ref=e61]: 消息通知
+      - menuitem "个人资料" [ref=e62] [cursor=pointer]:
+        - img [ref=e64]
+        - generic [ref=e67]: 个人资料
+      - menuitem "修改密码" [ref=e68] [cursor=pointer]:
+        - img [ref=e70]
+        - generic [ref=e73]: 修改密码
+  - generic [ref=e74]:
+    - generic [ref=e75]:
+      - heading "用户工作台" [level=3] [ref=e77]
+      - button "测试学生 (USER)" [ref=e80] [cursor=pointer]:
+        - img [ref=e83]
+        - generic [ref=e85]: 测试学生 (USER)
+        - img [ref=e87]
+    - main [ref=e89]:
+      - generic [ref=e90]:
+        - generic [ref=e92]: 请假申请
+        - generic [ref=e94]:
+          - generic [ref=e95]:
+            - generic [ref=e96]: "* 请假类型"
+            - generic [ref=e99] [cursor=pointer]:
+              - generic:
+                - combobox "* 请假类型" [ref=e101]
+                - generic [ref=e102]: 病假
+              - img [ref=e105]
+          - generic [ref=e107]:
+            - generic [ref=e108]: "* 开始时间"
+            - generic [ref=e111]:
+              - img [ref=e114]
+              - combobox "* 开始时间" [ref=e118]
+          - generic [ref=e119]:
+            - generic [ref=e120]: "* 结束时间"
+            - generic [ref=e123]:
+              - img [ref=e126]
+              - combobox "* 结束时间" [ref=e130]
+          - generic [ref=e131]:
+            - generic [ref=e132]: 证明材料
+            - generic [ref=e134]:
+              - textbox "证明材料" [disabled] [ref=e137]:
+                - /placeholder: 证明材料路径（上传后自动填入）
+              - button "选择文件" [ref=e139] [cursor=pointer]:
+                - button "选择文件" [ref=e140]:
+                  - generic [ref=e141]: 选择文件
+              - button "上传" [disabled] [ref=e142]:
+                - generic [ref=e143]: 上传
+          - generic [ref=e144]:
+            - generic [ref=e145]: "* 请假原因"
+            - generic [ref=e147]:
+              - textbox "* 请假原因" [ref=e148]:
+                - /placeholder: 请填写详细的请假原因，以便审批人快速了解情况
+              - generic [ref=e149]: 0 / 200
+          - generic [ref=e151]:
+            - button "提交申请" [ref=e152] [cursor=pointer]:
+              - generic [ref=e153]: 提交申请
+            - button "重置" [ref=e154] [cursor=pointer]:
+              - generic [ref=e155]: 重置
+```

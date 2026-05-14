@@ -68,6 +68,7 @@ public class AuthServiceImpl implements AuthService {
         user.setRoleCode("USER");
         user.setStatus(1);
         userMapper.insertUser(user);
+        userMapper.insertStudentProfile(user.getId(), request.getStudentNo(), request.getClassId());
     }
 
     @Override

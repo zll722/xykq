@@ -11,10 +11,13 @@
         <result property="realName" column="real_name"/>
         <result property="roleCode" column="role_code"/>
         <result property="status" column="status"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+        <result property="avatarUrl" column="avatar_url"/>
     </resultMap>
 
     <sql id="BaseColumns">
-        id, username, password_hash, real_name, role_code, status
+        id, username, password_hash, real_name, role_code, status, phone, email, avatar_url
     </sql>
 
     <select id="findByUsername" resultMap="SysUserMap">
@@ -32,8 +35,13 @@
     </select>
 
     <insert id="insertUser" parameterType="com.campus.attendance.domain.SysUser" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO sys_user (username, password_hash, real_name, role_code, status)
-        VALUES (#{username}, #{passwordHash}, #{realName}, #{roleCode}, #{status})
+        INSERT INTO sys_user (username, password_hash, real_name, role_code, status, phone, email, avatar_url)
+        VALUES (#{username}, #{passwordHash}, #{realName}, #{roleCode}, #{status}, #{phone}, #{email}, #{avatarUrl})
+    </insert>
+
+    <insert id="insertStudentProfile">
+        INSERT INTO student_profile (user_id, student_no, class_id)
+        VALUES (#{userId}, #{studentNo}, #{classId})
     </insert>
 
     <update id="updatePassword">

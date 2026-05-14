@@ -1,7 +1,8 @@
 package com.campus.attendance.service;
 
-import com.campus.attendance.domain.LeaveApproval;
 import com.campus.attendance.domain.LeaveRequest;
+import com.campus.attendance.dto.leave.AdminLeaveApprovalHistoryItem;
+import com.campus.attendance.dto.leave.AdminLeavePendingItem;
 import com.campus.attendance.dto.leave.LeaveApplyRequest;
 import com.campus.attendance.dto.leave.LeaveApproveRequest;
 import com.campus.attendance.dto.leave.LeaveProgressItem;
@@ -19,9 +20,9 @@ public interface LeaveService {
 
     void cancel(Long id, Long userId);
 
-    List<LeaveRequest> listPending();
+    List<AdminLeavePendingItem> listPending();
 
     void approve(Long requestId, Long approverId, LeaveApproveRequest request);
 
-    List<LeaveApproval> listApprovalHistory();
+    List<AdminLeaveApprovalHistoryItem> listApprovalHistory();
 }

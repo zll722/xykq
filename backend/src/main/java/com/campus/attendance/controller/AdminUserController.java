@@ -1,6 +1,7 @@
 package com.campus.attendance.controller;
 
 import com.campus.attendance.common.ApiResponse;
+import com.campus.attendance.domain.ClassInfo;
 import com.campus.attendance.dto.admin.AdminUserSaveRequest;
 import com.campus.attendance.dto.user.UserSummary;
 import com.campus.attendance.security.RequirePermission;
@@ -35,6 +36,11 @@ public class AdminUserController {
             @RequestParam(required = false) String roleCode
     ) {
         return ApiResponse.ok(userService.listUsers(keyword, status, roleCode));
+    }
+
+    @GetMapping("/classes")
+    public ApiResponse<List<ClassInfo>> listAssignableClasses() {
+        return ApiResponse.ok(userService.listAssignableClasses());
     }
 
     @PostMapping

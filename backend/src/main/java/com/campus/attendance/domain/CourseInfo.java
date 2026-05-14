@@ -7,6 +7,7 @@ public class CourseInfo {
     private String courseCode;
     private String courseName;
     private Long teacherId;
+    private String teacherName;
     private String location;
     private Integer weekDay;
     private LocalTime startTime;
@@ -43,6 +44,14 @@ public class CourseInfo {
 
     public void setTeacherId(Long teacherId) {
         this.teacherId = teacherId;
+    }
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
     }
 
     public String getLocation() {

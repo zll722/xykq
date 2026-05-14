@@ -16,6 +16,10 @@ public interface UserMapper {
 
     int insertUser(SysUser user);
 
+    int insertStudentProfile(@Param("userId") Long userId,
+                             @Param("studentNo") String studentNo,
+                             @Param("classId") Long classId);
+
     int updatePassword(@Param("userId") Long userId, @Param("passwordHash") String passwordHash);
 
     List<SysUser> listUsers(@Param("keyword") String keyword, @Param("status") Integer status, @Param("roleCode") String roleCode);

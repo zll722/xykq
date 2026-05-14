@@ -13,21 +13,55 @@
         <result property="actedAt" column="acted_at"/>
     </resultMap>
 
+    <resultMap id="AdminLeaveApprovalHistoryMap" type="com.campus.attendance.dto.leave.AdminLeaveApprovalHistoryItem">
+        <id property="approvalId" column="approval_id"/>
+        <result property="leaveRequestId" column="leave_request_id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="studentName" column="student_name"/>
+        <result property="approverId" column="approver_id"/>
+        <result property="approverName" column="approver_name"/>
+        <result property="leaveType" column="leave_type"/>
+        <result property="reason" column="reason"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="action" column="action"/>
+        <result property="comment" column="comment"/>
+        <result property="actedAt" column="acted_at"/>
+        <result property="requestStatus" column="request_status"/>
+    </resultMap>
+
     <insert id="insert" parameterType="com.campus.attendance.domain.LeaveApproval" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO leave_approval (leave_request_id, approver_id, action, comment)
         VALUES (#{leaveRequestId}, #{approverId}, #{action}, #{comment})
     </insert>
 
     <select id="listByRequestId" resultMap="LeaveApprovalMap">
-        SELECT id, leave_request_id, approver_id, action, comment, acted_at
-        FROM leave_approval
-        WHERE leave_request_id = #{leaveRequestId}
-        ORDER BY acted_at DESC
+        SELECT * FROM leave_approval WHERE leave_request_id = #{leaveRequestId} ORDER BY id DESC
     </select>
 
     <select id="listAll" resultMap="LeaveApprovalMap">
-        SELECT id, leave_request_id, approver_id, action, comment, acted_at
-        FROM leave_approval
-        ORDER BY acted_at DESC
+        SELECT * FROM leave_approval ORDER BY id DESC
+    </select>
+
+    <select id="listReadableHistory" resultMap="AdminLeaveApprovalHistoryMap">
+        SELECT la.id AS approval_id,
+               la.leave_request_id,
+               lr.student_id,
+               student.real_name AS student_name,
+               la.approver_id,
+               approver.real_name AS approver_name,
+               lr.leave_type,
+               lr.reason,
+               DATE_FORMAT(lr.start_time, '%Y-%m-%d %H:%i') AS start_time,
+               DATE_FORMAT(lr.end_time, '%Y-%m-%d %H:%i') AS end_time,
+               la.action,
+               la.comment,
+               DATE_FORMAT(la.acted_at, '%Y-%m-%d %H:%i') AS acted_at,
+               lr.status AS request_status
+        FROM leave_approval la
+        JOIN leave_request lr ON lr.id = la.leave_request_id
+        LEFT JOIN sys_user student ON student.id = lr.student_id
+        LEFT JOIN sys_user approver ON approver.id = la.approver_id
+        ORDER BY la.id DESC
     </select>
 </mapper>

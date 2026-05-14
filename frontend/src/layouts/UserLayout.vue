@@ -1,71 +1,96 @@
-﻿<template>
-  <div class="user-shell">
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="logo-mark">SC</div>
-        <div class="brand-text">
-          <strong>校园云</strong>
-          <span>考勤系统</span>
+<template>
+  <el-container class="workspace-shell user-shell">
+    <el-aside width="280px" class="workspace-sidebar user-sidebar">
+      <div class="brand-block">
+        <div class="brand-mark">
+          <el-icon><School /></el-icon>
+        </div>
+        <div>
+          <div class="brand-title">智能校园考勤</div>
+          <div class="brand-subtitle">学生任务中心</div>
         </div>
       </div>
 
-      <nav class="nav-list">
-        <RouterLink
-          v-for="item in navItems"
-          :key="item.path"
-          :to="item.path"
-          class="nav-item"
-          :class="{ active: isActive(item.path) }"
-        >
-          <span class="nav-icon" aria-hidden="true">{{ item.icon }}</span>
-          <span>{{ item.label }}</span>
-        </RouterLink>
-      </nav>
-    </aside>
+      <div class="sidebar-section">
+        <div class="section-title">高频任务</div>
+        <el-menu :default-active="route.path" class="nav-menu" router>
+          <el-menu-item v-for="item in primaryNav" :key="item.path" :index="item.path">
+            <el-icon><component :is="item.icon" /></el-icon>
+            <span>{{ item.label }}</span>
+          </el-menu-item>
+        </el-menu>
+      </div>
 
-    <div class="user-main">
-      <header class="topbar">
-        <div class="user-text">当前用户：{{ currentUserText }}</div>
-        <button data-testid="user-logout" class="logout-btn" @click="logout">注销</button>
-      </header>
+      <div class="sidebar-section muted">
+        <div class="section-title">个人设置</div>
+        <el-menu :default-active="route.path" class="nav-menu secondary" router>
+          <el-menu-item v-for="item in secondaryNav" :key="item.path" :index="item.path">
+            <el-icon><component :is="item.icon" /></el-icon>
+            <span>{{ item.label }}</span>
+          </el-menu-item>
+        </el-menu>
+      </div>
+    </el-aside>
 
-      <main class="content-wrap">
+    <el-container>
+      <el-header class="workspace-header user-header">
+        <div class="header-left">
+          <div class="header-eyebrow">学生端</div>
+        </div>
+        <div class="header-actions">
+          <el-dropdown trigger="click">
+            <span class="user-dropdown">
+              <el-avatar size="small" :icon="UserFilled" />
+              <span class="user-name">{{ currentUserText }}</span>
+              <el-icon><CaretBottom /></el-icon>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item @click="logout">注销登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+      </el-header>
+
+      <el-main class="workspace-main">
         <router-view />
-      </main>
-    </div>
-  </div>
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
 
 <script setup>
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { School, UserFilled, CaretBottom } from '@element-plus/icons-vue';
 import { useAuthStore } from '../stores/auth';
 
 const authStore = useAuthStore();
 const router = useRouter();
 const route = useRoute();
 
-const navItems = [
-  { path: '/user/dashboard', label: '首页', icon: '⌂' },
-  { path: '/user/overview', label: '个人中心', icon: 'O' },
-  { path: '/user/courses', label: '我的课程', icon: 'K' },
-  { path: '/user/sign-in', label: '在线签到', icon: 'Q' },
-  { path: '/user/attendance-records', label: '我的考勤', icon: 'A' },
-  { path: '/user/leave-apply', label: '请假申请', icon: 'J' },
-  { path: '/user/leave-progress', label: '审批进度', icon: 'P' },
-  { path: '/user/leave-history', label: '请假记录', icon: 'H' },
-  { path: '/user/messages', label: '消息通知', icon: 'M' },
-  { path: '/user/profile', label: '个人资料', icon: 'D' },
-  { path: '/user/password', label: '修改密码', icon: 'S' }
+const primaryNav = [
+  { path: '/user/dashboard', label: '工作台', icon: 'House', description: '查看今日待办、签到状态与审批提醒' },
+  { path: '/user/courses', label: '课程与课表', icon: 'Reading', description: '查看课程安排与上课信息' },
+  { path: '/user/sign-in', label: '签到中心', icon: 'Location', description: '完成在线签到并了解当前是否可签到' },
+  { path: '/user/attendance-records', label: '考勤记录', icon: 'List', description: '查看历史出勤、迟到、缺勤与请假记录' },
+  { path: '/user/leave-apply', label: '请假中心', icon: 'DocumentAdd', description: '提交请假、查看进度与历史审批结果' },
+  { path: '/user/messages', label: '消息通知', icon: 'Bell', description: '集中查看审批、签到和系统通知' }
 ];
 
-const currentUserText = computed(() => {
-  const name = authStore.userInfo?.realName || '学生用户';
-  const role = authStore.userInfo?.roleCode || 'USER';
-  return `${name} (${role})`;
-});
+const secondaryNav = [
+  { path: '/user/profile', label: '个人资料', icon: 'Postcard', description: '维护姓名、联系方式与头像信息' },
+  { path: '/user/password', label: '账号安全', icon: 'Lock', description: '修改密码并维护账号安全' }
+];
 
-const isActive = (path) => route.path === path;
+const navMap = computed(() => [...primaryNav, ...secondaryNav]);
+const currentNav = computed(() => navMap.value.find((item) => item.path === route.path));
+
+const currentTitle = computed(() => currentNav.value?.label || '学生工作台');
+const currentDescription = computed(() => currentNav.value?.description || '围绕课程、签到、请假和通知完成日常任务');
+
+const currentUserText = computed(() => authStore.userInfo?.realName || authStore.userInfo?.username || '学生用户');
 
 const logout = () => {
   authStore.logout();
@@ -74,156 +99,126 @@ const logout = () => {
 </script>
 
 <style scoped>
-.user-shell {
+.workspace-shell {
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 248px 1fr;
-  background: #eff4fa;
+  background: linear-gradient(180deg, #f4f8fc 0%, #edf3fb 100%);
 }
 
-.sidebar {
-  background: linear-gradient(190deg, #15334f 0%, #1f4362 50%, #25536d 100%);
-  color: #d8e4f1;
-  padding: 18px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+.workspace-sidebar {
+  border-right: 1px solid rgba(28, 73, 116, 0.08);
+  padding: 24px 18px;
+  background: linear-gradient(180deg, #123b66 0%, #184976 48%, #1f5b80 100%);
+  color: #fff;
 }
 
-.brand {
+.brand-block {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 8px 14px;
-  border-bottom: 1px solid rgba(186, 209, 234, 0.2);
+  gap: 14px;
+  margin-bottom: 28px;
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
 }
 
-.logo-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
+.brand-mark {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
   display: grid;
   place-items: center;
-  font-weight: 700;
-  font-size: 0.8rem;
-  color: #0f3a5b;
-  background: linear-gradient(130deg, #bce7ff 0%, #95d3ff 100%);
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 24px;
 }
 
-.brand-text {
-  display: grid;
-  line-height: 1.2;
-}
-
-.brand-text strong {
-  color: #f1f7ff;
-  font-size: 0.97rem;
-}
-
-.brand-text span {
-  color: #a8c7df;
-  font-size: 0.83rem;
-}
-
-.nav-list {
-  display: grid;
-  gap: 4px;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border-radius: 11px;
-  padding: 9px 10px;
-  color: #ccdaea;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.nav-item:hover {
-  color: #f2f7ff;
-  background: rgba(171, 198, 228, 0.15);
-}
-
-.nav-item.active {
-  color: #ffffff;
-  background: linear-gradient(120deg, rgba(53, 141, 197, 0.9), rgba(54, 179, 152, 0.72));
-  box-shadow: 0 8px 18px rgba(4, 18, 35, 0.28);
-}
-
-.nav-icon {
-  width: 20px;
-  height: 20px;
-  display: grid;
-  place-items: center;
-  border-radius: 6px;
-  border: 1px solid rgba(194, 214, 235, 0.34);
-  font-size: 0.72rem;
+.brand-title {
+  font-size: 18px;
   font-weight: 700;
 }
 
-.user-main {
-  min-width: 0;
-  display: grid;
-  grid-template-rows: 64px 1fr;
+.brand-subtitle {
+  margin-top: 4px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.72);
 }
 
-.topbar {
-  background: #f8fbff;
-  border-bottom: 1px solid #d8e3ef;
-  padding: 0 20px;
+.sidebar-section + .sidebar-section {
+  margin-top: 22px;
+}
+
+.section-title {
+  margin-bottom: 10px;
+  padding: 0 12px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.nav-menu {
+  border-right: none;
+  background: transparent;
+}
+
+.nav-menu :deep(.el-menu-item) {
+  margin-bottom: 8px;
+  border-radius: 16px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.nav-menu :deep(.el-menu-item:hover),
+.nav-menu :deep(.el-menu-item.is-active) {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.workspace-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  padding: 12px 32px;
+  background: transparent;
 }
 
-.user-text {
-  color: #244664;
+:deep(.el-header) {
+  height: auto !important;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6b86a3;
+  background: rgba(107, 134, 163, 0.1);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(107, 134, 163, 0.2);
+}
+
+.user-dropdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #d7e4f2;
+  box-shadow: 0 10px 24px rgba(28, 76, 129, 0.08);
+  cursor: pointer;
+}
+
+.user-name {
   font-weight: 600;
+  color: #17324d;
 }
 
-.logout-btn {
-  min-height: 36px;
-  padding: 0 14px;
-}
-
-.content-wrap {
-  padding: 18px;
-}
-
-@media (max-width: 1080px) {
-  .user-shell {
-    grid-template-columns: 208px 1fr;
-  }
-}
-
-@media (max-width: 860px) {
-  .user-shell {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    padding-bottom: 10px;
-  }
-
-  .nav-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-  }
-
-  .user-main {
-    grid-template-rows: auto 1fr;
-  }
-
-  .topbar {
-    min-height: 56px;
-    padding: 10px 14px;
-  }
-
-  .content-wrap {
-    padding: 14px;
-  }
+.workspace-main {
+  padding: 0 32px 32px;
 }
 </style>

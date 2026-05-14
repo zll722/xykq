@@ -1,8 +1,9 @@
 package com.campus.attendance.controller;
 
 import com.campus.attendance.common.ApiResponse;
-import com.campus.attendance.domain.LeaveApproval;
 import com.campus.attendance.domain.LeaveRequest;
+import com.campus.attendance.dto.leave.AdminLeaveApprovalHistoryItem;
+import com.campus.attendance.dto.leave.AdminLeavePendingItem;
 import com.campus.attendance.dto.leave.LeaveApplyRequest;
 import com.campus.attendance.dto.leave.LeaveApproveRequest;
 import com.campus.attendance.dto.leave.LeaveProgressItem;
@@ -61,7 +62,7 @@ public class LeaveController {
     }
 
     @GetMapping("/leave/approvals/pending")
-    public ApiResponse<List<LeaveRequest>> listPending() {
+    public ApiResponse<List<AdminLeavePendingItem>> listPending() {
         return ApiResponse.ok(leaveService.listPending());
     }
 
@@ -73,7 +74,7 @@ public class LeaveController {
     }
 
     @GetMapping("/leave/approvals/history")
-    public ApiResponse<List<LeaveApproval>> listHistory() {
+    public ApiResponse<List<AdminLeaveApprovalHistoryItem>> listHistory() {
         return ApiResponse.ok(leaveService.listApprovalHistory());
     }
 }

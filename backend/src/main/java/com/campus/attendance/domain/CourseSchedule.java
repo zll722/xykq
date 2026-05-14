@@ -5,7 +5,9 @@ import java.time.LocalTime;
 public class CourseSchedule {
     private Long id;
     private Long courseId;
+    private String courseName;
     private Long classId;
+    private String className;
     private Integer weekNo;
     private Integer weekDay;
     private LocalTime startTime;
@@ -28,12 +30,28 @@ public class CourseSchedule {
         this.courseId = courseId;
     }
 
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
     public Long getClassId() {
         return classId;
     }
 
     public void setClassId(Long classId) {
         this.classId = classId;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public Integer getWeekNo() {

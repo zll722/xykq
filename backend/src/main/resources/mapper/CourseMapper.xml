@@ -9,6 +9,7 @@
         <result property="courseCode" column="course_code"/>
         <result property="courseName" column="course_name"/>
         <result property="teacherId" column="teacher_id"/>
+        <result property="teacherName" column="teacher_name"/>
         <result property="location" column="location"/>
         <result property="weekDay" column="week_day"/>
         <result property="startTime" column="start_time"/>
@@ -17,17 +18,18 @@
     </resultMap>
 
     <select id="list" resultMap="CourseMap">
-        SELECT id, course_code, course_name, teacher_id, location, week_day, start_time, end_time, status
-        FROM course_info
+        SELECT ci.id, ci.course_code, ci.course_name, ci.teacher_id, su.real_name AS teacher_name, ci.location, ci.week_day, ci.start_time, ci.end_time, ci.status
+        FROM course_info ci
+        LEFT JOIN sys_user su ON su.id = ci.teacher_id
         WHERE 1 = 1
         <if test="keyword != null and keyword != ''">
-            AND (course_code LIKE CONCAT('%', #{keyword}, '%')
-            OR course_name LIKE CONCAT('%', #{keyword}, '%'))
+            AND (ci.course_code LIKE CONCAT('%', #{keyword}, '%')
+            OR ci.course_name LIKE CONCAT('%', #{keyword}, '%'))
         </if>
         <if test="status != null">
-            AND status = #{status}
+            AND ci.status = #{status}
         </if>
-        ORDER BY id DESC
+        ORDER BY ci.id DESC
     </select>
 
     <insert id="insert" parameterType="com.campus.attendance.domain.CourseInfo" useGeneratedKeys="true" keyProperty="id">

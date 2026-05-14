@@ -1,4 +1,4 @@
-﻿import { expect, test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 function mockApi(route) {
   const req = route.request();
@@ -124,14 +124,15 @@ test('user flow: login -> sign-in -> leave apply -> progress', async ({ page }) 
   await login(page, 'student001', '123456');
 
   await page.goto('/user/sign-in');
-  await page.getByTestId('sign-in-schedule').selectOption('1');
-  await page.getByTestId('sign-in-submit').click();
-  await expect(page.getByText('签到结果：PRESENT')).toBeVisible();
+  await page.getByTestId('sign-in-submit').first().click();
+  await expect(page.getByText(/签到结果：PRESENT/)).toBeVisible();
 
   await page.goto('/user/leave-apply');
-  await page.getByTestId('leave-reason').fill('发烧请假');
+  await page.getByTestId('leave-start-time').fill('2026-03-20 08:00:00');
+  await page.getByTestId('leave-end-time').fill('2026-03-20 18:00:00');
+  await page.getByTestId('leave-reason').fill('发烧请假去医院看病');
   await page.getByTestId('leave-submit').click();
-  await expect(page.getByText('提交成功')).toBeVisible();
+  await expect(page.getByText(/提交成功/)).toBeVisible();
 
   await page.goto('/user/leave-progress');
   await expect(page.getByText('PENDING')).toBeVisible();

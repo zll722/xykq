@@ -1,25 +1,36 @@
 package com.campus.attendance.service.impl;
 
+import com.campus.attendance.domain.ClassInfo;
 import com.campus.attendance.domain.SysUser;
 import com.campus.attendance.dto.admin.AdminUserSaveRequest;
 import com.campus.attendance.dto.user.UserProfileInfo;
 import com.campus.attendance.dto.user.UserProfileUpdateRequest;
 import com.campus.attendance.dto.user.UserSummary;
 import com.campus.attendance.exception.BizException;
+import com.campus.attendance.mapper.ClassMapper;
+import com.campus.attendance.mapper.StudentProfileMapper;
 import com.campus.attendance.mapper.UserMapper;
 import com.campus.attendance.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
+    private final ClassMapper classMapper;
+    private final StudentProfileMapper studentProfileMapper;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserMapper userMapper, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserMapper userMapper,
+                           ClassMapper classMapper,
+                           StudentProfileMapper studentProfileMapper,
+                           PasswordEncoder passwordEncoder) {
         this.userMapper = userMapper;
+        this.classMapper = classMapper;
+        this.studentProfileMapper = studentProfileMapper;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -44,6 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Long createAdminUser(AdminUserSaveRequest request) {
         if (request.getPassword() == null || request.getPassword().isBlank()) {
             throw new BizException(4001, "新增用户必须提供密码");
@@ -52,6 +64,7 @@ public class UserServiceImpl implements UserService {
         if (exists != null) {
             throw new BizException(4001, "用户名已存在");
         }
+        validateClassBinding(request);
         SysUser user = new SysUser();
         user.setUsername(request.getUsername());
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
@@ -59,12 +72,16 @@ public class UserServiceImpl implements UserService {
         user.setRoleCode(request.getRoleCode());
         user.setStatus(request.getStatus());
         userMapper.insertUser(user);
+        saveStudentProfile(user.getId(), request);
         return user.getId();
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateAdminUser(Long id, AdminUserSaveRequest request) {
+        validateClassBinding(request);
         userMapper.updateBasic(id, request.getRealName(), request.getRoleCode(), request.getStatus());
+        saveStudentProfile(id, request);
     }
 
     @Override
@@ -77,6 +94,31 @@ public class UserServiceImpl implements UserService {
         userMapper.softDelete(id);
     }
 
+    @Override
+    public List<ClassInfo> listAssignableClasses() {
+        return classMapper.list(null, 1);
+    }
+
+    private void validateClassBinding(AdminUserSaveRequest request) {
+        if (!"USER".equals(request.getRoleCode())) {
+            return;
+        }
+        if (request.getClassId() == null) {
+            throw new BizException(4001, "普通用户必须选择班级");
+        }
+    }
+
+    private void saveStudentProfile(Long userId, AdminUserSaveRequest request) {
+        if (!"USER".equals(request.getRoleCode())) {
+            return;
+        }
+        String studentNo = studentProfileMapper.findStudentNoByUserId(userId);
+        if (studentNo == null || studentNo.isBlank()) {
+            studentNo = "AUTO" + userId;
+        }
+        studentProfileMapper.upsertByUserId(userId, studentNo, request.getClassId());
+    }
+
     private UserSummary toSummary(SysUser user) {
         UserSummary summary = new UserSummary();
         summary.setId(user.getId());
@@ -84,6 +126,9 @@ public class UserServiceImpl implements UserService {
         summary.setRealName(user.getRealName());
         summary.setRoleCode(user.getRoleCode());
         summary.setStatus(user.getStatus());
+        if ("USER".equals(user.getRoleCode())) {
+            summary.setClassId(studentProfileMapper.findClassIdByUserId(user.getId()));
+        }
         return summary;
     }
 }

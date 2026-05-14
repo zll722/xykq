@@ -13,6 +13,7 @@ public class AttendanceRecord {
     private LocalDateTime signedAt;
     private String status;
     private String source;
+    private String remark;
     private String makeupReason;
     private Long operatorId;
 
@@ -86,6 +87,14 @@ public class AttendanceRecord {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public String getMakeupReason() {

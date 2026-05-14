@@ -1,74 +1,103 @@
-﻿<template>
-  <div class="admin-shell">
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="logo-mark">SC</div>
-        <div class="brand-text">
-          <strong>校园云</strong>
-          <span>考勤系统</span>
+<template>
+  <el-container class="workspace-shell admin-shell">
+    <el-aside width="300px" class="workspace-sidebar admin-sidebar">
+      <div class="brand-block">
+        <div class="brand-mark">
+          <el-icon><DataAnalysis /></el-icon>
+        </div>
+        <div>
+          <div class="brand-title">校园考勤管理台</div>
+          <div class="brand-subtitle">以任务驱动的管理控制台</div>
         </div>
       </div>
 
-      <nav class="nav-list">
-        <RouterLink
-          v-for="item in navItems"
-          :key="item.path"
-          :to="item.path"
-          class="nav-item"
-          :class="{ active: isActive(item.path) }"
-        >
-          <span class="nav-icon" aria-hidden="true">{{ item.icon }}</span>
-          <span>{{ item.label }}</span>
-        </RouterLink>
-      </nav>
-    </aside>
+      <div v-for="group in navGroups" :key="group.label" class="sidebar-section">
+        <div class="section-title">{{ group.label }}</div>
+        <el-menu :default-active="route.path" class="nav-menu" router>
+          <el-menu-item v-for="item in group.items" :key="item.path" :index="item.path">
+            <el-icon><component :is="item.icon" /></el-icon>
+            <span>{{ item.label }}</span>
+          </el-menu-item>
+        </el-menu>
+      </div>
+    </el-aside>
 
-    <div class="admin-main">
-      <header class="topbar">
-        <div class="user-text">当前用户：{{ currentUserText }}</div>
-        <button data-testid="admin-logout" class="logout-btn" @click="logout">注销</button>
-      </header>
+    <el-container>
+      <el-header class="workspace-header admin-header">
+        <div class="header-left">
+          <div class="header-eyebrow">管理端</div>
+        </div>
+        <el-dropdown trigger="click">
+          <span class="user-dropdown">
+            <el-avatar size="small" :icon="UserFilled" />
+            <span class="user-name">{{ currentUserText }}</span>
+            <el-icon><CaretBottom /></el-icon>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="logout">注销登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+      </el-header>
 
-      <main class="content-wrap">
+      <el-main class="workspace-main">
         <router-view />
-      </main>
-    </div>
-  </div>
+      </el-main>
+    </el-container>
+  </el-container>
 </template>
 
 <script setup>
 import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { DataAnalysis, UserFilled, CaretBottom } from '@element-plus/icons-vue';
 import { useAuthStore } from '../stores/auth';
 
 const authStore = useAuthStore();
 const router = useRouter();
 const route = useRoute();
 
-const navItems = [
-  { path: '/admin/dashboard', label: '首页', icon: '⌂' },
-  { path: '/admin/users', label: '用户管理', icon: 'U' },
-  { path: '/admin/roles', label: '角色权限', icon: 'R' },
-  { path: '/admin/classes', label: '班级管理', icon: 'C' },
-  { path: '/admin/courses', label: '课程管理', icon: 'K' },
-  { path: '/admin/schedules', label: '排班管理', icon: 'P' },
-  { path: '/admin/leave-pending', label: '请假审批', icon: 'A' },
-  { path: '/admin/leave-history', label: '审批历史', icon: 'H' },
-  { path: '/admin/attendance-records', label: '考勤记录', icon: 'Q' },
-  { path: '/admin/attendance-adjustments', label: '考勤补录', icon: 'B' },
-  { path: '/admin/attendance-exceptions', label: '异常处理', icon: 'Y' },
-  { path: '/admin/stats', label: '统计分析', icon: 'T' },
-  { path: '/admin/system-logs', label: '操作日志', icon: 'L' },
-  { path: '/admin/system-config', label: '系统配置', icon: 'S' }
+const navGroups = [
+  {
+    label: '工作台',
+    items: [
+      { path: '/admin/dashboard', label: '总览中心', icon: 'House', description: '查看待审批、异常考勤和核心统计' }
+    ]
+  },
+  {
+    label: '教学基础数据',
+    items: [
+      { path: '/admin/users', label: '用户管理', icon: 'User', description: '管理学生和管理员账号状态' },
+      { path: '/admin/classes', label: '班级管理', icon: 'CollectionTag', description: '维护班级基础信息和容量' },
+      { path: '/admin/courses', label: '课程管理', icon: 'Reading', description: '维护课程、教师和上课地点' },
+      { path: '/admin/schedules', label: '排班管理', icon: 'Calendar', description: '按课程与班级维护排班信息' }
+    ]
+  },
+  {
+    label: '考勤与请假',
+    items: [
+      { path: '/admin/leave-pending', label: '待审批请假', icon: 'DocumentChecked', description: '集中处理待审批请假单' },
+      { path: '/admin/leave-history', label: '审批历史', icon: 'DocumentCopy', description: '回溯历史审批结果和处理记录' },
+      { path: '/admin/attendance-records', label: '考勤记录', icon: 'List', description: '查看和筛选原始考勤结果' },
+      { path: '/admin/attendance-adjustments', label: '考勤修正', icon: 'EditPen', description: '对考勤记录进行补录与修正' },
+      { path: '/admin/attendance-exceptions', label: '异常处理', icon: 'Warning', description: '查看和处理异常考勤' }
+    ]
+  },
+  {
+    label: '统计与系统',
+    items: [
+      { path: '/admin/stats', label: '统计分析', icon: 'PieChart', description: '按课程、班级和时间查看统计并导出' },
+      { path: '/admin/system-logs', label: '操作日志', icon: 'Tickets', description: '追踪关键操作和系统调用记录' }
+    ]
+  }
 ];
 
-const currentUserText = computed(() => {
-  const name = authStore.userInfo?.realName || '系统管理员';
-  const role = authStore.userInfo?.roleCode || 'ADMIN';
-  return `${name} (${role})`;
-});
-
-const isActive = (path) => route.path === path;
+const flatNav = computed(() => navGroups.flatMap((group) => group.items));
+const currentNav = computed(() => flatNav.value.find((item) => item.path === route.path));
+const currentTitle = computed(() => currentNav.value?.label || '管理控制台');
+const currentDescription = computed(() => currentNav.value?.description || '围绕审批、考勤和系统配置处理校园日常事务');
+const currentUserText = computed(() => authStore.userInfo?.realName || authStore.userInfo?.username || '管理员');
 
 const logout = () => {
   authStore.logout();
@@ -77,156 +106,126 @@ const logout = () => {
 </script>
 
 <style scoped>
-.admin-shell {
+.workspace-shell {
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 248px 1fr;
-  background: #eff4fa;
+  background: linear-gradient(180deg, #f4f8fc 0%, #edf3fb 100%);
 }
 
-.sidebar {
-  background: linear-gradient(190deg, #172d45 0%, #20384f 45%, #2b3f52 100%);
-  color: #d8e4f1;
-  padding: 18px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+.workspace-sidebar {
+  border-right: 1px solid rgba(28, 73, 116, 0.08);
+  padding: 24px 18px;
+  background: linear-gradient(180deg, #112d49 0%, #173a5c 50%, #1f4b69 100%);
+  color: #fff;
 }
 
-.brand {
+.brand-block {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 8px 14px;
-  border-bottom: 1px solid rgba(186, 209, 234, 0.2);
+  gap: 14px;
+  margin-bottom: 28px;
+  padding: 18px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
 }
 
-.logo-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
+.brand-mark {
+  width: 48px;
+  height: 48px;
+  border-radius: 16px;
   display: grid;
   place-items: center;
-  font-weight: 700;
-  font-size: 0.8rem;
-  color: #0e355a;
-  background: linear-gradient(130deg, #c2e8ff 0%, #9dc8ff 100%);
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 24px;
 }
 
-.brand-text {
-  display: grid;
-  line-height: 1.2;
-}
-
-.brand-text strong {
-  color: #f1f7ff;
-  font-size: 0.97rem;
-}
-
-.brand-text span {
-  color: #9fbbd4;
-  font-size: 0.83rem;
-}
-
-.nav-list {
-  display: grid;
-  gap: 4px;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border-radius: 11px;
-  padding: 9px 10px;
-  color: #ccdaea;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-
-.nav-item:hover {
-  color: #f2f7ff;
-  background: rgba(171, 198, 228, 0.15);
-}
-
-.nav-item.active {
-  color: #ffffff;
-  background: linear-gradient(120deg, rgba(63, 124, 205, 0.86), rgba(66, 169, 165, 0.7));
-  box-shadow: 0 8px 18px rgba(4, 18, 35, 0.28);
-}
-
-.nav-icon {
-  width: 20px;
-  height: 20px;
-  display: grid;
-  place-items: center;
-  border-radius: 6px;
-  border: 1px solid rgba(194, 214, 235, 0.34);
-  font-size: 0.72rem;
+.brand-title {
+  font-size: 18px;
   font-weight: 700;
 }
 
-.admin-main {
-  min-width: 0;
-  display: grid;
-  grid-template-rows: 64px 1fr;
+.brand-subtitle {
+  margin-top: 4px;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.72);
 }
 
-.topbar {
-  background: #f8fbff;
-  border-bottom: 1px solid #d8e3ef;
-  padding: 0 20px;
+.sidebar-section + .sidebar-section {
+  margin-top: 18px;
+}
+
+.section-title {
+  margin-bottom: 10px;
+  padding: 0 12px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.nav-menu {
+  border-right: none;
+  background: transparent;
+}
+
+.nav-menu :deep(.el-menu-item) {
+  margin-bottom: 8px;
+  border-radius: 16px;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.nav-menu :deep(.el-menu-item:hover),
+.nav-menu :deep(.el-menu-item.is-active) {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.workspace-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  padding: 12px 32px;
+  background: transparent;
 }
 
-.user-text {
-  color: #244664;
+:deep(.el-header) {
+  height: auto !important;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6b86a3;
+  background: rgba(107, 134, 163, 0.1);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(107, 134, 163, 0.2);
+}
+
+.user-dropdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid #d7e4f2;
+  box-shadow: 0 10px 24px rgba(28, 76, 129, 0.08);
+  cursor: pointer;
+}
+
+.user-name {
   font-weight: 600;
+  color: #17324d;
 }
 
-.logout-btn {
-  min-height: 36px;
-  padding: 0 14px;
-}
-
-.content-wrap {
-  padding: 18px;
-}
-
-@media (max-width: 1080px) {
-  .admin-shell {
-    grid-template-columns: 208px 1fr;
-  }
-}
-
-@media (max-width: 860px) {
-  .admin-shell {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar {
-    padding-bottom: 10px;
-  }
-
-  .nav-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-  }
-
-  .admin-main {
-    grid-template-rows: auto 1fr;
-  }
-
-  .topbar {
-    min-height: 56px;
-    padding: 10px 14px;
-  }
-
-  .content-wrap {
-    padding: 14px;
-  }
+.workspace-main {
+  padding: 0 32px 32px;
 }
 </style>

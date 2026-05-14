@@ -69,11 +69,16 @@ const submit = async () => {
   error.value = '';
   try {
     await authStore.login(form.username, form.password);
-    if (authStore.userInfo?.roleCode === 'ADMIN') {
+    const roleCode = authStore.userInfo?.roleCode;
+    if (roleCode === 'ADMIN') {
       router.push('/admin/dashboard');
-      return;
+    } else if (roleCode === 'TEACHER') {
+      router.push('/teacher/dashboard');
+    } else if (roleCode === 'COUNSELOR') {
+      router.push('/counselor/dashboard');
+    } else {
+      router.push('/user/dashboard');
     }
-    router.push('/user/dashboard');
   } catch (e) {
     error.value = e.message || '登录失败';
   }

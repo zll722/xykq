@@ -4,6 +4,10 @@ export function listAdminUsersApi(params) {
   return request.get('/admin/users', { params });
 }
 
+export function listAdminUserClassesApi() {
+  return request.get('/admin/users/classes');
+}
+
 export function createAdminUserApi(payload) {
   return request.post('/admin/users', payload);
 }

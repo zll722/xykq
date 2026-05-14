@@ -1,5 +1,6 @@
 package com.campus.attendance.service;
 
+import com.campus.attendance.domain.ClassInfo;
 import com.campus.attendance.dto.admin.AdminUserSaveRequest;
 import com.campus.attendance.dto.user.UserSummary;
 import com.campus.attendance.dto.user.UserProfileInfo;
@@ -21,4 +22,6 @@ public interface UserService {
     void updateUserStatus(Long id, Integer status);
 
     void deleteUser(Long id);
+
+    List<ClassInfo> listAssignableClasses();
 }

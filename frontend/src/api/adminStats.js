@@ -48,11 +48,3 @@ export async function exportSummaryApi(params) {
 export function listOperationLogsApi(params) {
   return request.get('/admin/system/logs', { params });
 }
-
-export function listSystemConfigApi() {
-  return request.get('/admin/system/config');
-}
-
-export function updateSystemConfigApi(payload) {
-  return request.put('/admin/system/config', payload);
-}

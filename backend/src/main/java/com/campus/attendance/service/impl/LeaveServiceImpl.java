@@ -1,8 +1,9 @@
 package com.campus.attendance.service.impl;
 
-import com.campus.attendance.domain.LeaveApproval;
 import com.campus.attendance.domain.LeaveRequest;
 import com.campus.attendance.domain.NotifyMessage;
+import com.campus.attendance.dto.leave.AdminLeaveApprovalHistoryItem;
+import com.campus.attendance.dto.leave.AdminLeavePendingItem;
 import com.campus.attendance.dto.leave.LeaveApplyRequest;
 import com.campus.attendance.dto.leave.LeaveApproveRequest;
 import com.campus.attendance.dto.leave.LeaveProgressItem;
@@ -10,10 +11,12 @@ import com.campus.attendance.exception.BizException;
 import com.campus.attendance.mapper.LeaveApprovalMapper;
 import com.campus.attendance.mapper.LeaveRequestMapper;
 import com.campus.attendance.mapper.NotifyMessageMapper;
+import com.campus.attendance.mapper.StudentProfileMapper;
 import com.campus.attendance.service.LeaveService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,13 +25,16 @@ public class LeaveServiceImpl implements LeaveService {
     private final LeaveRequestMapper leaveRequestMapper;
     private final LeaveApprovalMapper leaveApprovalMapper;
     private final NotifyMessageMapper notifyMessageMapper;
+    private final StudentProfileMapper studentProfileMapper;
 
     public LeaveServiceImpl(LeaveRequestMapper leaveRequestMapper,
                             LeaveApprovalMapper leaveApprovalMapper,
-                            NotifyMessageMapper notifyMessageMapper) {
+                            NotifyMessageMapper notifyMessageMapper,
+                            StudentProfileMapper studentProfileMapper) {
         this.leaveRequestMapper = leaveRequestMapper;
         this.leaveApprovalMapper = leaveApprovalMapper;
         this.notifyMessageMapper = notifyMessageMapper;
+        this.studentProfileMapper = studentProfileMapper;
     }
 
     @Override
@@ -89,8 +95,8 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public List<LeaveRequest> listPending() {
-        return leaveRequestMapper.listPending();
+    public List<AdminLeavePendingItem> listPending() {
+        return leaveRequestMapper.listPendingReadable();
     }
 
     @Override
@@ -115,7 +121,7 @@ public class LeaveServiceImpl implements LeaveService {
         }
         leaveRequestMapper.updateStatus(requestId, status);
 
-        LeaveApproval approval = new LeaveApproval();
+        com.campus.attendance.domain.LeaveApproval approval = new com.campus.attendance.domain.LeaveApproval();
         approval.setLeaveRequestId(requestId);
         approval.setApproverId(approverId);
         approval.setAction(action);
@@ -130,10 +136,41 @@ public class LeaveServiceImpl implements LeaveService {
         msg.setReadFlag(0);
         msg.setSentAt(LocalDateTime.now());
         notifyMessageMapper.insert(msg);
+
+        if ("APPROVED".equals(status)) {
+            notifyTeachersOnApproval(requestId, leave);
+        }
+    }
+
+    private void notifyTeachersOnApproval(Long requestId, LeaveRequest leave) {
+        Long classId = studentProfileMapper.findClassIdByUserId(leave.getStudentId());
+        if (classId == null) {
+            return;
+        }
+        LocalDate startDate = leave.getStartTime().toLocalDate();
+        LocalDate endDate = leave.getEndTime().toLocalDate();
+        java.util.Set<Long> notifiedTeachers = new java.util.HashSet<>();
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            List<Long> teacherIds = leaveRequestMapper.findTeacherIdsByClassAndTimeRange(classId, date);
+            for (Long teacherId : teacherIds) {
+                if (notifiedTeachers.add(teacherId)) {
+                    NotifyMessage teacherMsg = new NotifyMessage();
+                    teacherMsg.setUserId(teacherId);
+                    teacherMsg.setTitle("学生请假通知");
+                    teacherMsg.setContent("学生请假申请#" + requestId + " 已审批通过，请假时段：" +
+                            leave.getStartTime().toLocalDate() + " 至 " + leave.getEndTime().toLocalDate() +
+                            "，请注意课堂出勤安排。");
+                    teacherMsg.setMsgType("LEAVE_TEACHER_NOTIFY");
+                    teacherMsg.setReadFlag(0);
+                    teacherMsg.setSentAt(LocalDateTime.now());
+                    notifyMessageMapper.insert(teacherMsg);
+                }
+            }
+        }
     }
 
     @Override
-    public List<LeaveApproval> listApprovalHistory() {
-        return leaveApprovalMapper.listAll();
+    public List<AdminLeaveApprovalHistoryItem> listApprovalHistory() {
+        return leaveApprovalMapper.listReadableHistory();
     }
 }

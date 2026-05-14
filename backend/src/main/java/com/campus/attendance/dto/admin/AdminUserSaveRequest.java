@@ -13,6 +13,7 @@ public class AdminUserSaveRequest {
     private String roleCode;
     @NotNull
     private Integer status;
+    private Long classId;
 
     public String getUsername() {
         return username;
@@ -52,5 +53,13 @@ public class AdminUserSaveRequest {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Long getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Long classId) {
+        this.classId = classId;
     }
 }

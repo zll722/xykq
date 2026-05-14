@@ -7,6 +7,7 @@ public class AdminAttendanceRecordItem {
     private Long classId;
     private String className;
     private Long studentId;
+    private String studentName;
     private String attendanceDate;
     private String signedAt;
     private String status;
@@ -57,6 +58,14 @@ public class AdminAttendanceRecordItem {
 
     public void setStudentId(Long studentId) {
         this.studentId = studentId;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
     }
 
     public String getAttendanceDate() {

@@ -7,7 +7,9 @@
     <resultMap id="ScheduleMap" type="com.campus.attendance.domain.CourseSchedule">
         <id property="id" column="id"/>
         <result property="courseId" column="course_id"/>
+        <result property="courseName" column="course_name"/>
         <result property="classId" column="class_id"/>
+        <result property="className" column="class_name"/>
         <result property="weekNo" column="week_no"/>
         <result property="weekDay" column="week_day"/>
         <result property="startTime" column="start_time"/>
@@ -16,40 +18,72 @@
     </resultMap>
 
     <select id="list" resultMap="ScheduleMap">
-        SELECT id, course_id, class_id, week_no, week_day, start_time, end_time, location
-        FROM course_schedule
+        SELECT cs.id,
+               cs.course_id,
+               ci.course_name,
+               cs.class_id,
+               cl.class_name,
+               cs.week_no,
+               cs.week_day,
+               cs.start_time,
+               cs.end_time,
+               cs.location
+        FROM course_schedule cs
+        LEFT JOIN course_info ci ON ci.id = cs.course_id
+        LEFT JOIN class_info cl ON cl.id = cs.class_id
         WHERE 1 = 1
         <if test="courseId != null">
-            AND course_id = #{courseId}
+            AND cs.course_id = #{courseId}
         </if>
         <if test="classId != null">
-            AND class_id = #{classId}
+            AND cs.class_id = #{classId}
         </if>
-        ORDER BY id DESC
+        ORDER BY cs.id DESC
     </select>
 
     <select id="findById" resultMap="ScheduleMap">
-        SELECT id, course_id, class_id, week_no, week_day, start_time, end_time, location
-        FROM course_schedule
-        WHERE id = #{id}
-        LIMIT 1
+        SELECT cs.id,
+               cs.course_id,
+               ci.course_name,
+               cs.class_id,
+               cl.class_name,
+               cs.week_no,
+               cs.week_day,
+               cs.start_time,
+               cs.end_time,
+               cs.location
+        FROM course_schedule cs
+        LEFT JOIN course_info ci ON ci.id = cs.course_id
+        LEFT JOIN class_info cl ON cl.id = cs.class_id
+        WHERE cs.id = #{id}
     </select>
 
     <select id="listMySchedules" resultType="com.campus.attendance.dto.user.MyScheduleItem">
-        SELECT
-            cs.id AS schedule_id,
-            cs.course_id,
-            cs.class_id,
-            ci.course_name,
-            cs.week_day,
-            TIME_FORMAT(cs.start_time, '%H:%i:%s') AS start_time,
-            TIME_FORMAT(cs.end_time, '%H:%i:%s') AS end_time,
-            cs.location
+        SELECT cs.id AS schedule_id,
+               cs.course_id,
+               ci.course_name,
+               cs.class_id,
+               cl.class_name,
+               cs.week_day,
+               DATE_FORMAT(cs.start_time, '%H:%i:%s') AS start_time,
+               DATE_FORMAT(cs.end_time, '%H:%i:%s') AS end_time,
+               COALESCE(cs.location, ci.location) AS location,
+               CASE
+                   WHEN DATE(NOW()) = DATE(ar.attendance_date) AND ar.status = 'PRESENT' THEN 'SIGNED'
+                   WHEN DATE(NOW()) = DATE(ar.attendance_date) AND ar.status = 'LATE' THEN 'SIGNED'
+                   WHEN NOW() BETWEEN TIMESTAMP(DATE(NOW()), cs.start_time) - INTERVAL 15 MINUTE
+                       AND TIMESTAMP(DATE(NOW()), cs.start_time) + INTERVAL 15 MINUTE THEN 'OPEN'
+                   ELSE 'CLOSED'
+               END AS sign_status
         FROM course_schedule cs
-        INNER JOIN course_info ci ON ci.id = cs.course_id
-        INNER JOIN student_profile sp ON sp.class_id = cs.class_id
-        WHERE sp.user_id = #{userId}
-        ORDER BY cs.week_day ASC, cs.start_time ASC
+        JOIN course_info ci ON ci.id = cs.course_id
+        JOIN class_info cl ON cl.id = cs.class_id
+        JOIN student_profile sp ON sp.class_id = cs.class_id AND sp.user_id = #{userId}
+        LEFT JOIN attendance_record ar
+               ON ar.schedule_id = cs.id
+              AND ar.student_id = #{userId}
+              AND ar.attendance_date = DATE(NOW())
+        ORDER BY cs.week_day, cs.start_time
     </select>
 
     <insert id="insert" parameterType="com.campus.attendance.domain.CourseSchedule" useGeneratedKeys="true" keyProperty="id">

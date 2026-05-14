@@ -26,6 +26,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ApiResponse<Void> handleOther(Exception e) {
+        e.printStackTrace();
         return ApiResponse.fail(5000, "系统异常");
     }
 }

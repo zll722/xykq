@@ -6,6 +6,7 @@ public class UserSummary {
     private String realName;
     private String roleCode;
     private Integer status;
+    private Long classId;
 
     public Long getId() {
         return id;
@@ -45,5 +46,13 @@ public class UserSummary {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Long getClassId() {
+        return classId;
+    }
+
+    public void setClassId(Long classId) {
+        this.classId = classId;
     }
 }

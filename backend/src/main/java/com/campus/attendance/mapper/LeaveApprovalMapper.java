@@ -1,6 +1,7 @@
 package com.campus.attendance.mapper;
 
 import com.campus.attendance.domain.LeaveApproval;
+import com.campus.attendance.dto.leave.AdminLeaveApprovalHistoryItem;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,4 +14,6 @@ public interface LeaveApprovalMapper {
     List<LeaveApproval> listByRequestId(@Param("leaveRequestId") Long leaveRequestId);
 
     List<LeaveApproval> listAll();
+
+    List<AdminLeaveApprovalHistoryItem> listReadableHistory();
 }

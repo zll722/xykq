@@ -7,6 +7,7 @@ import com.campus.attendance.exception.BizException;
 import com.campus.attendance.mapper.LeaveApprovalMapper;
 import com.campus.attendance.mapper.LeaveRequestMapper;
 import com.campus.attendance.mapper.NotifyMessageMapper;
+import com.campus.attendance.mapper.StudentProfileMapper;
 import com.campus.attendance.service.impl.LeaveServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,12 +28,14 @@ class LeaveServiceImplTest {
     private LeaveApprovalMapper leaveApprovalMapper;
     @Mock
     private NotifyMessageMapper notifyMessageMapper;
+    @Mock
+    private StudentProfileMapper studentProfileMapper;
 
     private LeaveServiceImpl leaveService;
 
     @BeforeEach
     void setUp() {
-        leaveService = new LeaveServiceImpl(leaveRequestMapper, leaveApprovalMapper, notifyMessageMapper);
+        leaveService = new LeaveServiceImpl(leaveRequestMapper, leaveApprovalMapper, notifyMessageMapper, studentProfileMapper);
     }
 
     @Test

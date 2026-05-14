@@ -9,4 +9,19 @@
         WHERE user_id = #{userId}
         LIMIT 1
     </select>
+
+    <select id="findStudentNoByUserId" resultType="java.lang.String">
+        SELECT student_no
+        FROM student_profile
+        WHERE user_id = #{userId}
+        LIMIT 1
+    </select>
+
+    <update id="upsertByUserId">
+        INSERT INTO student_profile (user_id, student_no, class_id)
+        VALUES (#{userId}, #{studentNo}, #{classId})
+        ON DUPLICATE KEY UPDATE
+            student_no = VALUES(student_no),
+            class_id = VALUES(class_id)
+    </update>
 </mapper>
