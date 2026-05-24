@@ -32,28 +32,36 @@
   <view class="menu-list">
     <view class="menu-item card" bindtap="goOverview">
       <view class="menu-left">
-        <text class="menu-icon">◎</text>
+        <view class="menu-icon-box">
+          <text class="menu-icon">◎</text>
+        </view>
         <text class="menu-label">考勤总览</text>
       </view>
       <text class="menu-arrow">›</text>
     </view>
     <view class="menu-item card" bindtap="goAttendance">
       <view class="menu-left">
-        <text class="menu-icon">▤</text>
+        <view class="menu-icon-box">
+          <text class="menu-icon">▤</text>
+        </view>
         <text class="menu-label">考勤记录</text>
       </view>
       <text class="menu-arrow">›</text>
     </view>
     <view class="menu-item card" bindtap="goMessages">
       <view class="menu-left">
-        <text class="menu-icon">◈</text>
+        <view class="menu-icon-box">
+          <text class="menu-icon">◈</text>
+        </view>
         <text class="menu-label">消息通知</text>
       </view>
       <text class="menu-arrow">›</text>
     </view>
     <view class="menu-item card" bindtap="goChangePassword">
       <view class="menu-left">
-        <text class="menu-icon">◓</text>
+        <view class="menu-icon-box">
+          <text class="menu-icon">◓</text>
+        </view>
         <text class="menu-label">修改密码</text>
       </view>
       <text class="menu-arrow">›</text>

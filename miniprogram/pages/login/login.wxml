@@ -1,27 +1,41 @@
 <view class="login-page">
+  <!-- 背景装饰圆 -->
+  <view class="bg-circle bg-circle-1"></view>
+  <view class="bg-circle bg-circle-2"></view>
+  <view class="bg-circle bg-circle-3"></view>
+
   <view class="login-hero">
-    <view class="logo-circle">
-      <text class="logo-icon">◎</text>
+    <view class="logo-wrap">
+      <view class="logo-ring-outer">
+        <view class="logo-ring-inner">
+          <text class="logo-icon">✦</text>
+        </view>
+      </view>
     </view>
     <text class="login-title">智能校园考勤</text>
     <text class="login-subtitle">Smart Campus Attendance</text>
   </view>
 
-  <view class="login-form">
+  <view class="login-card">
+    <text class="card-title">账号登录</text>
     <view class="form-item">
-      <view class="input-wrap">
-        <text class="input-prefix">账</text>
-        <input class="form-input" placeholder="请输入账号" value="{{username}}" bindinput="onUsernameInput" />
+      <view class="input-row">
+        <view class="input-icon-box">
+          <text class="input-icon-txt">人</text>
+        </view>
+        <input class="form-input" placeholder="请输入账号" placeholder-class="input-ph" value="{{username}}" bindinput="onUsernameInput" />
       </view>
     </view>
     <view class="form-item">
-      <view class="input-wrap">
-        <text class="input-prefix">密</text>
-        <input class="form-input" placeholder="请输入密码" password="{{true}}" value="{{password}}" bindinput="onPasswordInput" />
+      <view class="input-row">
+        <view class="input-icon-box">
+          <text class="input-icon-txt">锁</text>
+        </view>
+        <input class="form-input" placeholder="请输入密码" placeholder-class="input-ph" password="{{true}}" value="{{password}}" bindinput="onPasswordInput" />
       </view>
     </view>
-    <button class="btn-primary login-btn" bindtap="onLogin" loading="{{loading}}">登 录</button>
+    <button class="btn-login" bindtap="onLogin" loading="{{loading}}">登 录</button>
   </view>
 
-  <text class="login-footer">智能校园管理系统 · 考勤模块</text>
+  <text class="login-footer">© 智能校园管理系统 · 考勤模块</text>
 </view>

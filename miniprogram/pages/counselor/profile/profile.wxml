@@ -32,21 +32,27 @@
   <view class="menu-list">
     <view class="menu-item card" bindtap="goClasses">
       <view class="menu-left">
-        <text class="menu-icon">▦</text>
+        <view class="menu-icon-box">
+          <text class="menu-icon">▦</text>
+        </view>
         <text class="menu-label">班级管理</text>
       </view>
       <text class="menu-arrow">›</text>
     </view>
     <view class="menu-item card" bindtap="goHistory">
       <view class="menu-left">
-        <text class="menu-icon">◧</text>
+        <view class="menu-icon-box">
+          <text class="menu-icon">◧</text>
+        </view>
         <text class="menu-label">审批历史</text>
       </view>
       <text class="menu-arrow">›</text>
     </view>
     <view class="menu-item card" bindtap="goChangePassword">
       <view class="menu-left">
-        <text class="menu-icon">◎</text>
+        <view class="menu-icon-box">
+          <text class="menu-icon">◎</text>
+        </view>
         <text class="menu-label">修改密码</text>
       </view>
       <text class="menu-arrow">›</text>

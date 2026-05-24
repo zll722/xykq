@@ -1,23 +1,40 @@
 .welcome-card {
-  background: linear-gradient(135deg, #2980e8, #409EFF);
+  background: linear-gradient(135deg, #1a5fc8 0%, #409EFF 60%, #69c0ff 100%);
   color: #fff;
-  padding: 40rpx;
-  border-radius: 24rpx;
+  padding: 44rpx 40rpx;
+  border-radius: 28rpx;
   margin-bottom: 24rpx;
-  box-shadow: 0 8rpx 32rpx rgba(64, 158, 255, 0.35);
+  box-shadow: 0 12rpx 40rpx rgba(64, 158, 255, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome-card::after {
+  content: '';
+  position: absolute;
+  top: -40rpx;
+  right: -40rpx;
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
 }
 
 .welcome-text {
   display: block;
-  font-size: 40rpx;
-  font-weight: 700;
+  font-size: 42rpx;
+  font-weight: 800;
   margin-bottom: 8rpx;
+  position: relative;
+  z-index: 1;
 }
 
 .welcome-sub {
   display: block;
   font-size: 26rpx;
-  opacity: 0.85;
+  opacity: 0.8;
+  position: relative;
+  z-index: 1;
 }
 
 .stats-grid {
@@ -29,7 +46,8 @@
 
 .stat-item {
   text-align: center;
-  padding: 28rpx 16rpx;
+  padding: 32rpx 16rpx;
+  border-radius: 24rpx;
 }
 
 .approval-bar {
@@ -37,17 +55,19 @@
   align-items: center;
   padding: 24rpx 32rpx;
   margin-bottom: 24rpx;
+  border-left: 6rpx solid #409EFF;
 }
 
 .approval-label {
   font-size: 26rpx;
-  color: #888;
+  color: #8c9dae;
+  font-weight: 500;
 }
 
 .approval-value {
   flex: 1;
   font-size: 28rpx;
-  color: #333;
+  color: #2c3e50;
   font-weight: 500;
 }
 
@@ -55,15 +75,16 @@
 
 .stat-value {
   display: block;
-  font-size: 44rpx;
-  font-weight: 700;
+  font-size: 48rpx;
+  font-weight: 800;
   margin-bottom: 8rpx;
 }
 
 .stat-label {
   display: block;
   font-size: 24rpx;
-  color: #999;
+  color: #aab4be;
+  font-weight: 500;
 }
 
 .section {
@@ -73,26 +94,20 @@
 .course-card {
   padding: 28rpx;
   border-left: 6rpx solid #409EFF;
-  border-radius: 0 20rpx 20rpx 0;
+  border-radius: 0 22rpx 22rpx 0;
   margin-bottom: 16rpx;
 }
 
 .course-name {
   font-size: 30rpx;
-  font-weight: 600;
-  color: #222;
+  font-weight: 700;
+  color: #1a1a2e;
 }
 
 .course-info {
   margin-top: 12rpx;
   font-size: 24rpx;
-  color: #888;
+  color: #8c9dae;
 }
 
-.ml-20 {
-  margin-left: 20rpx;
-}
-
-.quick-actions {
-  margin-top: 32rpx;
-}
+.ml-20 { margin-left: 20rpx; }
