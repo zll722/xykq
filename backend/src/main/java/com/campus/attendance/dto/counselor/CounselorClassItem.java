@@ -7,6 +7,7 @@ public class CounselorClassItem {
     private Integer capacity;
     private Integer studentCount;
     private Integer pendingLeaveCount;
+    private String remark;
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -20,4 +21,6 @@ public class CounselorClassItem {
     public void setStudentCount(Integer studentCount) { this.studentCount = studentCount; }
     public Integer getPendingLeaveCount() { return pendingLeaveCount; }
     public void setPendingLeaveCount(Integer pendingLeaveCount) { this.pendingLeaveCount = pendingLeaveCount; }
+    public String getRemark() { return remark; }
+    public void setRemark(String remark) { this.remark = remark; }
 }

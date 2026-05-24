@@ -32,7 +32,7 @@ Page({
     const id = e.currentTarget.dataset.id;
     const remark = this.data.remarks[id] || '';
     try {
-      await approveLeave(id, { action: 'APPROVE', remark });
+      await approveLeave(id, { action: 'APPROVED', remark });
       wx.showToast({ title: '已通过', icon: 'success' });
       this.loadData();
     } catch (err) {
@@ -48,7 +48,7 @@ Page({
       return;
     }
     try {
-      await approveLeave(id, { action: 'REJECT', remark });
+      await approveLeave(id, { action: 'REJECTED', remark });
       wx.showToast({ title: '已驳回', icon: 'success' });
       this.loadData();
     } catch (err) {

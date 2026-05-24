@@ -42,7 +42,7 @@
         </el-table-column>
         <el-table-column label="请假类型" width="90">
           <template #default="{ row }">
-            <el-tag :type="typeColor(row.leaveType)" size="small">{{ row.leaveType }}</el-tag>
+            <el-tag :type="typeColor(row.leaveType)" size="small">{{ leaveTypeLabel(row.leaveType) }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="请假时间" min-width="220">
@@ -89,7 +89,7 @@
           <span>{{ currentRow?.studentName }} ({{ currentRow?.studentNo }})</span>
         </el-form-item>
         <el-form-item label="请假类型">
-          <el-tag :type="typeColor(currentRow?.leaveType)">{{ currentRow?.leaveType }}</el-tag>
+          <el-tag :type="typeColor(currentRow?.leaveType)">{{ leaveTypeLabel(currentRow?.leaveType) }}</el-tag>
         </el-form-item>
         <el-form-item label="请假时间">
           <span>{{ currentRow?.startTime }} 至 {{ currentRow?.endTime }}</span>
@@ -149,10 +149,12 @@ const isImageProof = computed(() => {
 
 const dialogTitle = ref('');
 
+const LEAVE_TYPE_MAP = { SICK: '病假', PERSONAL: '事假', PUBLIC: '公假', OTHER: '其他' };
+const leaveTypeLabel = (type) => LEAVE_TYPE_MAP[type] || type || '其他';
 const typeColor = (type) => {
-  if (type === '病假') return 'danger';
-  if (type === '事假') return 'warning';
-  if (type === '公假') return 'success';
+  if (type === 'SICK') return 'danger';
+  if (type === 'PERSONAL') return 'warning';
+  if (type === 'PUBLIC') return 'success';
   return 'info';
 };
 

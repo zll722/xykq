@@ -10,7 +10,7 @@
     </view>
 
     <view class="sign-result" wx:if="{{signResult}}">
-      <text class="result-icon">{{signResult.status === 'NORMAL' ? '✅' : (signResult.status === 'LATE' ? '⚠️' : '❌')}}</text>
+      <text class="result-icon">{{(signResult.status === 'PRESENT' || signResult.status === 'NORMAL') ? '✅' : (signResult.status === 'LATE' ? '⚠️' : '❌')}}</text>
       <text class="result-text">{{signResult.statusText}}</text>
       <text class="result-time">签到时间：{{signResult.signTime}}</text>
     </view>

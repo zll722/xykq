@@ -9,7 +9,7 @@
       <text class="tag tag-warning">待审批</text>
     </view>
     <view class="leave-info mt-20">
-      <text>{{item.leaveType === 'SICK' ? '病假' : (item.leaveType === 'PERSONAL' ? '事假' : '其他')}}</text>
+      <text>{{item.leaveType === 'SICK' ? '病假' : (item.leaveType === 'PERSONAL' ? '事假' : (item.leaveType === 'PUBLIC' ? '公假' : '其他'))}}</text>
       <text class="ml-20">{{item.startTime}} ~ {{item.endTime}}</text>
     </view>
     <view class="leave-reason">{{item.reason}}</view>

@@ -22,6 +22,10 @@
   <view class="section">
     <text class="section-title">快捷入口</text>
     <view class="quick-grid">
+      <view class="quick-item card" bindtap="goCourses">
+        <text class="quick-icon">◈</text>
+        <text class="quick-text">我的课程</text>
+      </view>
       <view class="quick-item card" bindtap="goClasses">
         <text class="quick-icon">◫</text>
         <text class="quick-text">我的班级</text>
@@ -31,7 +35,7 @@
         <text class="quick-text">考勤报表</text>
       </view>
       <view class="quick-item card" bindtap="goLeave">
-        <text class="quick-icon">◈</text>
+        <text class="quick-icon">◨</text>
         <text class="quick-text">请假通知</text>
       </view>
     </view>

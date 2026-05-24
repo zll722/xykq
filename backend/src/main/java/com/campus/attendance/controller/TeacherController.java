@@ -40,6 +40,12 @@ public class TeacherController {
         return ApiResponse.ok(teacherMapper.listMyClasses(teacherId));
     }
 
+    @GetMapping("/courses")
+    public ApiResponse<List<Map<String, Object>>> myCourses() {
+        Long teacherId = SecurityUtils.getCurrentUserId();
+        return ApiResponse.ok(teacherMapper.listMyCourses(teacherId));
+    }
+
     @GetMapping("/classes/{classId}/attendance")
     public ApiResponse<List<Map<String, Object>>> classAttendance(@PathVariable Long classId) {
         Long teacherId = SecurityUtils.getCurrentUserId();

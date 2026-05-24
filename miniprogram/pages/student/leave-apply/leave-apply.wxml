@@ -13,17 +13,36 @@
     </view>
 
     <view class="form-item">
-      <text class="form-label">开始日期</text>
-      <picker mode="date" bindchange="onStartDateChange">
-        <view class="form-input picker-view">{{form.startTime ? form.startTime.slice(0, 10) : '请选择开始日期'}}</view>
-      </picker>
+      <text class="form-label">快捷时间方案</text>
+      <view class="preset-group">
+        <view class="preset-btn" bindtap="applyPreset" data-preset="morningToday">今天上午</view>
+        <view class="preset-btn" bindtap="applyPreset" data-preset="afternoonToday">今天下午</view>
+        <view class="preset-btn" bindtap="applyPreset" data-preset="allDayTomorrow">明天全天</view>
+      </view>
     </view>
 
     <view class="form-item">
-      <text class="form-label">结束日期</text>
-      <picker mode="date" bindchange="onEndDateChange">
-        <view class="form-input picker-view">{{form.endTime ? form.endTime.slice(0, 10) : '请选择结束日期'}}</view>
-      </picker>
+      <text class="form-label">开始时间</text>
+      <view class="datetime-row">
+        <picker mode="date" value="{{startDate}}" bindchange="onStartDateChange">
+          <view class="form-input picker-view datetime-half">{{startDate || '选择日期'}}</view>
+        </picker>
+        <picker mode="time" value="{{startClock}}" bindchange="onStartTimeChange">
+          <view class="form-input picker-view datetime-half">{{startClock || '选择时间'}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">结束时间</text>
+      <view class="datetime-row">
+        <picker mode="date" value="{{endDate}}" bindchange="onEndDateChange">
+          <view class="form-input picker-view datetime-half">{{endDate || '选择日期'}}</view>
+        </picker>
+        <picker mode="time" value="{{endClock}}" bindchange="onEndTimeChange">
+          <view class="form-input picker-view datetime-half">{{endClock || '选择时间'}}</view>
+        </picker>
+      </view>
     </view>
 
     <view class="form-item">

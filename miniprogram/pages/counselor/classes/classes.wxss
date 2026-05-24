@@ -1,6 +1,14 @@
 .class-card {
   border-radius: 20rpx;
   cursor: pointer;
+  margin-bottom: 20rpx;
+}
+
+.class-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
 }
 
 .class-name {
@@ -9,15 +17,49 @@
   color: #222;
 }
 
-.class-meta {
+.class-detail-row {
+  display: flex;
+  gap: 24rpx;
+  margin-bottom: 14rpx;
+}
+
+.detail-item {
+  font-size: 24rpx;
+}
+
+.capacity-bar-wrap {
   display: flex;
   align-items: center;
   gap: 12rpx;
+  margin-bottom: 10rpx;
 }
 
-.class-code {
-  margin-top: 10rpx;
-  font-size: 24rpx;
+.capacity-bar {
+  flex: 1;
+  height: 10rpx;
+  background: #e9ecef;
+  border-radius: 10rpx;
+  overflow: hidden;
+}
+
+.capacity-fill {
+  height: 100%;
+  background: #409EFF;
+  border-radius: 10rpx;
+  transition: width 0.3s;
+}
+
+.capacity-pct {
+  font-size: 22rpx;
+  min-width: 56rpx;
+  text-align: right;
+}
+
+.class-remark {
+  font-size: 22rpx;
+  margin-top: 8rpx;
+  border-top: 1rpx solid #f0f0f0;
+  padding-top: 10rpx;
 }
 
 .pending-badge {

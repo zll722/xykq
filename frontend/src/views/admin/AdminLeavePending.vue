@@ -42,7 +42,7 @@
         </el-table-column>
         <el-table-column label="请假类型" width="90">
           <template #default="scope">
-            <el-tag>{{ scope.row.leaveType || '未填写' }}</el-tag>
+            <el-tag>{{ { SICK: '病假', PERSONAL: '事假', PUBLIC: '公假', OTHER: '其他' }[scope.row.leaveType] || scope.row.leaveType || '未填写' }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="请假时间" min-width="220">

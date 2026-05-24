@@ -38,7 +38,7 @@ Page({
   async loadAttendance(classId) {
     wx.showLoading({ title: '加载中', mask: true });
     try {
-      const raw = records || [];
+      const raw = await getClassAttendance(classId) || [];
       const processed = raw.map(item => ({
         ...item,
         attendRate: item.totalCount > 0 ? Math.round(item.presentCount / item.totalCount * 100) : 0

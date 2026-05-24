@@ -25,6 +25,8 @@ public interface AttendanceService {
 
     SignInResponse signIn(Long userId, SignInRequest request);
 
+    SignInResponse getMyScheduleRecord(Long userId, Long scheduleId);
+
     List<MyAttendanceRecordItem> listMyRecords(Long userId);
 
     List<MyScheduleItem> listMySchedules(Long userId);

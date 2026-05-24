@@ -75,21 +75,25 @@
     </select>
 
     <select id="myOverview" resultType="com.campus.attendance.dto.user.MyOverviewStats">
-        SELECT COUNT(*) AS total,
-               SUM(CASE WHEN status = 'PRESENT' THEN 1 ELSE 0 END) AS present,
-               SUM(CASE WHEN status = 'LATE' THEN 1 ELSE 0 END) AS late,
-               SUM(CASE WHEN status = 'ABSENT' THEN 1 ELSE 0 END) AS absent
+        SELECT COUNT(*)                                                                                     AS total_count,
+               SUM(CASE WHEN status = 'PRESENT' THEN 1 ELSE 0 END)                                        AS present_count,
+               SUM(CASE WHEN status = 'LATE' THEN 1 ELSE 0 END)                                           AS late_count,
+               SUM(CASE WHEN status = 'ABSENT' THEN 1 ELSE 0 END)                                         AS absent_count,
+               ROUND(SUM(CASE WHEN status = 'PRESENT' THEN 1 ELSE 0 END) * 100.0 / NULLIF(COUNT(*), 0), 1) AS present_rate
         FROM attendance_record
         WHERE student_id = #{studentId}
     </select>
 
     <select id="myCalendar" resultType="com.campus.attendance.dto.user.MyCalendarItem">
-        SELECT attendance_date AS attendanceDate,
-               status AS status
-        FROM attendance_record
-        WHERE student_id = #{studentId}
-          AND attendance_date BETWEEN #{startDate} AND #{endDate}
-        ORDER BY attendance_date ASC, id ASC
+        SELECT ar.attendance_date,
+               ar.status,
+               ci.course_name
+        FROM attendance_record ar
+        JOIN course_info ci ON ci.id = ar.course_id
+        WHERE ar.student_id = #{studentId}
+          <if test="startDate != null">AND ar.attendance_date &gt;= #{startDate}</if>
+          <if test="endDate != null">AND ar.attendance_date &lt;= #{endDate}</if>
+        ORDER BY ar.attendance_date ASC, ar.id ASC
     </select>
 
     <select id="listAdminRecords" resultMap="AdminAttendanceRecordMap">

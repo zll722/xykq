@@ -62,6 +62,11 @@ public class AttendanceController {
         return ApiResponse.ok(null);
     }
 
+    @GetMapping("/attendance/record/my/{scheduleId}")
+    public ApiResponse<SignInResponse> getMyScheduleRecord(@PathVariable Long scheduleId) {
+        return ApiResponse.ok(attendanceService.getMyScheduleRecord(SecurityUtils.getCurrentUserId(), scheduleId));
+    }
+
     @PostMapping("/attendance/sign-in")
     public ApiResponse<SignInResponse> signIn(@Valid @RequestBody SignInRequest request) {
         return ApiResponse.ok(attendanceService.signIn(SecurityUtils.getCurrentUserId(), request));

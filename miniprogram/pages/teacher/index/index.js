@@ -28,6 +28,10 @@ Page({
     }
   },
 
+  goCourses() {
+    wx.navigateTo({ url: '/pages/teacher/courses/courses' });
+  },
+
   goClasses() {
     wx.navigateTo({ url: '/pages/teacher/classes/classes' });
   },

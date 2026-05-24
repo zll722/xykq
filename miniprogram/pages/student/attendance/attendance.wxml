@@ -1,4 +1,17 @@
 <view class="container">
+  <view class="date-filter card">
+    <view class="date-row">
+      <picker mode="date" value="{{filterStartDate}}" bindchange="onStartDateChange">
+        <view class="date-input">{{filterStartDate || '开始日期'}}</view>
+      </picker>
+      <text class="date-sep">至</text>
+      <picker mode="date" value="{{filterEndDate}}" bindchange="onEndDateChange">
+        <view class="date-input">{{filterEndDate || '结束日期'}}</view>
+      </picker>
+      <view class="date-clear" bindtap="clearDateFilter" wx:if="{{filterStartDate || filterEndDate}}">清除</view>
+    </view>
+  </view>
+
   <view class="filter-bar">
     <view class="filter-item {{currentFilter === 'all' ? 'active' : ''}}" bindtap="setFilter" data-filter="all">全部</view>
     <view class="filter-item {{currentFilter === 'PRESENT' ? 'active' : ''}}" bindtap="setFilter" data-filter="PRESENT">正常</view>

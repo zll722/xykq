@@ -44,7 +44,7 @@
         </el-table-column>
         <el-table-column label="请假类型" width="100">
           <template #default="{ row }">
-            <el-tag :type="typeColor(row.leaveType)">{{ row.leaveType }}</el-tag>
+            <el-tag :type="typeColor(row.leaveType)">{{ leaveTypeLabel(row.leaveType) }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="请假时间" min-width="240">
@@ -90,10 +90,12 @@ const loadData = async () => {
   }
 };
 
+const LEAVE_TYPE_MAP = { SICK: '病假', PERSONAL: '事假', PUBLIC: '公假', OTHER: '其他' };
+const leaveTypeLabel = (type) => LEAVE_TYPE_MAP[type] || type || '其他';
 const typeColor = (type) => {
-  if (type === '病假') return 'danger';
-  if (type === '事假') return 'warning';
-  if (type === '公假') return 'success';
+  if (type === 'SICK') return 'danger';
+  if (type === 'PERSONAL') return 'warning';
+  if (type === 'PUBLIC') return 'success';
   return 'info';
 };
 

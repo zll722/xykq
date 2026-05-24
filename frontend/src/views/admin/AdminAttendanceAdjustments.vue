@@ -49,8 +49,12 @@
           </template>
         </el-table-column>
         <el-table-column label="日期" prop="attendanceDate" width="120" />
-        <el-table-column label="当前状态" prop="statusText" width="120" />
-        <el-table-column label="签到时间" prop="signTime" min-width="160" />
+        <el-table-column label="当前状态" width="120">
+          <template #default="{ row }">
+            <el-tag :type="statusTagType(row.status)" size="small">{{ statusLabel(row.status) }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="签到时间" prop="signedAt" min-width="160" />
         <el-table-column label="操作" width="140" fixed="right">
           <template #default="scope">
             <el-button type="primary" @click="openAdjust(scope.row)">修正</el-button>
@@ -106,10 +110,15 @@ const form = reactive({
   reason: ''
 });
 
+const STATUS_LABEL = { PRESENT: '正常', LATE: '迟到', ABSENT: '缺勤', LEAVE: '请假' };
+const STATUS_TAG = { PRESENT: 'success', LATE: 'warning', ABSENT: 'danger', LEAVE: 'info' };
+const statusLabel = (s) => STATUS_LABEL[s] || s || '-';
+const statusTagType = (s) => STATUS_TAG[s] || '';
+
 const selectedSummary = computed(() => {
   if (!selected.value) return '未选择记录';
   const student = selected.value.studentName || `学生#${selected.value.studentId}`;
-  return `记录 #${selected.value.id} · ${student} · ${selected.value.courseName || '未命名课程'} · ${selected.value.className || '未命名班级'} · 当前状态 ${selected.value.statusText || '-'}`;
+  return `记录 #${selected.value.id} · ${student} · ${selected.value.courseName || '未命名课程'} · ${selected.value.className || '未命名班级'} · 当前状态 ${statusLabel(selected.value.status)}`;
 });
 
 const loadRecords = async () => {

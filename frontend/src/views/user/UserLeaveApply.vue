@@ -29,10 +29,10 @@
               <el-col :xs="24" :md="12">
                 <el-form-item label="请假类型" prop="leaveType">
                   <el-select v-model="form.leaveType" placeholder="请选择请假类型">
-                    <el-option label="病假" value="病假" />
-                    <el-option label="事假" value="事假" />
-                    <el-option label="公假" value="公假" />
-                    <el-option label="其他" value="其他" />
+                    <el-option label="病假" value="SICK" />
+                    <el-option label="事假" value="PERSONAL" />
+                    <el-option label="公假" value="PUBLIC" />
+                    <el-option label="其他" value="OTHER" />
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -143,7 +143,7 @@ const uploading = ref(false);
 const selectedFile = ref(null);
 
 const form = ref({
-  leaveType: '病假',
+  leaveType: 'SICK',
   startTime: '',
   endTime: '',
   reason: '',
@@ -235,7 +235,7 @@ const submit = async () => {
 
 const reset = () => {
   form.value = {
-    leaveType: '病假',
+    leaveType: 'SICK',
     startTime: '',
     endTime: '',
     reason: '',

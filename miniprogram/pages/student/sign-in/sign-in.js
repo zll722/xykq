@@ -1,4 +1,4 @@
-const { signIn } = require('../../../api/attendance');
+const { signIn, getMyScheduleRecord } = require('../../../api/attendance');
 
 Page({
   data: {
@@ -16,6 +16,33 @@ Page({
     });
     this.updateTime();
     this.timer = setInterval(() => this.updateTime(), 1000);
+    if (options.scheduleId) {
+      this.checkExistingRecord(options.scheduleId);
+    }
+  },
+
+  async checkExistingRecord(scheduleId) {
+    try {
+      const res = await getMyScheduleRecord(scheduleId);
+      if (res && res.status) {
+        this.applySignResult(res);
+      }
+    } catch (err) {
+      // 未签到或查询失败，保持签到按钮显示
+    }
+  },
+
+  applySignResult(res) {
+    const statusMap = { PRESENT: '签到成功', NORMAL: '签到成功', LATE: '迟到签到', ABSENT: '缺勤' };
+    const rawTime = res.signedAt || '';
+    const signTime = rawTime.length >= 19 ? rawTime.substring(11, 19) : rawTime;
+    this.setData({
+      signResult: {
+        status: res.status,
+        statusText: statusMap[res.status] || res.status,
+        signTime: signTime || this.data.currentTime
+      }
+    });
   },
 
   onUnload() {
@@ -32,14 +59,7 @@ Page({
     this.setData({ loading: true });
     try {
       const res = await signIn({ scheduleId: Number(this.data.scheduleId) });
-      const statusMap = { NORMAL: '签到成功', LATE: '迟到签到', ABSENT: '缺勤' };
-      this.setData({
-        signResult: {
-          status: res.status,
-          statusText: statusMap[res.status] || res.status,
-          signTime: res.signTime || this.data.currentTime
-        }
-      });
+      this.applySignResult(res);
     } catch (err) {
       console.error(err);
     } finally {

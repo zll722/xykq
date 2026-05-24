@@ -1,0 +1,139 @@
+.page-title-bar {
+  padding: 32rpx 0 20rpx;
+}
+
+.page-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #222;
+}
+
+.page-sub {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+.stats-section {
+  padding: 32rpx;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20rpx;
+  margin: 24rpx 0;
+}
+
+.stat-block {
+  background: #f7f8fa;
+  border-radius: 16rpx;
+  padding: 24rpx 16rpx;
+  text-align: center;
+}
+
+.stat-num {
+  display: block;
+  font-size: 48rpx;
+  font-weight: 700;
+  margin-bottom: 8rpx;
+}
+
+.stat-label {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.rate-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 16rpx;
+  background: #f0f8ff;
+  border-radius: 16rpx;
+}
+
+.rate-label {
+  font-size: 28rpx;
+  color: #555;
+  font-weight: 500;
+}
+
+.rate-value {
+  font-size: 44rpx;
+  font-weight: 700;
+}
+
+.query-section {
+  padding: 32rpx;
+}
+
+.date-row {
+  display: flex;
+  gap: 20rpx;
+  margin: 20rpx 0;
+}
+
+.date-item {
+  flex: 1;
+}
+
+.date-label {
+  display: block;
+  font-size: 24rpx;
+  color: #888;
+  margin-bottom: 10rpx;
+}
+
+.date-input {
+  width: 100%;
+  height: 72rpx;
+  background: #f7f8fa;
+  border-radius: 12rpx;
+  padding: 0 20rpx;
+  font-size: 26rpx;
+  color: #333;
+  box-sizing: border-box;
+  border: 2rpx solid #e8ecf0;
+}
+
+.picker-view {
+  line-height: 72rpx;
+}
+
+.query-btn {
+  margin-top: 16rpx;
+}
+
+.calendar-list {
+  margin-top: 20rpx;
+}
+
+.cal-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.cal-item:last-child {
+  border-bottom: none;
+}
+
+.cal-date {
+  display: block;
+  font-size: 26rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.cal-course {
+  display: block;
+  font-size: 24rpx;
+  color: #888;
+  margin-top: 6rpx;
+}

@@ -4,19 +4,29 @@
     <text class="welcome-sub">今日考勤状态一览</text>
   </view>
 
-  <view class="stats-row">
+  <view class="stats-grid">
     <view class="stat-item card">
-      <text class="stat-value text-primary">{{stats.attendanceRate || '0%'}}</text>
+      <text class="stat-value text-primary">{{stats.presentRate || stats.attendanceRate || '0%'}}</text>
       <text class="stat-label">出勤率</text>
     </view>
     <view class="stat-item card">
       <text class="stat-value text-warning">{{stats.lateCount || 0}}</text>
-      <text class="stat-label">迟到</text>
+      <text class="stat-label">迟到次数</text>
+    </view>
+    <view class="stat-item card" bindtap="goMessages">
+      <text class="stat-value {{unreadCount > 0 ? 'text-danger' : 'text-gray'}}">{{unreadCount}}</text>
+      <text class="stat-label">待读通知</text>
     </view>
     <view class="stat-item card">
-      <text class="stat-value text-danger">{{stats.absentCount || 0}}</text>
-      <text class="stat-label">缺勤</text>
+      <text class="stat-value text-info" style="font-size:28rpx;">{{signStatusText}}</text>
+      <text class="stat-label">签到状态</text>
     </view>
+  </view>
+
+  <view class="approval-bar card" wx:if="{{latestApprovalText !== '暂无审批记录'}}" bindtap="goLeaveHistory">
+    <text class="approval-label">最近审批：</text>
+    <text class="approval-value">{{latestApprovalText}}</text>
+    <text class="menu-arrow">›</text>
   </view>
 
   <view class="section">
@@ -37,8 +47,6 @@
     </view>
   </view>
 
-  <view class="quick-actions">
-    <button class="btn-primary" bindtap="goSignIn">快捷签到</button>
-  </view>
+
 </view>
 <custom-tabbar role="USER" currentIndex="{{0}}" />

@@ -57,6 +57,27 @@
         ORDER BY ci.id
     </select>
 
+    <!-- 教师授课课程明细列表 -->
+    <select id="listMyCourses" resultType="java.util.HashMap">
+        SELECT
+            co.id                                                              AS courseId,
+            co.course_name                                                     AS courseName,
+            co.course_code                                                     AS courseCode,
+            co.location,
+            co.week_day                                                        AS weekDay,
+            TIME_FORMAT(co.start_time, '%H:%i')                                AS startTime,
+            TIME_FORMAT(co.end_time, '%H:%i')                                  AS endTime,
+            GROUP_CONCAT(DISTINCT ci.class_name ORDER BY ci.id SEPARATOR '、') AS classNames,
+            COUNT(DISTINCT sp.user_id)                                         AS studentCount
+        FROM course_info co
+            JOIN course_schedule cs ON cs.course_id = co.id
+            JOIN class_info ci ON ci.id = cs.class_id
+            LEFT JOIN student_profile sp ON sp.class_id = ci.id
+        WHERE co.teacher_id = #{teacherId} AND co.status = 1
+        GROUP BY co.id, co.course_name, co.course_code, co.location, co.week_day, co.start_time, co.end_time
+        ORDER BY co.week_day, co.start_time
+    </select>
+
     <!-- 教师查看某班级考勤报表 -->
     <select id="listClassAttendance" resultType="java.util.HashMap">
         SELECT

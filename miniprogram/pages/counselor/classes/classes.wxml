@@ -1,14 +1,21 @@
 <view class="container">
   <view wx:if="{{classes.length === 0}}" class="empty-text">暂无管辖班级</view>
   <view wx:for="{{classes}}" wx:key="id" class="card class-card" bindtap="goStudents" data-id="{{item.id}}" data-name="{{item.className}}">
-    <view class="flex-between">
+    <view class="class-header">
       <text class="class-name">{{item.className}}</text>
-      <view class="class-meta">
-        <text class="text-gray">{{item.studentCount || 0}}人</text>
-        <text wx:if="{{item.pendingLeaveCount > 0}}" class="pending-badge">{{item.pendingLeaveCount}}待审</text>
-      </view>
+      <text wx:if="{{item.pendingLeaveCount > 0}}" class="pending-badge">{{item.pendingLeaveCount}}待审</text>
     </view>
-    <view class="class-code text-gray">{{item.classCode}}</view>
+    <view class="class-detail-row">
+      <text class="text-gray detail-item">编号：{{item.classCode}}</text>
+      <text class="text-gray detail-item">人数：{{item.countLabel}}</text>
+    </view>
+    <view wx:if="{{item.capacity > 0}}" class="capacity-bar-wrap">
+      <view class="capacity-bar">
+        <view class="capacity-fill" style="width:{{item.capacityWidth}}"></view>
+      </view>
+      <text class="capacity-pct text-gray">{{item.capacityPct}}%</text>
+    </view>
+    <view wx:if="{{item.remark}}" class="class-remark text-gray">{{item.remark}}</view>
   </view>
 </view>
 <custom-tabbar role="COUNSELOR" currentIndex="{{1}}" />

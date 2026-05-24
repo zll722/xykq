@@ -10,8 +10,17 @@ Page({
   async loadClasses() {
     wx.showLoading({ title: '加载中', mask: true });
     try {
-      const classes = await getMyClasses();
-      this.setData({ classes: classes || [] });
+      const raw = await getMyClasses();
+      const classes = (raw || []).map(item => {
+        const pct = item.capacity > 0
+          ? Math.round(item.studentCount / item.capacity * 100)
+          : 0;
+        const countLabel = item.capacity > 0
+          ? (item.studentCount || 0) + ' / ' + item.capacity
+          : String(item.studentCount || 0);
+        return { ...item, capacityPct: pct, capacityWidth: pct + '%', countLabel };
+      });
+      this.setData({ classes });
     } catch (err) {
       console.error(err);
     } finally {

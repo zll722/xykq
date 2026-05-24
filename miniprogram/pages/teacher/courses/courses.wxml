@@ -1,0 +1,27 @@
+<view class="container">
+  <view wx:if="{{courses.length === 0}}" class="empty-text">暂无授课课程</view>
+  <view wx:for="{{courses}}" wx:key="courseId" class="card course-card">
+    <view class="course-header">
+      <text class="course-name">{{item.courseName}}</text>
+      <text class="course-code text-gray">{{item.courseCode}}</text>
+    </view>
+    <view class="course-meta">
+      <view class="meta-row">
+        <text class="meta-icon">◷</text>
+        <text class="meta-text">{{item.schedule}}</text>
+      </view>
+      <view class="meta-row" wx:if="{{item.location}}">
+        <text class="meta-icon">⌖</text>
+        <text class="meta-text">{{item.location}}</text>
+      </view>
+      <view class="meta-row">
+        <text class="meta-icon">◫</text>
+        <text class="meta-text">{{item.classNames}}</text>
+      </view>
+    </view>
+    <view class="course-footer">
+      <text class="student-count text-primary">{{item.studentCount || 0}} 名学生</text>
+    </view>
+  </view>
+</view>
+<custom-tabbar role="TEACHER" currentIndex="{{-1}}" />

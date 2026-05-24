@@ -154,6 +154,18 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
+    public SignInResponse getMyScheduleRecord(Long userId, Long scheduleId) {
+        AttendanceRecord record = attendanceRecordMapper.findOne(scheduleId, userId, LocalDate.now());
+        if (record == null || record.getSignedAt() == null) {
+            return null;
+        }
+        SignInResponse response = new SignInResponse();
+        response.setStatus(record.getStatus());
+        response.setSignedAt(record.getSignedAt().toString());
+        return response;
+    }
+
+    @Override
     public List<MyAttendanceRecordItem> listMyRecords(Long userId) {
         return attendanceRecordMapper.listMyRecords(userId);
     }
