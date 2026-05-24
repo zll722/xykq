@@ -1,0 +1,86 @@
+<view class="register-page">
+  <!-- 背景装饰圆 -->
+  <view class="bg-circle bg-circle-1"></view>
+  <view class="bg-circle bg-circle-2"></view>
+  <view class="bg-circle bg-circle-3"></view>
+
+  <view class="register-hero">
+    <view class="logo-wrap">
+      <view class="logo-ring-outer">
+        <view class="logo-ring-inner">
+          <text class="logo-icon">✦</text>
+        </view>
+      </view>
+    </view>
+    <text class="register-title">学生注册</text>
+    <text class="register-subtitle">Smart Campus Attendance</text>
+  </view>
+
+  <view class="register-card">
+    <text class="card-title">填写注册信息</text>
+
+    <view class="form-item">
+      <text class="form-label">真实姓名</text>
+      <view class="input-row">
+        <view class="input-icon-box"><text class="input-icon-txt">名</text></view>
+        <input class="form-input" placeholder="请输入真实姓名" placeholder-class="input-ph"
+          value="{{realName}}" bindinput="onRealNameInput" />
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">学号</text>
+      <view class="input-row">
+        <view class="input-icon-box"><text class="input-icon-txt">号</text></view>
+        <input class="form-input" placeholder="请输入学号" placeholder-class="input-ph"
+          value="{{studentNo}}" bindinput="onStudentNoInput" />
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">所属班级</text>
+      <picker mode="selector" range="{{classNames}}" value="{{classIndex}}" bindchange="onClassChange">
+        <view class="picker-row">
+          <text class="{{classIndex >= 0 ? 'picker-val' : 'picker-ph'}}">
+            {{classIndex >= 0 ? classNames[classIndex] : '请选择班级'}}
+          </text>
+          <text class="picker-arrow">›</text>
+        </view>
+      </picker>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">登录账号</text>
+      <view class="input-row">
+        <view class="input-icon-box"><text class="input-icon-txt">账</text></view>
+        <input class="form-input" placeholder="请设置登录账号" placeholder-class="input-ph"
+          value="{{username}}" bindinput="onUsernameInput" />
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">登录密码</text>
+      <view class="input-row">
+        <view class="input-icon-box"><text class="input-icon-txt">锁</text></view>
+        <input class="form-input" placeholder="请设置密码（不少于6位）" placeholder-class="input-ph"
+          password="{{true}}" value="{{password}}" bindinput="onPasswordInput" />
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">确认密码</text>
+      <view class="input-row">
+        <view class="input-icon-box"><text class="input-icon-txt">确</text></view>
+        <input class="form-input" placeholder="请再次输入密码" placeholder-class="input-ph"
+          password="{{true}}" value="{{confirmPassword}}" bindinput="onConfirmPasswordInput" />
+      </view>
+    </view>
+
+    <button class="btn-register" bindtap="onRegister" loading="{{loading}}">立 即 注 册</button>
+
+    <view class="login-tip" bindtap="goLogin">
+      <text class="login-tip-text">已有账号？</text>
+      <text class="login-tip-link">返回登录</text>
+    </view>
+  </view>
+</view>

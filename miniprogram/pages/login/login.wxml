@@ -35,6 +35,11 @@
       </view>
     </view>
     <button class="btn-login" bindtap="onLogin" loading="{{loading}}">登 录</button>
+
+    <view class="register-tip" bindtap="goRegister">
+      <text class="register-tip-text">还没有账号？</text>
+      <text class="register-tip-link">立即注册</text>
+    </view>
   </view>
 
   <text class="login-footer">© 智能校园管理系统 · 考勤模块</text>

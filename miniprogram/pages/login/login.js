@@ -16,6 +16,10 @@ Page({
     this.setData({ password: e.detail.value });
   },
 
+  goRegister() {
+    wx.navigateTo({ url: '/pages/register/register' });
+  },
+
   async onLogin() {
     const { username, password } = this.data;
     if (!username || !password) {

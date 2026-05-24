@@ -50,6 +50,9 @@
 
         <button data-testid="login-submit" class="btn-login" @click="submit">登录</button>
         <p v-if="error" class="error-text">{{ error }}</p>
+        <p class="register-link">
+          还没有账号？<router-link to="/register">立即注册</router-link>
+        </p>
       </div>
     </section>
   </div>
@@ -269,6 +272,23 @@ h1 {
 .error-text {
   margin: 14px 0 0;
   color: #c63636;
+}
+
+.register-link {
+  margin-top: 16px;
+  text-align: center;
+  color: #5a7a9a;
+  font-size: 0.92rem;
+}
+
+.register-link a {
+  color: #3a7bd5;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
 }
 
 @keyframes grid-float {

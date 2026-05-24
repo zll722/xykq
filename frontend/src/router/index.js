@@ -6,11 +6,13 @@ import counselorRoutes from './modules/counselor';
 import { useAuthStore } from '../stores/auth';
 
 const LoginPage = () => import('../views/common/LoginPage.vue');
+const RegisterPage = () => import('../views/common/RegisterPage.vue');
 const ForbiddenPage = () => import('../views/common/ForbiddenPage.vue');
 
 const routes = [
   { path: '/', redirect: '/login' },
   { path: '/login', component: LoginPage },
+  { path: '/register', component: RegisterPage },
   { path: '/403', component: ForbiddenPage },
   ...adminRoutes,
   ...teacherRoutes,
@@ -25,7 +27,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore();
-  if (to.path === '/login') {
+  if (to.path === '/login' || to.path === '/register') {
     next();
     return;
   }
