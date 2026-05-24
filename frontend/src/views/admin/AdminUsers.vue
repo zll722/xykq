@@ -38,9 +38,12 @@
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="username" label="用户名" />
         <el-table-column prop="realName" label="姓名" />
-        <el-table-column label="班级" min-width="180">
+        <el-table-column label="班级 / 课程" min-width="200">
           <template #default="{ row }">
-            <span>{{ getClassName(row.classId) }}</span>
+            <span v-if="row.roleCode === 'USER'">{{ getClassName(row.classId) }}</span>
+            <span v-else-if="row.roleCode === 'COUNSELOR'">{{ getCounselorClasses(row.id) }}</span>
+            <span v-else-if="row.roleCode === 'TEACHER'">{{ getTeacherCourses(row.id) }}</span>
+            <span v-else>-</span>
           </template>
         </el-table-column>
         <el-table-column prop="roleCode" label="角色">
@@ -128,16 +131,14 @@
         <el-form-item v-if="form.roleCode === 'USER'" label="班级" prop="classId">
           <el-select
             v-model="form.classId"
-            value-key="id"
             placeholder="请选择班级"
             style="width: 100%"
-            filterable
           >
             <el-option
               v-for="item in classOptions"
               :key="item.id"
               :label="item.className"
-              :value="item"
+              :value="item.id"
             />
           </el-select>
         </el-form-item>
@@ -168,12 +169,14 @@ import {
   updateAdminUserApi,
   updateAdminUserStatusApi
 } from '../../api/adminUsers';
+import { listCoursesApi } from '../../api/adminTeaching';
 
 const list = ref([]);
 const loading = ref(false);
 const submitting = ref(false);
 const formRef = ref(null);
 const classOptions = ref([]);
+const courseList = ref([]);
 
 const filters = reactive({
   keyword: '',
@@ -212,6 +215,16 @@ const getClassName = (classId) => {
   if (!classId) return '-';
   const normalizedId = Number(classId);
   return classOptions.value.find((item) => item.id === normalizedId)?.className || `班级#${normalizedId}`;
+};
+
+const getCounselorClasses = (userId) => {
+  const classes = classOptions.value.filter((item) => Number(item.headTeacherId) === Number(userId));
+  return classes.length ? classes.map((item) => item.className).join('、') : '-';
+};
+
+const getTeacherCourses = (userId) => {
+  const courses = courseList.value.filter((item) => Number(item.teacherId) === Number(userId));
+  return courses.length ? courses.map((item) => item.courseName).join('、') : '-';
 };
 
 const loadClassOptions = async () => {
@@ -281,9 +294,7 @@ const openEdit = async (item) => {
   form.password = '';
   form.realName = item.realName;
   form.roleCode = item.roleCode;
-  form.classId = form.roleCode === 'USER'
-    ? classOptions.value.find((option) => option.id === Number(item.classId)) || null
-    : null;
+  form.classId = form.roleCode === 'USER' ? (item.classId != null ? Number(item.classId) : null) : null;
   form.status = item.status;
   editorVisible.value = true;
 };
@@ -305,7 +316,7 @@ const submitEditor = async () => {
       realName: form.realName,
       roleCode: form.roleCode,
       status: form.status,
-      classId: form.roleCode === 'USER' ? form.classId?.id ?? null : null
+      classId: form.roleCode === 'USER' ? form.classId ?? null : null
     };
 
     if (form.password) {
@@ -350,7 +361,10 @@ const remove = async (id) => {
 };
 
 onMounted(async () => {
-  await loadClassOptions();
+  await Promise.all([
+    loadClassOptions(),
+    listCoursesApi().then((data) => { courseList.value = Array.isArray(data) ? data : []; }).catch(() => {})
+  ]);
   await loadData();
 });
 </script>

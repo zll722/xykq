@@ -1,0 +1,40 @@
+<view class="container">
+  <view class="welcome-card card">
+    <text class="welcome-text">辅导员工作台</text>
+    <text class="welcome-sub">{{userInfo.realName || '老师'}}，欢迎回来</text>
+  </view>
+
+  <view class="stats-row">
+    <view class="stat-item card">
+      <text class="stat-value text-primary">{{stats.classCount || 0}}</text>
+      <text class="stat-label">管辖班级</text>
+    </view>
+    <view class="stat-item card">
+      <text class="stat-value text-success">{{stats.studentCount || 0}}</text>
+      <text class="stat-label">学生总数</text>
+    </view>
+    <view class="stat-item card">
+      <text class="stat-value text-danger">{{stats.pendingLeaveCount || 0}}</text>
+      <text class="stat-label">待审批</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <text class="section-title">快捷入口</text>
+    <view class="quick-grid">
+      <view class="quick-item card" bindtap="goClasses">
+        <text class="quick-icon">▦</text>
+        <text class="quick-text">班级管理</text>
+      </view>
+      <view class="quick-item card" bindtap="goPending">
+        <text class="quick-icon">✓</text>
+        <text class="quick-text">请假审批</text>
+      </view>
+      <view class="quick-item card" bindtap="goHistory">
+        <text class="quick-icon">◧</text>
+        <text class="quick-text">审批历史</text>
+      </view>
+    </view>
+  </view>
+</view>
+<custom-tabbar role="COUNSELOR" currentIndex="{{0}}" />

@@ -1,0 +1,60 @@
+.leave-card {
+  border-radius: 20rpx;
+}
+
+.leave-type-badge {
+  padding: 6rpx 20rpx;
+  border-radius: 10rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.leave-type-badge.sick {
+  background: #fef0f0;
+  color: #F56C6C;
+}
+
+.leave-type-badge.personal {
+  background: #ecf5ff;
+  color: #409EFF;
+}
+
+.leave-type-badge.other {
+  background: #f4f4f5;
+  color: #909399;
+}
+
+.leave-date {
+  margin-top: 16rpx;
+}
+
+.date-range {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.leave-reason {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  color: #888;
+  line-height: 1.6;
+}
+
+.submit-time {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+}
+
+.btn-cancel {
+  background: #fff;
+  border: 2rpx solid #F56C6C;
+  color: #F56C6C;
+  border-radius: 14rpx;
+  font-size: 28rpx;
+  padding: 16rpx 0;
+  width: 100%;
+}
+
+.btn-cancel::after {
+  border: none;
+}

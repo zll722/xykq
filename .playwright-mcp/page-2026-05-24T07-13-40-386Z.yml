@@ -1,0 +1,124 @@
+- generic [ref=e29]:
+  - complementary [ref=e30]:
+    - generic [ref=e31]:
+      - img [ref=e34]
+      - generic [ref=e36]:
+        - generic [ref=e37]: 校园考勤管理台
+        - generic [ref=e38]: 以任务驱动的管理控制台
+    - generic [ref=e39]:
+      - generic [ref=e40]: 工作台
+      - menubar [ref=e41]:
+        - menuitem "总览中心" [ref=e42] [cursor=pointer]:
+          - img [ref=e44]
+          - generic [ref=e46]: 总览中心
+    - generic [ref=e47]:
+      - generic [ref=e48]: 教学基础数据
+      - menubar [ref=e49]:
+        - menuitem "用户管理" [ref=e50] [cursor=pointer]:
+          - img [ref=e52]
+          - generic [ref=e54]: 用户管理
+        - menuitem "班级管理" [ref=e55] [cursor=pointer]:
+          - img [ref=e57]
+          - generic [ref=e59]: 班级管理
+        - menuitem "课程管理" [ref=e60] [cursor=pointer]:
+          - img [ref=e62]
+          - generic [ref=e65]: 课程管理
+        - menuitem "排班管理" [ref=e66] [cursor=pointer]:
+          - img [ref=e68]
+          - generic [ref=e70]: 排班管理
+    - generic [ref=e71]:
+      - generic [ref=e72]: 考勤与请假
+      - menubar [ref=e73]:
+        - menuitem "待审批请假" [ref=e74] [cursor=pointer]:
+          - img [ref=e76]
+          - generic [ref=e78]: 待审批请假
+        - menuitem "审批历史" [ref=e79] [cursor=pointer]:
+          - img [ref=e81]
+          - generic [ref=e83]: 审批历史
+        - menuitem "考勤记录" [ref=e84] [cursor=pointer]:
+          - img [ref=e86]
+          - generic [ref=e88]: 考勤记录
+        - menuitem "考勤修正" [ref=e89] [cursor=pointer]:
+          - img [ref=e91]
+          - generic [ref=e93]: 考勤修正
+        - menuitem "异常处理" [ref=e94] [cursor=pointer]:
+          - img [ref=e96]
+          - generic [ref=e98]: 异常处理
+    - generic [ref=e99]:
+      - generic [ref=e100]: 统计与系统
+      - menubar [ref=e101]:
+        - menuitem "统计分析" [ref=e102] [cursor=pointer]:
+          - img [ref=e104]
+          - generic [ref=e107]: 统计分析
+        - menuitem "操作日志" [ref=e108] [cursor=pointer]:
+          - img [ref=e110]
+          - generic [ref=e112]: 操作日志
+  - generic [ref=e113]:
+    - generic [ref=e114]:
+      - generic [ref=e116]: 管理端
+      - button "系统管理员" [ref=e118] [cursor=pointer]:
+        - img [ref=e121]
+        - generic [ref=e123]: 系统管理员
+        - img [ref=e125]
+    - main [ref=e127]:
+      - generic [ref=e128]:
+        - generic [ref=e129]:
+          - generic [ref=e130]:
+            - paragraph [ref=e131]: 管理总览
+            - heading "先处理高优先级事务，再看统计" [level=1] [ref=e132]
+            - paragraph [ref=e133]: 把待审批、异常考勤和整体出勤放在一个视图里，减少在多个页面之间切换。
+          - generic [ref=e134]:
+            - button "处理待审批" [ref=e135] [cursor=pointer]:
+              - generic [ref=e136]: 处理待审批
+            - button "查看异常考勤" [ref=e137] [cursor=pointer]:
+              - generic [ref=e138]: 查看异常考勤
+        - generic [ref=e139]:
+          - generic [ref=e142]:
+            - generic [ref=e143]: 总考勤记录
+            - strong [ref=e144]: "10"
+            - paragraph [ref=e145]: 累计采集的考勤记录总数
+          - generic [ref=e148]:
+            - generic [ref=e149]: 整体出勤率
+            - strong [ref=e150]: 70%
+            - paragraph [ref=e151]: 正常出勤 7 人次
+          - generic [ref=e154]:
+            - generic [ref=e155]: 待审批请假
+            - strong [ref=e156]: "0"
+            - paragraph [ref=e157]: 当前没有待审批请假
+          - generic [ref=e160]:
+            - generic [ref=e161]: 异常考勤总量
+            - strong [ref=e162]: "3"
+            - paragraph [ref=e163]: 迟到、缺勤、请假、早退合计
+        - generic [ref=e164]:
+          - generic [ref=e166]:
+            - generic [ref=e169]:
+              - text: 优先处理事项
+              - paragraph [ref=e170]: 真正需要管理员立即操作的工作放在最上面
+            - generic [ref=e172]:
+              - button "待审批请假 0 条待处理申请，点击直接进入审批" [ref=e173] [cursor=pointer]:
+                - generic [ref=e174]: 待审批请假
+                - generic [ref=e175]: 0 条待处理申请，点击直接进入审批
+              - button "异常考勤处理 集中查看迟到、缺勤和异常状态记录" [ref=e176] [cursor=pointer]:
+                - generic [ref=e177]: 异常考勤处理
+                - generic [ref=e178]: 集中查看迟到、缺勤和异常状态记录
+              - button "考勤记录检索 按课程、班级和日期筛选历史考勤记录" [ref=e179] [cursor=pointer]:
+                - generic [ref=e180]: 考勤记录检索
+                - generic [ref=e181]: 按课程、班级和日期筛选历史考勤记录
+              - button "统计导出 查看趋势并导出汇总报表" [ref=e182] [cursor=pointer]:
+                - generic [ref=e183]: 统计导出
+                - generic [ref=e184]: 查看趋势并导出汇总报表
+          - generic [ref=e186]:
+            - generic [ref=e189]:
+              - text: 关键提醒
+              - paragraph [ref=e190]: 帮助你快速理解当前系统状态
+            - list [ref=e192]:
+              - listitem [ref=e193]: 迟到 1 人次，缺勤 1 人次
+              - listitem [ref=e194]: 请假 1 人次，早退 0 人次
+              - listitem [ref=e195]: 出勤率低于预期时，建议优先查看“统计分析”和“异常处理”
+        - generic [ref=e196]:
+          - generic [ref=e201]:
+            - text: 考勤状态分布
+            - paragraph [ref=e202]: 快速了解正常、迟到、缺勤占比
+          - generic [ref=e211]:
+            - text: 异常考勤类型
+            - paragraph [ref=e212]: 识别最需要优先治理的问题类型

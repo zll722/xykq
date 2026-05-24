@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.attendance.mapper.TeacherMapper">
+
+    <resultMap id="TeacherLeaveNotifyMap" type="com.campus.attendance.dto.teacher.TeacherLeaveNotifyItem">
+        <result property="leaveRequestId" column="leave_request_id"/>
+        <result property="studentName" column="student_name"/>
+        <result property="className" column="class_name"/>
+        <result property="courseName" column="course_name"/>
+        <result property="leaveType" column="leave_type"/>
+        <result property="reason" column="reason"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="approvedAt" column="approved_at"/>
+    </resultMap>
+
+    <!-- 查询教师收到的已审批通过的请假通知（通过该教师授课班级匹配） -->
+    <select id="listLeaveNotifications" resultMap="TeacherLeaveNotifyMap">
+        SELECT DISTINCT
+            lr.id                                                AS leave_request_id,
+            su.real_name                                         AS student_name,
+            ci.class_name,
+            co.course_name,
+            lr.leave_type,
+            lr.reason,
+            DATE_FORMAT(lr.start_time, '%Y-%m-%d %H:%i')        AS start_time,
+            DATE_FORMAT(lr.end_time, '%Y-%m-%d %H:%i')          AS end_time,
+            DATE_FORMAT(la.acted_at, '%Y-%m-%d %H:%i')          AS approved_at
+        FROM leave_request lr
+                 JOIN sys_user su ON su.id = lr.student_id
+                 JOIN student_profile sp ON sp.user_id = lr.student_id
+                 JOIN class_info ci ON ci.id = sp.class_id
+                 JOIN course_schedule cs ON cs.class_id = ci.id
+                 JOIN course_info co ON co.id = cs.course_id AND co.teacher_id = #{teacherId}
+                 JOIN leave_approval la ON la.leave_request_id = lr.id AND la.action = 'APPROVED'
+        WHERE lr.status = 'APPROVED'
+        ORDER BY approved_at DESC
+    </select>
+
+    <!-- 教师授课班级列表 -->
+    <select id="listMyClasses" resultType="java.util.HashMap">
+        SELECT DISTINCT
+            ci.id         AS classId,
+            ci.class_name AS className,
+            ci.class_code AS classCode,
+            counselor.real_name AS counselorName,
+            COUNT(DISTINCT sp.user_id) AS studentCount
+        FROM course_info co
+            JOIN course_schedule cs ON cs.course_id = co.id
+            JOIN class_info ci ON ci.id = cs.class_id
+            LEFT JOIN sys_user counselor ON counselor.id = ci.head_teacher_id
+            LEFT JOIN student_profile sp ON sp.class_id = ci.id
+        WHERE co.teacher_id = #{teacherId} AND co.status = 1
+        GROUP BY ci.id, ci.class_name, ci.class_code, counselor.real_name
+        ORDER BY ci.id
+    </select>
+
+    <!-- 教师查看某班级考勤报表 -->
+    <select id="listClassAttendance" resultType="java.util.HashMap">
+        SELECT
+            su.id          AS userId,
+            su.real_name   AS studentName,
+            sp.student_no  AS studentNo,
+            COUNT(CASE WHEN ar.status = 'PRESENT' THEN 1 END) AS presentCount,
+            COUNT(CASE WHEN ar.status = 'ABSENT'  THEN 1 END) AS absentCount,
+            COUNT(CASE WHEN ar.status = 'LATE'    THEN 1 END) AS lateCount,
+            COUNT(CASE WHEN ar.status = 'LEAVE'   THEN 1 END) AS leaveCount,
+            COUNT(ar.id)                                        AS totalCount
+        FROM student_profile sp
+            JOIN sys_user su ON su.id = sp.user_id
+            LEFT JOIN attendance_record ar ON ar.student_id = su.id
+                AND ar.class_id = #{classId}
+                AND ar.course_id IN (
+                    SELECT co.id FROM course_info co WHERE co.teacher_id = #{teacherId}
+                )
+        WHERE sp.class_id = #{classId}
+        GROUP BY su.id, su.real_name, sp.student_no
+        ORDER BY sp.student_no
+    </select>
+
+    <!-- 教师端仪表盘统计 -->
+    <select id="getDashboardStats" resultType="java.util.HashMap">
+        <![CDATA[
+        SELECT
+            (SELECT COUNT(DISTINCT co2.id)
+             FROM course_info co2
+             WHERE co2.teacher_id = #{teacherId} AND co2.status = 1)         AS courseCount,
+            (SELECT COUNT(DISTINCT cs2.class_id)
+             FROM course_schedule cs2
+             JOIN course_info co3 ON co3.id = cs2.course_id AND co3.teacher_id = #{teacherId})
+                                                                              AS classCount,
+            (SELECT COUNT(DISTINCT lr2.id)
+             FROM leave_request lr2
+             JOIN student_profile sp2 ON sp2.user_id = lr2.student_id
+             JOIN course_schedule cs3 ON cs3.class_id = sp2.class_id
+             JOIN course_info co4 ON co4.id = cs3.course_id AND co4.teacher_id = #{teacherId}
+             WHERE lr2.status = 'APPROVED'
+               AND lr2.start_time >= DATE_SUB(NOW(), INTERVAL 30 DAY))        AS recentApprovedLeaves,
+            (SELECT COUNT(DISTINCT lr3.id)
+             FROM leave_request lr3
+             JOIN student_profile sp3 ON sp3.user_id = lr3.student_id
+             JOIN course_schedule cs4 ON cs4.class_id = sp3.class_id
+             JOIN course_info co5 ON co5.id = cs4.course_id AND co5.teacher_id = #{teacherId}
+             WHERE lr3.status = 'APPROVED'
+               AND DATE(lr3.start_time) <= CURDATE()
+               AND DATE(lr3.end_time) >= CURDATE())                            AS todayLeaveCount
+        ]]>
+    </select>
+
+</mapper>

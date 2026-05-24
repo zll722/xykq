@@ -1,0 +1,113 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e8]
+      - generic [ref=e10]:
+        - generic [ref=e11]: 校园考勤管理台
+        - generic [ref=e12]: 以任务驱动的管理控制台
+    - generic [ref=e13]:
+      - generic [ref=e14]: 工作台
+      - menubar [ref=e15]:
+        - menuitem "总览中心" [ref=e16] [cursor=pointer]:
+          - img [ref=e18]
+          - generic [ref=e20]: 总览中心
+    - generic [ref=e21]:
+      - generic [ref=e22]: 教学基础数据
+      - menubar [ref=e23]:
+        - menuitem "用户管理" [ref=e24] [cursor=pointer]:
+          - img [ref=e26]
+          - generic [ref=e28]: 用户管理
+        - menuitem "班级管理" [ref=e29] [cursor=pointer]:
+          - img [ref=e31]
+          - generic [ref=e33]: 班级管理
+        - menuitem "课程管理" [ref=e34] [cursor=pointer]:
+          - img [ref=e36]
+          - generic [ref=e39]: 课程管理
+        - menuitem "排班管理" [ref=e40] [cursor=pointer]:
+          - img [ref=e42]
+          - generic [ref=e44]: 排班管理
+    - generic [ref=e45]:
+      - generic [ref=e46]: 考勤与请假
+      - menubar [ref=e47]:
+        - menuitem "待审批请假" [ref=e48] [cursor=pointer]:
+          - img [ref=e50]
+          - generic [ref=e52]: 待审批请假
+        - menuitem "审批历史" [ref=e53] [cursor=pointer]:
+          - img [ref=e55]
+          - generic [ref=e57]: 审批历史
+        - menuitem "考勤记录" [ref=e58] [cursor=pointer]:
+          - img [ref=e60]
+          - generic [ref=e62]: 考勤记录
+        - menuitem "考勤修正" [ref=e63] [cursor=pointer]:
+          - img [ref=e65]
+          - generic [ref=e67]: 考勤修正
+        - menuitem "异常处理" [ref=e68] [cursor=pointer]:
+          - img [ref=e70]
+          - generic [ref=e72]: 异常处理
+    - generic [ref=e73]:
+      - generic [ref=e74]: 统计与系统
+      - menubar [ref=e75]:
+        - menuitem "统计分析" [ref=e76] [cursor=pointer]:
+          - img [ref=e78]
+          - generic [ref=e81]: 统计分析
+        - menuitem "操作日志" [ref=e82] [cursor=pointer]:
+          - img [ref=e84]
+          - generic [ref=e86]: 操作日志
+  - generic [ref=e87]:
+    - generic [ref=e88]:
+      - generic [ref=e90]: 管理端
+      - button "系统管理员" [ref=e92] [cursor=pointer]:
+        - img [ref=e95]
+        - generic [ref=e97]: 系统管理员
+        - img [ref=e99]
+    - main [ref=e101]:
+      - generic [ref=e102]:
+        - generic [ref=e103]: 首页 / 用户管理
+        - heading "用户管理" [level=1] [ref=e104]
+        - generic [ref=e106]:
+          - generic [ref=e107]:
+            - generic [ref=e109]:
+              - img [ref=e112]
+              - textbox "搜索用户名或姓名" [ref=e114]
+            - generic [ref=e116] [cursor=pointer]:
+              - generic:
+                - combobox [ref=e118]
+                - generic [ref=e119]: 全部角色
+              - img [ref=e122]
+            - generic [ref=e125] [cursor=pointer]:
+              - generic:
+                - combobox [ref=e127]
+                - generic [ref=e128]: 全部状态
+              - img [ref=e131]
+            - button "搜索" [ref=e133] [cursor=pointer]:
+              - img [ref=e135]
+              - generic [ref=e137]: 搜索
+            - button "新建" [ref=e138] [cursor=pointer]:
+              - img [ref=e140]
+              - generic [ref=e142]: 新建
+          - generic [ref=e143]:
+            - generic [ref=e144]:
+              - table [ref=e146]:
+                - rowgroup [ref=e155]:
+                  - row "ID 用户名 姓名 班级 / 课程 角色 状态 操作" [ref=e156]:
+                    - columnheader "ID" [ref=e157]:
+                      - generic [ref=e158]: ID
+                    - columnheader "用户名" [ref=e159]:
+                      - generic [ref=e160]: 用户名
+                    - columnheader "姓名" [ref=e161]:
+                      - generic [ref=e162]: 姓名
+                    - columnheader "班级 / 课程" [ref=e163]:
+                      - generic [ref=e164]: 班级 / 课程
+                    - columnheader "角色" [ref=e165]:
+                      - generic [ref=e166]: 角色
+                    - columnheader "状态" [ref=e167]:
+                      - generic [ref=e168]: 状态
+                    - columnheader "操作" [ref=e169]:
+                      - generic [ref=e170]: 操作
+              - generic [ref=e174]:
+                - table [ref=e175]:
+                  - rowgroup
+                - generic [ref=e178]:
+                  - img [ref=e180]
+                  - paragraph [ref=e197]: 暂无用户数据
+            - img [ref=e201]

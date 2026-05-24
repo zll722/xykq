@@ -1,0 +1,33 @@
+.msg-card {
+  border-radius: 20rpx;
+  transition: all 0.2s;
+}
+
+.msg-card.unread {
+  border-left: 6rpx solid #409EFF;
+  border-radius: 0 20rpx 20rpx 0;
+}
+
+.msg-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #222;
+  flex: 1;
+  margin-right: 16rpx;
+}
+
+.msg-card.unread .msg-title {
+  color: #409EFF;
+}
+
+.msg-time {
+  font-size: 22rpx;
+  flex-shrink: 0;
+}
+
+.msg-content {
+  margin-top: 14rpx;
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.6;
+}

@@ -1,0 +1,35 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/student/index/index",
+    "pages/student/schedule/schedule",
+    "pages/student/sign-in/sign-in",
+    "pages/student/attendance/attendance",
+    "pages/student/leave-apply/leave-apply",
+    "pages/student/leave-history/leave-history",
+    "pages/student/leave-progress/leave-progress",
+    "pages/student/messages/messages",
+    "pages/student/profile/profile",
+    "pages/teacher/index/index",
+    "pages/teacher/classes/classes",
+    "pages/teacher/attendance-report/attendance-report",
+    "pages/teacher/leave-notify/leave-notify",
+    "pages/teacher/profile/profile",
+    "pages/counselor/index/index",
+    "pages/counselor/classes/classes",
+    "pages/counselor/students/students",
+    "pages/counselor/leave-pending/leave-pending",
+    "pages/counselor/leave-history/leave-history",
+    "pages/counselor/profile/profile"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#409EFF",
+    "navigationBarTitleText": "智能校园考勤",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f0f4f8",
+    "backgroundTextStyle": "dark",
+    "enablePullDownRefresh": false
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

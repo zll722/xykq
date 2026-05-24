@@ -1,0 +1,17 @@
+<view class="container">
+  <view wx:if="{{records.length === 0}}" class="empty-text">暂无请假记录</view>
+  <view wx:for="{{records}}" wx:key="id" class="card leave-card">
+    <view class="flex-between">
+      <view class="leave-type-badge {{item.leaveType === 'SICK' ? 'sick' : (item.leaveType === 'PERSONAL' ? 'personal' : 'other')}}">
+        <text>{{item.leaveType === 'SICK' ? '病假' : (item.leaveType === 'PERSONAL' ? '事假' : '其他')}}</text>
+      </view>
+      <text class="tag {{item.status === 'APPROVED' ? 'tag-success' : (item.status === 'REJECTED' ? 'tag-danger' : (item.status === 'CANCELLED' ? 'tag-info' : 'tag-warning'))}}">
+        {{item.status === 'APPROVED' ? '已通过' : (item.status === 'REJECTED' ? '已驳回' : (item.status === 'CANCELLED' ? '已取消' : '审批中'))}}
+      </text>
+    </view>
+    <view class="leave-date mt-20">
+      <text class="date-range">{{item.startTime}} ~ {{item.endTime}}</text>
+    </view>
+    <view class="leave-reason">{{item.reason}}</view>
+  </view>
+</view>

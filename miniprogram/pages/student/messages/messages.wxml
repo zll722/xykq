@@ -1,0 +1,15 @@
+<view class="container">
+  <view class="flex-between mb-20" wx:if="{{messages.length > 0}}">
+    <text class="section-title">消息列表</text>
+    <text class="text-primary" bindtap="readAll">全部已读</text>
+  </view>
+  <view wx:if="{{messages.length === 0}}" class="empty-text">暂无消息</view>
+  <view wx:for="{{messages}}" wx:key="id" class="msg-card card {{item.readFlag === 0 ? 'unread' : ''}}" bindtap="onRead" data-id="{{item.id}}">
+    <view class="flex-between">
+      <text class="msg-title">{{item.title}}</text>
+      <text class="msg-time text-gray">{{item.sentAt}}</text>
+    </view>
+    <view class="msg-content">{{item.content}}</view>
+  </view>
+</view>
+<custom-tabbar role="USER" currentIndex="{{-1}}" />

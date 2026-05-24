@@ -1,0 +1,27 @@
+<view class="container">
+  <view wx:if="{{list.length === 0}}" class="empty-text">暂无待审批请假</view>
+  <view wx:for="{{list}}" wx:key="id" class="card leave-card">
+    <view class="flex-between">
+      <view>
+        <text class="student-name">{{item.studentName}}</text>
+        <text class="student-no">{{item.studentNo}} · {{item.className}}</text>
+      </view>
+      <text class="tag tag-warning">待审批</text>
+    </view>
+    <view class="leave-info mt-20">
+      <text>{{item.leaveType === 'SICK' ? '病假' : (item.leaveType === 'PERSONAL' ? '事假' : '其他')}}</text>
+      <text class="ml-20">{{item.startTime}} ~ {{item.endTime}}</text>
+    </view>
+    <view class="leave-reason">{{item.reason}}</view>
+    <view class="submit-time text-gray">提交时间：{{item.submittedAt}}</view>
+
+    <view class="action-row mt-20">
+      <input class="remark-input" placeholder="审批意见（可选）" data-id="{{item.id}}" bindinput="onRemarkInput" />
+      <view class="action-btns">
+        <button class="btn-approve" bindtap="onApprove" data-id="{{item.id}}">通过</button>
+        <button class="btn-reject" bindtap="onReject" data-id="{{item.id}}">驳回</button>
+      </view>
+    </view>
+  </view>
+</view>
+<custom-tabbar role="COUNSELOR" currentIndex="{{2}}" />

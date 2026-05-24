@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "消息通知",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "custom-tabbar": "/components/custom-tabbar/custom-tabbar"
+  }
+}

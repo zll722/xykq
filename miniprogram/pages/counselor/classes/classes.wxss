@@ -1,0 +1,30 @@
+.class-card {
+  border-radius: 20rpx;
+  cursor: pointer;
+}
+
+.class-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #222;
+}
+
+.class-meta {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.class-code {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+}
+
+.pending-badge {
+  background: #fef0f0;
+  color: #F56C6C;
+  font-size: 22rpx;
+  padding: 4rpx 14rpx;
+  border-radius: 8rpx;
+  font-weight: 600;
+}

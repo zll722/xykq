@@ -10,6 +10,7 @@ public class MyScheduleItem {
     private String startTime;
     private String endTime;
     private String location;
+    private String signStatus;
 
     public Long getScheduleId() {
         return scheduleId;
@@ -81,5 +82,13 @@ public class MyScheduleItem {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getSignStatus() {
+        return signStatus;
+    }
+
+    public void setSignStatus(String signStatus) {
+        this.signStatus = signStatus;
     }
 }

@@ -25,8 +25,15 @@
           </template>
         </el-table-column>
         <el-table-column prop="location" label="地点" min-width="150" />
-        <el-table-column label="操作" width="120" fixed="right">
+        <el-table-column label="操作" width="160" fixed="right">
           <template #default="{ row }">
+            <el-button
+              v-permission="'schedule:update'"
+              link
+              type="primary"
+              icon="Edit"
+              @click="openEdit(row)"
+            >编辑</el-button>
             <el-popconfirm title="确认删除该排班吗？" @confirm="remove(row.id)">
               <template #reference>
                 <el-button v-permission="'schedule:delete'" link type="danger" icon="Delete">删除</el-button>
@@ -41,22 +48,57 @@
       </el-table>
     </el-card>
 
-    <el-dialog v-model="dialogVisible" title="新增排班" width="500px" @close="closeDialog">
+    <el-dialog
+      v-model="dialogVisible"
+      :title="formMode === 'create' ? '新增排班' : '编辑排班'"
+      width="520px"
+      @close="closeDialog"
+    >
       <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
-        <el-form-item label="课程ID" prop="courseId">
-          <el-input-number v-model="form.courseId" :min="1" style="width: 100%" />
+        <el-form-item label="课程" prop="courseId">
+          <el-select
+            v-model="form.courseId"
+            placeholder="请选择课程"
+            style="width: 100%"
+            @change="onCourseChange"
+          >
+            <el-option
+              v-for="item in courseOptions"
+              :key="item.id"
+              :label="`${item.courseName}（${item.teacherName || '未分配教师'}）`"
+              :value="item.id"
+            />
+          </el-select>
         </el-form-item>
 
-        <el-form-item label="班级ID" prop="classId">
-          <el-input-number v-model="form.classId" :min="1" style="width: 100%" />
+        <el-form-item label="班级" prop="classIds">
+          <el-select
+            v-model="form.classIds"
+            placeholder="请选择班级"
+            style="width: 100%"
+            :multiple="formMode === 'create'"
+            collapse-tags
+            collapse-tags-tooltip
+          >
+            <el-option
+              v-for="item in classOptions"
+              :key="item.id"
+              :label="item.className"
+              :value="item.id"
+            />
+          </el-select>
         </el-form-item>
 
         <el-form-item label="周次" prop="weekNo">
-          <el-input-number v-model="form.weekNo" :min="1" :max="30" placeholder="留空表示所有周" style="width: 100%" />
-        </el-form-item>
-
-        <el-form-item label="上课地点" prop="location">
-          <el-input v-model.trim="form.location" placeholder="可覆盖课程默认地点" />
+          <el-input-number
+            v-model="form.weekNo"
+            :min="1"
+            :max="30"
+            style="width: 100%"
+            placeholder="留空表示整学期"
+            controls-position="right"
+          />
+          <div style="font-size:12px;color:#909399;margin-top:4px">不填则表示整学期每周都上课</div>
         </el-form-item>
 
         <el-form-item label="星期" prop="weekDay">
@@ -74,16 +116,21 @@
         <el-form-item label="上课时间" required>
           <div style="display: flex; gap: 10px; width: 100%">
             <el-time-picker v-model="form.startTime" placeholder="开始时间" format="HH:mm:ss" value-format="HH:mm:ss" style="flex: 1" />
-            <span>至</span>
+            <span style="line-height:32px">至</span>
             <el-time-picker v-model="form.endTime" placeholder="结束时间" format="HH:mm:ss" value-format="HH:mm:ss" style="flex: 1" />
           </div>
+          <div style="font-size:12px;color:#909399;margin-top:4px">选择课程后自动带入默认时间，可手动修改</div>
+        </el-form-item>
+
+        <el-form-item label="上课地点">
+          <el-input v-model.trim="form.location" placeholder="留空则使用课程默认地点" />
         </el-form-item>
       </el-form>
 
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="closeDialog">取消</el-button>
-          <el-button type="primary" @click="createSchedule" :loading="submitting">确认</el-button>
+          <el-button type="primary" @click="submitForm" :loading="submitting">确认</el-button>
         </span>
       </template>
     </el-dialog>
@@ -93,17 +140,28 @@
 <script setup>
 import { onMounted, reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
-import { createScheduleApi, deleteScheduleApi, listSchedulesApi } from '../../api/adminTeaching';
+import {
+  createScheduleApi,
+  deleteScheduleApi,
+  listClassesApi,
+  listCoursesApi,
+  listSchedulesApi,
+  updateScheduleApi
+} from '../../api/adminTeaching';
 
 const list = ref([]);
 const loading = ref(false);
 const submitting = ref(false);
 const dialogVisible = ref(false);
+const formMode = ref('create');
 const formRef = ref(null);
+const courseOptions = ref([]);
+const classOptions = ref([]);
 
 const form = reactive({
+  id: null,
   courseId: null,
-  classId: null,
+  classIds: [],
   weekNo: null,
   weekDay: 1,
   startTime: '08:00:00',
@@ -112,8 +170,18 @@ const form = reactive({
 });
 
 const rules = {
-  courseId: [{ required: true, message: '请输入课程ID', trigger: 'blur' }],
-  classId: [{ required: true, message: '请输入班级ID', trigger: 'blur' }]
+  courseId: [{ required: true, message: '请选择课程', trigger: 'change' }],
+  classIds: [{ required: true, type: 'array', min: 1, message: '请选择班级', trigger: 'change' }],
+  weekDay: [{ required: true, message: '请选择星期', trigger: 'change' }]
+};
+
+const loadOptions = async () => {
+  const [courses, classes] = await Promise.all([
+    listCoursesApi().catch(() => []),
+    listClassesApi().catch(() => [])
+  ]);
+  courseOptions.value = Array.isArray(courses) ? courses : [];
+  classOptions.value = Array.isArray(classes) ? classes.filter((c) => c.status === 1) : [];
 };
 
 const loadData = async () => {
@@ -127,12 +195,23 @@ const loadData = async () => {
   }
 };
 
+/**
+ * 选择课程时自动带入该课程的默认星期和上课时间
+ */
+const onCourseChange = (courseId) => {
+  const course = courseOptions.value.find((c) => c.id === courseId);
+  if (!course) return;
+  if (course.weekDay) form.weekDay = course.weekDay;
+  if (course.startTime) form.startTime = course.startTime;
+  if (course.endTime) form.endTime = course.endTime;
+  if (course.location && !form.location) form.location = course.location;
+};
+
 const resetForm = () => {
-  if (formRef.value) {
-    formRef.value.resetFields();
-  }
+  if (formRef.value) formRef.value.resetFields();
+  form.id = null;
   form.courseId = null;
-  form.classId = null;
+  form.classIds = [];
   form.weekNo = null;
   form.weekDay = 1;
   form.startTime = '08:00:00';
@@ -140,8 +219,25 @@ const resetForm = () => {
   form.location = '';
 };
 
-const openCreate = () => {
+const openCreate = async () => {
+  formMode.value = 'create';
   resetForm();
+  await loadOptions();
+  dialogVisible.value = true;
+};
+
+const openEdit = async (row) => {
+  formMode.value = 'edit';
+  resetForm();
+  await loadOptions();
+  form.id = row.id;
+  form.courseId = row.courseId ? Number(row.courseId) : null;
+  form.classIds = row.classId ? [Number(row.classId)] : [];
+  form.weekNo = row.weekNo || null;
+  form.weekDay = row.weekDay;
+  form.startTime = row.startTime;
+  form.endTime = row.endTime;
+  form.location = row.location || '';
   dialogVisible.value = true;
 };
 
@@ -149,7 +245,7 @@ const closeDialog = () => {
   dialogVisible.value = false;
 };
 
-const createSchedule = async () => {
+const submitForm = async () => {
   if (!formRef.value) return;
 
   if (!form.startTime || !form.endTime) {
@@ -157,29 +253,36 @@ const createSchedule = async () => {
     return;
   }
 
-  await formRef.value.validate(async (valid) => {
-    if (valid) {
-      submitting.value = true;
-      try {
-        await createScheduleApi({
-          courseId: form.courseId,
-          classId: form.classId,
-          weekNo: form.weekNo,
-          weekDay: form.weekDay,
-          startTime: form.startTime,
-          endTime: form.endTime,
-          location: form.location
-        });
-        ElMessage.success('新增排班成功');
-        closeDialog();
-        loadData();
-      } catch (error) {
-        ElMessage.error(error.message || '新增失败');
-      } finally {
-        submitting.value = false;
-      }
+  const valid = await formRef.value.validate().catch(() => false);
+  if (!valid) return;
+
+  submitting.value = true;
+  try {
+    const basePayload = {
+      courseId: form.courseId,
+      weekNo: form.weekNo || null,
+      weekDay: form.weekDay,
+      startTime: form.startTime,
+      endTime: form.endTime,
+      location: form.location || null
+    };
+
+    if (formMode.value === 'create') {
+      await Promise.all(
+        form.classIds.map((classId) => createScheduleApi({ ...basePayload, classId }))
+      );
+      ElMessage.success(`新增排班成功，共 ${form.classIds.length} 个班级`);
+    } else {
+      await updateScheduleApi(form.id, { ...basePayload, classId: form.classIds[0] });
+      ElMessage.success('更新成功');
     }
-  });
+    closeDialog();
+    loadData();
+  } catch (error) {
+    ElMessage.error(error.message || '操作失败');
+  } finally {
+    submitting.value = false;
+  }
 };
 
 const remove = async (id) => {
@@ -192,7 +295,10 @@ const remove = async (id) => {
   }
 };
 
-onMounted(loadData);
+onMounted(async () => {
+  await loadOptions();
+  await loadData();
+});
 </script>
 
 <style scoped>

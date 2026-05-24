@@ -1,0 +1,14 @@
+<view class="container">
+  <view wx:if="{{classes.length === 0}}" class="empty-text">暂无授课班级</view>
+  <view wx:for="{{classes}}" wx:key="classId" class="card class-card" bindtap="goAttendance" data-id="{{item.classId}}" data-name="{{item.className}}">
+    <view class="flex-between">
+      <text class="class-name">{{item.className}}</text>
+      <text class="text-gray">{{item.studentCount || 0}}人</text>
+    </view>
+    <view class="class-meta">
+      <text class="text-gray">{{item.classCode}}</text>
+      <text wx:if="{{item.counselorName}}" class="text-gray ml-20">辅导员：{{item.counselorName}}</text>
+    </view>
+  </view>
+</view>
+<custom-tabbar role="TEACHER" currentIndex="{{-1}}" />

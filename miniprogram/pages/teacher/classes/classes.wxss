@@ -1,0 +1,14 @@
+.class-card {
+  border-radius: 20rpx;
+}
+
+.class-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #222;
+}
+
+.class-meta {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+}

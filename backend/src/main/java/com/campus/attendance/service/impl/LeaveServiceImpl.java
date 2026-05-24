@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -37,13 +38,25 @@ public class LeaveServiceImpl implements LeaveService {
         this.studentProfileMapper = studentProfileMapper;
     }
 
+    private static final DateTimeFormatter DT_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long apply(Long userId, LeaveApplyRequest request) {
-        LocalDateTime start = LocalDateTime.parse(request.getStartTime());
-        LocalDateTime end = LocalDateTime.parse(request.getEndTime());
+        LocalDateTime start;
+        LocalDateTime end;
+        try {
+            start = LocalDateTime.parse(request.getStartTime(), DT_FMT);
+            end = LocalDateTime.parse(request.getEndTime(), DT_FMT);
+        } catch (Exception e) {
+            throw new BizException(4001, "时间格式错误，请使用 yyyy-MM-dd HH:mm:ss 格式");
+        }
         if (end.isBefore(start)) {
             throw new BizException(4001, "请假结束时间不能早于开始时间");
+        }
+        int conflict = leaveRequestMapper.countConflict(userId, start, end);
+        if (conflict > 0) {
+            throw new BizException(4001, "该时间段已有待审批或已通过的请假申请，请勿重复提交");
         }
         LeaveRequest leave = new LeaveRequest();
         leave.setStudentId(userId);

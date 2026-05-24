@@ -1,0 +1,73 @@
+- generic [ref=e29]:
+  - complementary [ref=e30]:
+    - generic [ref=e31]:
+      - img [ref=e34]
+      - generic [ref=e36]:
+        - generic [ref=e37]: 智能校园考勤
+        - generic [ref=e38]: 辅导员工作台
+    - menubar [ref=e39]:
+      - generic [ref=e40]: 工作台
+      - menuitem "总览中心" [ref=e41] [cursor=pointer]:
+        - img [ref=e43]
+        - generic [ref=e45]: 总览中心
+      - generic [ref=e46]: 班级管理
+      - menuitem "我的班级" [ref=e47] [cursor=pointer]:
+        - img [ref=e49]
+        - generic [ref=e53]: 我的班级
+      - generic [ref=e54]: 请假管理
+      - menuitem "待审批请假" [ref=e55] [cursor=pointer]:
+        - img [ref=e57]
+        - generic [ref=e59]: 待审批请假
+      - menuitem "审批历史" [ref=e60] [cursor=pointer]:
+        - img [ref=e62]
+        - generic [ref=e64]: 审批历史
+    - button "陈 陈辅导" [ref=e67] [cursor=pointer]:
+      - generic [ref=e68]: 陈
+      - generic [ref=e69]: 陈辅导
+      - img [ref=e71]
+  - generic [ref=e73]:
+    - generic [ref=e74]:
+      - generic [ref=e76]: 辅导员端
+      - generic [ref=e78]: 陈辅导
+    - main [ref=e79]:
+      - generic [ref=e80]:
+        - generic [ref=e81]:
+          - generic [ref=e82]:
+            - paragraph [ref=e83]: 辅导员工作台
+            - heading "陈辅导，欢迎回来" [level=1] [ref=e84]
+            - paragraph [ref=e85]: 管理您负责班级的学生请假情况，及时处理待审批申请。
+          - generic [ref=e86]:
+            - strong [ref=e87]: "1"
+            - generic [ref=e88]: 待审批请假
+        - generic [ref=e89]:
+          - generic [ref=e93]:
+            - img [ref=e95]
+            - generic [ref=e99]:
+              - generic [ref=e100]: "1"
+              - generic [ref=e101]: 负责班级数
+          - generic [ref=e105]:
+            - img [ref=e107]
+            - generic [ref=e109]:
+              - generic [ref=e110]: "5"
+              - generic [ref=e111]: 管理学生数
+          - generic [ref=e115]:
+            - img [ref=e117]
+            - generic [ref=e119]:
+              - generic [ref=e120]: "7"
+              - generic [ref=e121]: 近30天审批数
+        - generic [ref=e124]:
+          - generic [ref=e125]: 快速入口
+          - generic [ref=e127]:
+            - button "待审批请假 1" [ref=e128] [cursor=pointer]:
+              - generic [ref=e129]:
+                - img [ref=e131]
+                - text: 待审批请假
+                - superscript [ref=e134]: "1"
+            - button "我的班级" [ref=e135] [cursor=pointer]:
+              - generic [ref=e136]:
+                - img [ref=e138]
+                - text: 我的班级
+            - button "审批历史" [ref=e142] [cursor=pointer]:
+              - generic [ref=e143]:
+                - img [ref=e145]
+                - text: 审批历史

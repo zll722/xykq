@@ -1,0 +1,71 @@
+.welcome-card {
+  background: linear-gradient(135deg, #1a8f6c, #28b48a);
+  color: #fff;
+  padding: 40rpx;
+  border-radius: 24rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 32rpx rgba(40, 180, 138, 0.35);
+}
+
+.welcome-text {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 700;
+  margin-bottom: 8rpx;
+}
+
+.welcome-sub {
+  display: block;
+  font-size: 26rpx;
+  opacity: 0.85;
+}
+
+.stats-row {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.stat-item {
+  flex: 1;
+  text-align: center;
+  padding: 28rpx 16rpx;
+}
+
+.stat-value {
+  display: block;
+  font-size: 44rpx;
+  font-weight: 700;
+  margin-bottom: 8rpx;
+}
+
+.stat-label {
+  display: block;
+  font-size: 24rpx;
+  color: #999;
+}
+
+.quick-grid {
+  display: flex;
+  gap: 16rpx;
+}
+
+.quick-item {
+  flex: 1;
+  text-align: center;
+  padding: 36rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+.quick-icon {
+  display: block;
+  font-size: 52rpx;
+  margin-bottom: 14rpx;
+}
+
+.quick-text {
+  display: block;
+  font-size: 26rpx;
+  color: #444;
+  font-weight: 500;
+}

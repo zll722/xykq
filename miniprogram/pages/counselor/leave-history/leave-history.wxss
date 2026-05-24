@@ -1,0 +1,52 @@
+.leave-card {
+  border-radius: 20rpx;
+}
+
+.student-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.student-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #222;
+}
+
+.class-name {
+  font-size: 24rpx;
+  margin-top: 4rpx;
+}
+
+.leave-info {
+  font-size: 26rpx;
+  color: #666;
+  margin-top: 12rpx;
+}
+
+.leave-reason {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  color: #888;
+  line-height: 1.5;
+}
+
+.acted-info {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  display: flex;
+  align-items: center;
+}
+
+.comment-text {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: #666;
+  background: #f8f9fa;
+  padding: 12rpx 16rpx;
+  border-radius: 10rpx;
+}
+
+.ml-20 {
+  margin-left: 20rpx;
+}

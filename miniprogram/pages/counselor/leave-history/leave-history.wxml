@@ -1,0 +1,25 @@
+<view class="container">
+  <view wx:if="{{records.length === 0}}" class="empty-text">暂无审批记录</view>
+  <view wx:for="{{records}}" wx:key="id" class="card leave-card">
+    <view class="flex-between">
+      <view class="student-info">
+        <text class="student-name">{{item.studentName}}</text>
+        <text class="class-name text-gray">{{item.className}}</text>
+      </view>
+      <text class="tag {{item.status === 'APPROVED' ? 'tag-success' : 'tag-danger'}}">
+        {{item.status === 'APPROVED' ? '已通过' : '已驳回'}}
+      </text>
+    </view>
+    <view class="leave-info mt-20">
+      <text>{{item.leaveType === 'SICK' ? '病假' : (item.leaveType === 'PERSONAL' ? '事假' : '其他')}}</text>
+      <text class="ml-20">{{item.startTime}} ~ {{item.endTime}}</text>
+    </view>
+    <view class="leave-reason">{{item.reason}}</view>
+    <view class="acted-info text-gray" wx:if="{{item.approverName}}">
+      <text>审批人：{{item.approverName}}</text>
+      <text class="ml-20">{{item.actedAt}}</text>
+    </view>
+    <view class="comment-text" wx:if="{{item.comment}}">审批意见：{{item.comment}}</view>
+  </view>
+</view>
+<custom-tabbar role="COUNSELOR" currentIndex="{{-1}}" />

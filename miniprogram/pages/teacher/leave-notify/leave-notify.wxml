@@ -1,0 +1,20 @@
+<view class="container">
+  <view wx:if="{{notifications.length === 0}}" class="empty-text">暂无请假通知</view>
+  <view wx:for="{{notifications}}" wx:key="leaveRequestId" class="card notify-item">
+    <view class="flex-between">
+      <text class="student-name">{{item.studentName}}</text>
+      <text class="tag tag-success">已通过</text>
+    </view>
+    <view class="notify-info mt-20">
+      <text>{{item.leaveType === 'SICK' ? '病假' : (item.leaveType === 'PERSONAL' ? '事假' : '其他')}}</text>
+      <text class="ml-20">{{item.startTime}} ~ {{item.endTime}}</text>
+    </view>
+    <view class="notify-info">
+      <text class="text-gray">课程：{{item.courseName}}</text>
+      <text class="ml-20 text-gray">班级：{{item.className}}</text>
+    </view>
+    <view class="notify-reason">{{item.reason}}</view>
+    <view class="notify-time text-gray">审批时间：{{item.approvedAt}}</view>
+  </view>
+</view>
+<custom-tabbar role="TEACHER" currentIndex="{{2}}" />

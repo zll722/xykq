@@ -55,7 +55,10 @@
                   <h3>{{ item.courseName || '未命名课程' }}</h3>
                   <p>周{{ item.weekDay }} · {{ item.className || '班级待确认' }}</p>
                 </div>
-                <el-tag size="small" effect="dark" type="info">待签到</el-tag>
+                <el-tag v-if="item.signStatus === 'ON_LEAVE'" size="small" effect="dark" type="warning">已请假</el-tag>
+                <el-tag v-else-if="item.signStatus === 'SIGNED'" size="small" effect="dark" type="success">已签到</el-tag>
+                <el-tag v-else-if="item.signStatus === 'OPEN'" size="small" effect="dark" type="info">待签到</el-tag>
+                <el-tag v-else size="small" effect="plain" type="info">未开放</el-tag>
               </div>
 
               <div class="course-grid">
@@ -69,15 +72,20 @@
                 </div>
               </div>
 
+              <div v-if="item.signStatus === 'ON_LEAVE'" class="leave-notice">
+                请假审批已通过，本节课无需签到
+              </div>
               <el-button
+                v-else
                 type="primary"
                 size="large"
                 class="submit-button"
                 data-testid="sign-in-submit"
+                :disabled="item.signStatus !== 'OPEN'"
                 :loading="submittingId === item.scheduleId"
                 @click="submitSignIn(item.scheduleId)"
               >
-                立即签到
+                {{ item.signStatus === 'SIGNED' ? '已完成签到' : '立即签到' }}
               </el-button>
             </article>
           </el-col>
@@ -299,6 +307,16 @@ onMounted(loadSchedules);
 
 .submit-button {
   width: 100%;
+}
+
+.leave-notice {
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: #fffbe6;
+  color: #b08000;
+  font-size: 13px;
+  text-align: center;
+  border: 1px solid #ffe58f;
 }
 
 @media (max-width: 900px) {

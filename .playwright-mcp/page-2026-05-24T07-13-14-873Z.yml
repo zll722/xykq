@@ -1,0 +1,16 @@
+- generic [ref=e3]:
+  - generic [ref=e15]:
+    - heading "智慧校园 · 智能考勤" [level=2] [ref=e16]
+    - paragraph [ref=e17]: 融合课程、签到、请假与统计能力，让校园管理更高效、更智能。
+  - generic [ref=e19]:
+    - paragraph [ref=e20]: Smart Campus Attendance
+    - heading "智能校园考勤系统" [level=1] [ref=e21]
+    - generic [ref=e22]:
+      - generic [ref=e23]: 用户名
+      - textbox "用户名" [ref=e24]:
+        - /placeholder: 请输入用户名
+    - generic [ref=e25]:
+      - generic [ref=e26]: 密码
+      - textbox "密码" [ref=e27]:
+        - /placeholder: 请输入密码
+    - button "登录" [ref=e28] [cursor=pointer]

@@ -1,0 +1,22 @@
+<view class="container">
+  <view class="week-tabs">
+    <view wx:for="{{weekDays}}" wx:key="index"
+      class="week-tab {{currentDay === item.value ? 'active' : ''}}"
+      bindtap="switchDay" data-day="{{item.value}}">
+      <text>{{item.label}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{filteredSchedules.length === 0}}" class="empty-text">当天无课程安排</view>
+  <view wx:for="{{filteredSchedules}}" wx:key="id" class="course-card card" bindtap="goSignIn" data-item="{{item}}">
+    <view class="flex-between">
+      <text class="course-name">{{item.courseName}}</text>
+      <text class="course-time">{{item.startTime}}-{{item.endTime}}</text>
+    </view>
+    <view class="course-detail">
+      <text>📍 {{item.location || '未指定'}}</text>
+      <text class="ml-20">👨‍🏫 {{item.teacherName || ''}}</text>
+    </view>
+  </view>
+</view>
+<custom-tabbar role="USER" currentIndex="{{1}}" />

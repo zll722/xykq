@@ -55,15 +55,14 @@
               <el-input v-model="profile.avatarUrl" placeholder="上传成功后会自动回填" name="avatarUrl" />
             </el-form-item>
 
+            <div v-if="profile.avatarUrl" class="avatar-preview-row">
+              <span class="preview-label">当前头像</span>
+              <el-avatar :size="64" :src="profile.avatarUrl" shape="square" />
+            </div>
+
             <div class="avatar-upload-row">
-              <el-upload
-                :auto-upload="false"
-                :show-file-list="false"
-                :on-change="handleFileChange"
-                :before-upload="() => false"
-              >
-                <el-button>选择头像</el-button>
-              </el-upload>
+              <el-button @click="openFileChooser">选择头像</el-button>
+              <input ref="fileInputRef" type="file" accept="image/*" style="display:none" @change="handleFileChange" />
               <div class="upload-text">
                 <strong>{{ selectedFileName }}</strong>
                 <span>支持先选择再上传，成功后自动回填头像地址</span>
@@ -105,6 +104,9 @@ import { computed, onMounted, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import { getMyProfileApi, updateMyProfileApi } from '../../api/user';
 import { uploadFileApi } from '../../api/file';
+import { useAuthStore } from '../../stores/auth';
+
+const authStore = useAuthStore();
 
 const profile = ref({
   username: '',
@@ -114,6 +116,7 @@ const profile = ref({
   avatarUrl: ''
 });
 
+const fileInputRef = ref();
 const saving = ref(false);
 const uploading = ref(false);
 const selectedFile = ref(null);
@@ -129,8 +132,12 @@ const loadProfile = async () => {
   }
 };
 
-const handleFileChange = (file) => {
-  selectedFile.value = file.raw;
+const openFileChooser = () => {
+  fileInputRef.value?.click();
+};
+
+const handleFileChange = (e) => {
+  selectedFile.value = e.target.files[0] || null;
 };
 
 const uploadAvatar = async () => {
@@ -138,7 +145,7 @@ const uploadAvatar = async () => {
   uploading.value = true;
   try {
     const data = await uploadFileApi(selectedFile.value);
-    profile.value.avatarUrl = data.url || data.path || '';
+    profile.value.avatarUrl = data || '';
     ElMessage.success('头像上传成功');
   } catch (error) {
     console.error(error);
@@ -153,6 +160,7 @@ const save = async () => {
   try {
     await updateMyProfileApi(profile.value);
     ElMessage.success('资料已保存');
+    await authStore.fetchMe();
     loadProfile();
   } catch (error) {
     console.error(error);
@@ -239,6 +247,21 @@ onMounted(() => {
 .profile-form {
   display: grid;
   gap: 8px;
+}
+
+.avatar-preview-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: #f0f6ff;
+}
+
+.preview-label {
+  font-size: 13px;
+  color: #7890a8;
+  white-space: nowrap;
 }
 
 .avatar-upload-row {

@@ -40,7 +40,7 @@
         <div class="header-actions">
           <el-dropdown trigger="click">
             <span class="user-dropdown">
-              <el-avatar size="small" :icon="UserFilled" />
+              <el-avatar size="small" :src="authStore.userInfo?.avatarUrl || ''" :icon="authStore.userInfo?.avatarUrl ? undefined : UserFilled" />
               <span class="user-name">{{ currentUserText }}</span>
               <el-icon><CaretBottom /></el-icon>
             </span>

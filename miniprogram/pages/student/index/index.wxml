@@ -1,0 +1,44 @@
+<view class="container">
+  <view class="welcome-card card">
+    <text class="welcome-text">你好，{{userInfo.realName || '同学'}}</text>
+    <text class="welcome-sub">今日考勤状态一览</text>
+  </view>
+
+  <view class="stats-row">
+    <view class="stat-item card">
+      <text class="stat-value text-primary">{{stats.attendanceRate || '0%'}}</text>
+      <text class="stat-label">出勤率</text>
+    </view>
+    <view class="stat-item card">
+      <text class="stat-value text-warning">{{stats.lateCount || 0}}</text>
+      <text class="stat-label">迟到</text>
+    </view>
+    <view class="stat-item card">
+      <text class="stat-value text-danger">{{stats.absentCount || 0}}</text>
+      <text class="stat-label">缺勤</text>
+    </view>
+  </view>
+
+  <view class="section">
+    <view class="flex-between mb-20">
+      <text class="section-title">今日课程</text>
+      <text class="text-primary" bindtap="goSchedule">查看全部</text>
+    </view>
+    <view wx:if="{{todayCourses.length === 0}}" class="empty-text">今日无课程安排</view>
+    <view wx:for="{{todayCourses}}" wx:key="id" class="course-card card" bindtap="goSignIn" data-schedule="{{item}}">
+      <view class="flex-between">
+        <text class="course-name">{{item.courseName}}</text>
+        <text class="tag {{item.signStatus === 'SIGNED' ? 'tag-success' : (item.signStatus === 'OPEN' ? 'tag-warning' : 'tag-info')}}">{{item.signStatus === 'SIGNED' ? '已签到' : (item.signStatus === 'OPEN' ? '签到中' : '待签到')}}</text>
+      </view>
+      <view class="course-info">
+        <text>{{item.startTime}} - {{item.endTime}}</text>
+        <text class="ml-20">{{item.location}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="quick-actions">
+    <button class="btn-primary" bindtap="goSignIn">快捷签到</button>
+  </view>
+</view>
+<custom-tabbar role="USER" currentIndex="{{0}}" />

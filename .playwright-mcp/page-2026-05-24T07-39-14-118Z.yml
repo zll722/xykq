@@ -1,0 +1,373 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e8]
+      - generic [ref=e10]:
+        - generic [ref=e11]: 校园考勤管理台
+        - generic [ref=e12]: 以任务驱动的管理控制台
+    - generic [ref=e13]:
+      - generic [ref=e14]: 工作台
+      - menubar [ref=e15]:
+        - menuitem "总览中心" [ref=e16] [cursor=pointer]:
+          - img [ref=e18]
+          - generic [ref=e20]: 总览中心
+    - generic [ref=e21]:
+      - generic [ref=e22]: 教学基础数据
+      - menubar [ref=e23]:
+        - menuitem "用户管理" [ref=e24] [cursor=pointer]:
+          - img [ref=e26]
+          - generic [ref=e28]: 用户管理
+        - menuitem "班级管理" [ref=e29] [cursor=pointer]:
+          - img [ref=e31]
+          - generic [ref=e33]: 班级管理
+        - menuitem "课程管理" [ref=e34] [cursor=pointer]:
+          - img [ref=e36]
+          - generic [ref=e39]: 课程管理
+        - menuitem "排班管理" [ref=e40] [cursor=pointer]:
+          - img [ref=e42]
+          - generic [ref=e44]: 排班管理
+    - generic [ref=e45]:
+      - generic [ref=e46]: 考勤与请假
+      - menubar [ref=e47]:
+        - menuitem "待审批请假" [ref=e48] [cursor=pointer]:
+          - img [ref=e50]
+          - generic [ref=e52]: 待审批请假
+        - menuitem "审批历史" [ref=e53] [cursor=pointer]:
+          - img [ref=e55]
+          - generic [ref=e57]: 审批历史
+        - menuitem "考勤记录" [ref=e58] [cursor=pointer]:
+          - img [ref=e60]
+          - generic [ref=e62]: 考勤记录
+        - menuitem "考勤修正" [ref=e63] [cursor=pointer]:
+          - img [ref=e65]
+          - generic [ref=e67]: 考勤修正
+        - menuitem "异常处理" [ref=e68] [cursor=pointer]:
+          - img [ref=e70]
+          - generic [ref=e72]: 异常处理
+    - generic [ref=e73]:
+      - generic [ref=e74]: 统计与系统
+      - menubar [ref=e75]:
+        - menuitem "统计分析" [ref=e76] [cursor=pointer]:
+          - img [ref=e78]
+          - generic [ref=e81]: 统计分析
+        - menuitem "操作日志" [ref=e82] [cursor=pointer]:
+          - img [ref=e84]
+          - generic [ref=e86]: 操作日志
+  - generic [ref=e87]:
+    - generic [ref=e88]:
+      - generic [ref=e90]: 管理端
+      - button "系统管理员" [ref=e92] [cursor=pointer]:
+        - img [ref=e95]
+        - generic [ref=e97]: 系统管理员
+        - img [ref=e99]
+    - main [ref=e101]:
+      - generic [ref=e102]:
+        - generic [ref=e103]: 首页 / 用户管理
+        - heading "用户管理" [level=1] [ref=e104]
+        - generic [ref=e106]:
+          - generic [ref=e107]:
+            - generic [ref=e109]:
+              - img [ref=e112]
+              - textbox "搜索用户名或姓名" [ref=e114]
+            - generic [ref=e116] [cursor=pointer]:
+              - generic:
+                - combobox [ref=e118]
+                - generic [ref=e119]: 全部角色
+              - img [ref=e122]
+            - generic [ref=e125] [cursor=pointer]:
+              - generic:
+                - combobox [ref=e127]
+                - generic [ref=e128]: 全部状态
+              - img [ref=e131]
+            - button "搜索" [ref=e133] [cursor=pointer]:
+              - img [ref=e135]
+              - generic [ref=e137]: 搜索
+            - button "新建" [ref=e138] [cursor=pointer]:
+              - img [ref=e140]
+              - generic [ref=e142]: 新建
+          - generic [ref=e143]:
+            - generic [ref=e144]:
+              - table [ref=e146]:
+                - rowgroup [ref=e155]:
+                  - row "ID 用户名 姓名 班级 角色 状态 操作" [ref=e156]:
+                    - columnheader "ID" [ref=e157]:
+                      - generic [ref=e158]: ID
+                    - columnheader "用户名" [ref=e159]:
+                      - generic [ref=e160]: 用户名
+                    - columnheader "姓名" [ref=e161]:
+                      - generic [ref=e162]: 姓名
+                    - columnheader "班级" [ref=e163]:
+                      - generic [ref=e164]: 班级
+                    - columnheader "角色" [ref=e165]:
+                      - generic [ref=e166]: 角色
+                    - columnheader "状态" [ref=e167]:
+                      - generic [ref=e168]: 状态
+                    - columnheader "操作" [ref=e169]:
+                      - generic [ref=e170]: 操作
+              - table [ref=e175]:
+                - rowgroup [ref=e184]:
+                  - row "11 counselor02 刘辅导 2026级计算机科学1班、2026级软件工程2班 辅导员 编辑 删除" [ref=e185]:
+                    - cell "11" [ref=e186]:
+                      - generic [ref=e187]: "11"
+                    - cell "counselor02" [ref=e188]:
+                      - generic [ref=e189]: counselor02
+                    - cell "刘辅导" [ref=e190]:
+                      - generic [ref=e191]: 刘辅导
+                    - cell "2026级计算机科学1班、2026级软件工程2班" [ref=e192]:
+                      - generic [ref=e193]: 2026级计算机科学1班、2026级软件工程2班
+                    - cell "辅导员" [ref=e194]:
+                      - generic [ref=e195]:
+                        - generic:
+                          - generic: 辅导员
+                    - cell [ref=e196]:
+                      - generic [ref=e198]:
+                        - switch [checked]
+                    - cell "编辑 删除" [ref=e201]:
+                      - generic [ref=e202]:
+                        - button "编辑" [ref=e203] [cursor=pointer]:
+                          - img [ref=e205]
+                          - generic [ref=e208]: 编辑
+                        - button "删除" [ref=e209] [cursor=pointer]:
+                          - img [ref=e211]
+                          - generic [ref=e213]: 删除
+                  - row "10 counselor01 陈辅导 2026级软件工程1班 辅导员 编辑 删除" [ref=e214]:
+                    - cell "10" [ref=e215]:
+                      - generic [ref=e216]: "10"
+                    - cell "counselor01" [ref=e217]:
+                      - generic [ref=e218]: counselor01
+                    - cell "陈辅导" [ref=e219]:
+                      - generic [ref=e220]: 陈辅导
+                    - cell "2026级软件工程1班" [ref=e221]:
+                      - generic [ref=e222]: 2026级软件工程1班
+                    - cell "辅导员" [ref=e223]:
+                      - generic [ref=e224]:
+                        - generic:
+                          - generic: 辅导员
+                    - cell [ref=e225]:
+                      - generic [ref=e227]:
+                        - switch [checked]
+                    - cell "编辑 删除" [ref=e230]:
+                      - generic [ref=e231]:
+                        - button "编辑" [ref=e232] [cursor=pointer]:
+                          - img [ref=e234]
+                          - generic [ref=e237]: 编辑
+                        - button "删除" [ref=e238] [cursor=pointer]:
+                          - img [ref=e240]
+                          - generic [ref=e242]: 删除
+                  - row "9 ceshi1 哈哈哈 - 学生 编辑 删除" [ref=e243]:
+                    - cell "9" [ref=e244]:
+                      - generic [ref=e245]: "9"
+                    - cell "ceshi1" [ref=e246]:
+                      - generic [ref=e247]: ceshi1
+                    - cell "哈哈哈" [ref=e248]:
+                      - generic [ref=e249]: 哈哈哈
+                    - cell "-" [ref=e250]:
+                      - generic [ref=e251]: "-"
+                    - cell "学生" [ref=e252]:
+                      - generic [ref=e253]:
+                        - generic:
+                          - generic: 学生
+                    - cell [ref=e254]:
+                      - generic [ref=e256]:
+                        - switch [checked]
+                    - cell "编辑 删除" [ref=e259]:
+                      - generic [ref=e260]:
+                        - button "编辑" [ref=e261] [cursor=pointer]:
+                          - img [ref=e263]
+                          - generic [ref=e266]: 编辑
+                        - button "删除" [ref=e267] [cursor=pointer]:
+                          - img [ref=e269]
+                          - generic [ref=e271]: 删除
+                  - row "8 student005 赵六 2026级软件工程1班 学生 编辑 删除" [ref=e272]:
+                    - cell "8" [ref=e273]:
+                      - generic [ref=e274]: "8"
+                    - cell "student005" [ref=e275]:
+                      - generic [ref=e276]: student005
+                    - cell "赵六" [ref=e277]:
+                      - generic [ref=e278]: 赵六
+                    - cell "2026级软件工程1班" [ref=e279]:
+                      - generic [ref=e280]: 2026级软件工程1班
+                    - cell "学生" [ref=e281]:
+                      - generic [ref=e282]:
+                        - generic:
+                          - generic: 学生
+                    - cell [ref=e283]:
+                      - generic [ref=e285]:
+                        - switch [checked]
+                    - cell "编辑 删除" [ref=e288]:
+                      - generic [ref=e289]:
+                        - button "编辑" [ref=e290] [cursor=pointer]:
+                          - img [ref=e292]
+                          - generic [ref=e295]: 编辑
+                        - button "删除" [ref=e296] [cursor=pointer]:
+                          - img [ref=e298]
+                          - generic [ref=e300]: 删除
+                  - row "7 student004 王五 2026级软件工程2班 学生 编辑 删除" [ref=e301]:
+                    - cell "7" [ref=e302]:
+                      - generic [ref=e303]: "7"
+                    - cell "student004" [ref=e304]:
+                      - generic [ref=e305]: student004
+                    - cell "王五" [ref=e306]:
+                      - generic [ref=e307]: 王五
+                    - cell "2026级软件工程2班" [ref=e308]:
+                      - generic [ref=e309]: 2026级软件工程2班
+                    - cell "学生" [ref=e310]:
+                      - generic [ref=e311]:
+                        - generic:
+                          - generic: 学生
+                    - cell [ref=e312]:
+                      - generic [ref=e314]:
+                        - switch [checked]
+                    - cell "编辑 删除" [ref=e317]:
+                      - generic [ref=e318]:
+                        - button "编辑" [ref=e319] [cursor=pointer]:
+                          - img [ref=e321]
+                          - generic [ref=e324]: 编辑
+                        - button "删除" [ref=e325] [cursor=pointer]:
+                          - img [ref=e327]
+                          - generic [ref=e329]: 删除
+                  - row "6 student003 李四 2026级软件工程1班 学生 编辑 删除" [ref=e330]:
+                    - cell "6" [ref=e331]:
+                      - generic [ref=e332]: "6"
+                    - cell "student003" [ref=e333]:
+                      - generic [ref=e334]: student003
+                    - cell "李四" [ref=e335]:
+                      - generic [ref=e336]: 李四
+                    - cell "2026级软件工程1班" [ref=e337]:
+                      - generic [ref=e338]: 2026级软件工程1班
+                    - cell "学生" [ref=e339]:
+                      - generic [ref=e340]:
+                        - generic:
+                          - generic: 学生
+                    - cell [ref=e341]:
+                      - generic [ref=e343]:
+                        - switch [checked]
+                    - cell "编辑 删除" [ref=e346]:
+                      - generic [ref=e347]:
+                        - button "编辑" [ref=e348] [cursor=pointer]:
+                          - img [ref=e350]
+                          - generic [ref=e353]: 编辑
+                        - button "删除" [ref=e354] [cursor=pointer]:
+                          - img [ref=e356]
+                          - generic [ref=e358]: 删除
+                  - row "5 student002 张三 2026级软件工程1班 学生 编辑 删除" [ref=e359]:
+                    - cell "5" [ref=e360]:
+                      - generic [ref=e361]: "5"
+                    - cell "student002" [ref=e362]:
+                      - generic [ref=e363]: student002
+                    - cell "张三" [ref=e364]:
+                      - generic [ref=e365]: 张三
+                    - cell "2026级软件工程1班" [ref=e366]:
+                      - generic [ref=e367]: 2026级软件工程1班
+                    - cell "学生" [ref=e368]:
+                      - generic [ref=e369]:
+                        - generic:
+                          - generic: 学生
+                    - cell [ref=e370]:
+                      - generic [ref=e372]:
+                        - switch [checked]
+                    - cell "编辑 删除" [ref=e375]:
+                      - generic [ref=e376]:
+                        - button "编辑" [ref=e377] [cursor=pointer]:
+                          - img [ref=e379]
+                          - generic [ref=e382]: 编辑
+                        - button "删除" [ref=e383] [cursor=pointer]:
+                          - img [ref=e385]
+                          - generic [ref=e387]: 删除
+                  - row "4 teacher02 王老师 - 授课教师 编辑 删除" [ref=e388]:
+                    - cell "4" [ref=e389]:
+                      - generic [ref=e390]: "4"
+                    - cell "teacher02" [ref=e391]:
+                      - generic [ref=e392]: teacher02
+                    - cell "王老师" [ref=e393]:
+                      - generic [ref=e394]: 王老师
+                    - cell "-" [ref=e395]:
+                      - generic [ref=e396]: "-"
+                    - cell "授课教师" [ref=e397]:
+                      - generic [ref=e398]:
+                        - generic:
+                          - generic: 授课教师
+                    - cell [ref=e399]:
+                      - generic [ref=e401]:
+                        - switch [checked]
+                    - cell "编辑 删除" [ref=e404]:
+                      - generic [ref=e405]:
+                        - button "编辑" [ref=e406] [cursor=pointer]:
+                          - img [ref=e408]
+                          - generic [ref=e411]: 编辑
+                        - button "删除" [ref=e412] [cursor=pointer]:
+                          - img [ref=e414]
+                          - generic [ref=e416]: 删除
+                  - row "3 teacher01 李老师 - 授课教师 编辑 删除" [ref=e417]:
+                    - cell "3" [ref=e418]:
+                      - generic [ref=e419]: "3"
+                    - cell "teacher01" [ref=e420]:
+                      - generic [ref=e421]: teacher01
+                    - cell "李老师" [ref=e422]:
+                      - generic [ref=e423]: 李老师
+                    - cell "-" [ref=e424]:
+                      - generic [ref=e425]: "-"
+                    - cell "授课教师" [ref=e426]:
+                      - generic [ref=e427]:
+                        - generic:
+                          - generic: 授课教师
+                    - cell [ref=e428]:
+                      - generic [ref=e430]:
+                        - switch [checked]
+                    - cell "编辑 删除" [ref=e433]:
+                      - generic [ref=e434]:
+                        - button "编辑" [ref=e435] [cursor=pointer]:
+                          - img [ref=e437]
+                          - generic [ref=e440]: 编辑
+                        - button "删除" [ref=e441] [cursor=pointer]:
+                          - img [ref=e443]
+                          - generic [ref=e445]: 删除
+                  - row "2 student001 测试学生 2026级软件工程1班 学生 编辑 删除" [ref=e446]:
+                    - cell "2" [ref=e447]:
+                      - generic [ref=e448]: "2"
+                    - cell "student001" [ref=e449]:
+                      - generic [ref=e450]: student001
+                    - cell "测试学生" [ref=e451]:
+                      - generic [ref=e452]: 测试学生
+                    - cell "2026级软件工程1班" [ref=e453]:
+                      - generic [ref=e454]: 2026级软件工程1班
+                    - cell "学生" [ref=e455]:
+                      - generic [ref=e456]:
+                        - generic:
+                          - generic: 学生
+                    - cell [ref=e457]:
+                      - generic [ref=e459]:
+                        - switch [checked]
+                    - cell "编辑 删除" [ref=e462]:
+                      - generic [ref=e463]:
+                        - button "编辑" [ref=e464] [cursor=pointer]:
+                          - img [ref=e466]
+                          - generic [ref=e469]: 编辑
+                        - button "删除" [ref=e470] [cursor=pointer]:
+                          - img [ref=e472]
+                          - generic [ref=e474]: 删除
+                  - row "1 admin 系统管理员 - 管理员 编辑 删除" [ref=e475]:
+                    - cell "1" [ref=e476]:
+                      - generic [ref=e477]: "1"
+                    - cell "admin" [ref=e478]:
+                      - generic [ref=e479]: admin
+                    - cell "系统管理员" [ref=e480]:
+                      - generic [ref=e481]: 系统管理员
+                    - cell "-" [ref=e482]:
+                      - generic [ref=e483]: "-"
+                    - cell "管理员" [ref=e484]:
+                      - generic [ref=e485]:
+                        - generic:
+                          - generic: 管理员
+                    - cell [ref=e486]:
+                      - generic [ref=e488]:
+                        - switch [checked]
+                    - cell "编辑 删除" [ref=e491]:
+                      - generic [ref=e492]:
+                        - button "编辑" [ref=e493] [cursor=pointer]:
+                          - img [ref=e495]
+                          - generic [ref=e498]: 编辑
+                        - button "删除" [ref=e499] [cursor=pointer]:
+                          - img [ref=e501]
+                          - generic [ref=e503]: 删除
+            - img [ref=e507]

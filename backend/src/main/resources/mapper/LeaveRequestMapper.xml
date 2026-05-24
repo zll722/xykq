@@ -89,6 +89,14 @@
           AND cs.week_day = DAYOFWEEK(#{leaveDate}) - 1
     </select>
 
+    <select id="countConflict" resultType="int">
+        SELECT COUNT(*) FROM leave_request
+        WHERE student_id = #{studentId}
+          AND status IN ('PENDING', 'APPROVED')
+          AND start_time &lt; #{endTime}
+          AND end_time &gt; #{startTime}
+    </select>
+
     <update id="updateStatus">
         UPDATE leave_request
         SET status = #{status}

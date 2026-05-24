@@ -1,0 +1,388 @@
+- generic [ref=e1]:
+  - generic [ref=e3]:
+    - complementary [ref=e4]:
+      - generic [ref=e5]:
+        - img [ref=e8]
+        - generic [ref=e10]:
+          - generic [ref=e11]: 校园考勤管理台
+          - generic [ref=e12]: 以任务驱动的管理控制台
+      - generic [ref=e13]:
+        - generic [ref=e14]: 工作台
+        - menubar [ref=e15]:
+          - menuitem "总览中心" [ref=e16] [cursor=pointer]:
+            - img [ref=e18]
+            - generic [ref=e20]: 总览中心
+      - generic [ref=e21]:
+        - generic [ref=e22]: 教学基础数据
+        - menubar [ref=e23]:
+          - menuitem "用户管理" [ref=e24] [cursor=pointer]:
+            - img [ref=e26]
+            - generic [ref=e28]: 用户管理
+          - menuitem "班级管理" [ref=e29] [cursor=pointer]:
+            - img [ref=e31]
+            - generic [ref=e33]: 班级管理
+          - menuitem "课程管理" [ref=e34] [cursor=pointer]:
+            - img [ref=e36]
+            - generic [ref=e39]: 课程管理
+          - menuitem "排班管理" [ref=e40] [cursor=pointer]:
+            - img [ref=e42]
+            - generic [ref=e44]: 排班管理
+      - generic [ref=e45]:
+        - generic [ref=e46]: 考勤与请假
+        - menubar [ref=e47]:
+          - menuitem "待审批请假" [ref=e48] [cursor=pointer]:
+            - img [ref=e50]
+            - generic [ref=e52]: 待审批请假
+          - menuitem "审批历史" [ref=e53] [cursor=pointer]:
+            - img [ref=e55]
+            - generic [ref=e57]: 审批历史
+          - menuitem "考勤记录" [ref=e58] [cursor=pointer]:
+            - img [ref=e60]
+            - generic [ref=e62]: 考勤记录
+          - menuitem "考勤修正" [ref=e63] [cursor=pointer]:
+            - img [ref=e65]
+            - generic [ref=e67]: 考勤修正
+          - menuitem "异常处理" [ref=e68] [cursor=pointer]:
+            - img [ref=e70]
+            - generic [ref=e72]: 异常处理
+      - generic [ref=e73]:
+        - generic [ref=e74]: 统计与系统
+        - menubar [ref=e75]:
+          - menuitem "统计分析" [ref=e76] [cursor=pointer]:
+            - img [ref=e78]
+            - generic [ref=e81]: 统计分析
+          - menuitem "操作日志" [ref=e82] [cursor=pointer]:
+            - img [ref=e84]
+            - generic [ref=e86]: 操作日志
+    - generic [ref=e87]:
+      - generic [ref=e88]:
+        - generic [ref=e90]: 管理端
+        - button "系统管理员" [ref=e92] [cursor=pointer]:
+          - img [ref=e95]
+          - generic [ref=e97]: 系统管理员
+          - img [ref=e99]
+      - main [ref=e101]:
+        - generic [ref=e102]:
+          - generic [ref=e103]: 首页 / 排班管理
+          - heading "排班管理" [level=1] [ref=e104]
+          - generic [ref=e106]:
+            - generic [ref=e107]:
+              - button "新增排班" [ref=e108] [cursor=pointer]:
+                - img [ref=e110]
+                - generic [ref=e112]: 新增排班
+              - button "刷新" [ref=e113] [cursor=pointer]:
+                - img [ref=e115]
+                - generic [ref=e117]: 刷新
+            - generic [ref=e119]:
+              - table [ref=e121]:
+                - rowgroup [ref=e130]:
+                  - row "ID 课程名称 班级名称 周次 上课时间 地点 操作" [ref=e131]:
+                    - columnheader "ID" [ref=e132]:
+                      - generic [ref=e133]: ID
+                    - columnheader "课程名称" [ref=e134]:
+                      - generic [ref=e135]: 课程名称
+                    - columnheader "班级名称" [ref=e136]:
+                      - generic [ref=e137]: 班级名称
+                    - columnheader "周次" [ref=e138]:
+                      - generic [ref=e139]: 周次
+                    - columnheader "上课时间" [ref=e140]:
+                      - generic [ref=e141]: 上课时间
+                    - columnheader "地点" [ref=e142]:
+                      - generic [ref=e143]: 地点
+                    - columnheader "操作" [ref=e144]:
+                      - generic [ref=e145]: 操作
+              - table [ref=e150]:
+                - rowgroup [ref=e159]:
+                  - row "10 数据结构与算法 2026级软件工程1班 所有周 周5 09:41:00 - 10:40:00 33333323123钱钱钱 编辑 删除" [ref=e160]:
+                    - cell "10" [ref=e161]:
+                      - generic [ref=e162]: "10"
+                    - cell "数据结构与算法" [ref=e163]:
+                      - generic [ref=e164]: 数据结构与算法
+                    - cell "2026级软件工程1班" [ref=e165]:
+                      - generic [ref=e166]: 2026级软件工程1班
+                    - cell "所有周" [ref=e167]:
+                      - generic [ref=e168]: 所有周
+                    - cell "周5 09:41:00 - 10:40:00" [ref=e169]:
+                      - generic [ref=e170]:
+                        - generic [ref=e423]: 周5
+                        - text: 09:41:00 - 10:40:00
+                    - cell "33333323123钱钱钱" [ref=e171]:
+                      - generic [ref=e172]: 33333323123钱钱钱
+                    - cell "编辑 删除" [ref=e173]:
+                      - generic [ref=e174]:
+                        - button "编辑" [ref=e175] [cursor=pointer]:
+                          - img [ref=e177]
+                          - generic [ref=e180]: 编辑
+                        - button "删除" [ref=e181] [cursor=pointer]:
+                          - img [ref=e183]
+                          - generic [ref=e185]: 删除
+                  - row "9 计算机网络 2026级计算机科学1班 所有周 周5 09:40:00 - 10:40:00 12231231 编辑 删除" [ref=e186]:
+                    - cell "9" [ref=e187]:
+                      - generic [ref=e188]: "9"
+                    - cell "计算机网络" [ref=e189]:
+                      - generic [ref=e190]: 计算机网络
+                    - cell "2026级计算机科学1班" [ref=e191]:
+                      - generic [ref=e192]: 2026级计算机科学1班
+                    - cell "所有周" [ref=e193]:
+                      - generic [ref=e194]: 所有周
+                    - cell "周5 09:40:00 - 10:40:00" [ref=e195]:
+                      - generic [ref=e196]:
+                        - generic [ref=e425]: 周5
+                        - text: 09:40:00 - 10:40:00
+                    - cell "12231231" [ref=e197]:
+                      - generic [ref=e198]: "12231231"
+                    - cell "编辑 删除" [ref=e199]:
+                      - generic [ref=e200]:
+                        - button "编辑" [ref=e201] [cursor=pointer]:
+                          - img [ref=e203]
+                          - generic [ref=e206]: 编辑
+                        - button "删除" [ref=e207] [cursor=pointer]:
+                          - img [ref=e209]
+                          - generic [ref=e211]: 删除
+                  - row "8 程序设计基础 所有周 周5 09:40:00 - 10:40:00 5555 编辑 删除" [ref=e212]:
+                    - cell "8" [ref=e213]:
+                      - generic [ref=e214]: "8"
+                    - cell "程序设计基础" [ref=e215]:
+                      - generic [ref=e216]: 程序设计基础
+                    - cell [ref=e217]
+                    - cell "所有周" [ref=e218]:
+                      - generic [ref=e219]: 所有周
+                    - cell "周5 09:40:00 - 10:40:00" [ref=e220]:
+                      - generic [ref=e221]:
+                        - generic [ref=e427]: 周5
+                        - text: 09:40:00 - 10:40:00
+                    - cell "5555" [ref=e222]:
+                      - generic [ref=e223]: "5555"
+                    - cell "编辑 删除" [ref=e224]:
+                      - generic [ref=e225]:
+                        - button "编辑" [ref=e226] [cursor=pointer]:
+                          - img [ref=e228]
+                          - generic [ref=e231]: 编辑
+                        - button "删除" [ref=e232] [cursor=pointer]:
+                          - img [ref=e234]
+                          - generic [ref=e236]: 删除
+                  - row "7 计算机网络 所有周 周5 09:40:00 - 10:40:00 编辑 删除" [ref=e237]:
+                    - cell "7" [ref=e238]:
+                      - generic [ref=e239]: "7"
+                    - cell "计算机网络" [ref=e240]:
+                      - generic [ref=e241]: 计算机网络
+                    - cell [ref=e242]
+                    - cell "所有周" [ref=e243]:
+                      - generic [ref=e244]: 所有周
+                    - cell "周5 09:40:00 - 10:40:00" [ref=e245]:
+                      - generic [ref=e246]:
+                        - generic [ref=e429]: 周5
+                        - text: 09:40:00 - 10:40:00
+                    - cell [ref=e247]
+                    - cell "编辑 删除" [ref=e248]:
+                      - generic [ref=e249]:
+                        - button "编辑" [ref=e250] [cursor=pointer]:
+                          - img [ref=e252]
+                          - generic [ref=e255]: 编辑
+                        - button "删除" [ref=e256] [cursor=pointer]:
+                          - img [ref=e258]
+                          - generic [ref=e260]: 删除
+                  - row "6 222 2026级软件工程1班 所有周 周5 08:00:00 - 09:40:00 11222 编辑 删除" [ref=e261]:
+                    - cell "6" [ref=e262]:
+                      - generic [ref=e263]: "6"
+                    - cell "222" [ref=e264]:
+                      - generic [ref=e265]: "222"
+                    - cell "2026级软件工程1班" [ref=e266]:
+                      - generic [ref=e267]: 2026级软件工程1班
+                    - cell "所有周" [ref=e268]:
+                      - generic [ref=e269]: 所有周
+                    - cell "周5 08:00:00 - 09:40:00" [ref=e270]:
+                      - generic [ref=e271]:
+                        - generic [ref=e431]: 周5
+                        - text: 08:00:00 - 09:40:00
+                    - cell "11222" [ref=e272]:
+                      - generic [ref=e273]: "11222"
+                    - cell "编辑 删除" [ref=e274]:
+                      - generic [ref=e275]:
+                        - button "编辑" [ref=e276] [cursor=pointer]:
+                          - img [ref=e278]
+                          - generic [ref=e281]: 编辑
+                        - button "删除" [ref=e282] [cursor=pointer]:
+                          - img [ref=e284]
+                          - generic [ref=e286]: 删除
+                  - row "5 操作系统 2026级软件工程2班 所有周 周4 08:00:00 - 09:40:00 实验楼D-105 编辑 删除" [ref=e287]:
+                    - cell "5" [ref=e288]:
+                      - generic [ref=e289]: "5"
+                    - cell "操作系统" [ref=e290]:
+                      - generic [ref=e291]: 操作系统
+                    - cell "2026级软件工程2班" [ref=e292]:
+                      - generic [ref=e293]: 2026级软件工程2班
+                    - cell "所有周" [ref=e294]:
+                      - generic [ref=e295]: 所有周
+                    - cell "周4 08:00:00 - 09:40:00" [ref=e296]:
+                      - generic [ref=e297]:
+                        - generic [ref=e433]: 周4
+                        - text: 08:00:00 - 09:40:00
+                    - cell "实验楼D-105" [ref=e298]:
+                      - generic [ref=e299]: 实验楼D-105
+                    - cell "编辑 删除" [ref=e300]:
+                      - generic [ref=e301]:
+                        - button "编辑" [ref=e302] [cursor=pointer]:
+                          - img [ref=e304]
+                          - generic [ref=e307]: 编辑
+                        - button "删除" [ref=e308] [cursor=pointer]:
+                          - img [ref=e310]
+                          - generic [ref=e312]: 删除
+                  - row "4 程序设计基础 2026级软件工程2班 所有周 周1 08:00:00 - 09:40:00 教学楼A-101 编辑 删除" [ref=e313]:
+                    - cell "4" [ref=e314]:
+                      - generic [ref=e315]: "4"
+                    - cell "程序设计基础" [ref=e316]:
+                      - generic [ref=e317]: 程序设计基础
+                    - cell "2026级软件工程2班" [ref=e318]:
+                      - generic [ref=e319]: 2026级软件工程2班
+                    - cell "所有周" [ref=e320]:
+                      - generic [ref=e321]: 所有周
+                    - cell "周1 08:00:00 - 09:40:00" [ref=e322]:
+                      - generic [ref=e323]:
+                        - generic [ref=e435]: 周1
+                        - text: 08:00:00 - 09:40:00
+                    - cell "教学楼A-101" [ref=e324]:
+                      - generic [ref=e325]: 教学楼A-101
+                    - cell "编辑 删除" [ref=e326]:
+                      - generic [ref=e327]:
+                        - button "编辑" [ref=e328] [cursor=pointer]:
+                          - img [ref=e330]
+                          - generic [ref=e333]: 编辑
+                        - button "删除" [ref=e334] [cursor=pointer]:
+                          - img [ref=e336]
+                          - generic [ref=e338]: 删除
+                  - row "3 计算机网络 2026级软件工程1班 所有周 周3 14:00:00 - 15:40:00 教学楼C-301 编辑 删除" [ref=e339]:
+                    - cell "3" [ref=e340]:
+                      - generic [ref=e341]: "3"
+                    - cell "计算机网络" [ref=e342]:
+                      - generic [ref=e343]: 计算机网络
+                    - cell "2026级软件工程1班" [ref=e344]:
+                      - generic [ref=e345]: 2026级软件工程1班
+                    - cell "所有周" [ref=e346]:
+                      - generic [ref=e347]: 所有周
+                    - cell "周3 14:00:00 - 15:40:00" [ref=e348]:
+                      - generic [ref=e349]:
+                        - generic [ref=e437]: 周3
+                        - text: 14:00:00 - 15:40:00
+                    - cell "教学楼C-301" [ref=e350]:
+                      - generic [ref=e351]: 教学楼C-301
+                    - cell "编辑 删除" [ref=e352]:
+                      - generic [ref=e353]:
+                        - button "编辑" [ref=e354] [cursor=pointer]:
+                          - img [ref=e356]
+                          - generic [ref=e359]: 编辑
+                        - button "删除" [ref=e360] [cursor=pointer]:
+                          - img [ref=e362]
+                          - generic [ref=e364]: 删除
+                  - row "2 数据结构与算法 2026级软件工程1班 所有周 周2 10:00:00 - 11:40:00 教学楼B-201 编辑 删除" [ref=e365]:
+                    - cell "2" [ref=e366]:
+                      - generic [ref=e367]: "2"
+                    - cell "数据结构与算法" [ref=e368]:
+                      - generic [ref=e369]: 数据结构与算法
+                    - cell "2026级软件工程1班" [ref=e370]:
+                      - generic [ref=e371]: 2026级软件工程1班
+                    - cell "所有周" [ref=e372]:
+                      - generic [ref=e373]: 所有周
+                    - cell "周2 10:00:00 - 11:40:00" [ref=e374]:
+                      - generic [ref=e375]:
+                        - generic [ref=e439]: 周2
+                        - text: 10:00:00 - 11:40:00
+                    - cell "教学楼B-201" [ref=e376]:
+                      - generic [ref=e377]: 教学楼B-201
+                    - cell "编辑 删除" [ref=e378]:
+                      - generic [ref=e379]:
+                        - button "编辑" [ref=e380] [cursor=pointer]:
+                          - img [ref=e382]
+                          - generic [ref=e385]: 编辑
+                        - button "删除" [ref=e386] [cursor=pointer]:
+                          - img [ref=e388]
+                          - generic [ref=e390]: 删除
+                  - row "1 程序设计基础 2026级软件工程1班 所有周 周1 08:00:00 - 09:40:00 教学楼A-101 编辑 删除" [ref=e391]:
+                    - cell "1" [ref=e392]:
+                      - generic [ref=e393]: "1"
+                    - cell "程序设计基础" [ref=e394]:
+                      - generic [ref=e395]: 程序设计基础
+                    - cell "2026级软件工程1班" [ref=e396]:
+                      - generic [ref=e397]: 2026级软件工程1班
+                    - cell "所有周" [ref=e398]:
+                      - generic [ref=e399]: 所有周
+                    - cell "周1 08:00:00 - 09:40:00" [ref=e400]:
+                      - generic [ref=e401]:
+                        - generic [ref=e441]: 周1
+                        - text: 08:00:00 - 09:40:00
+                    - cell "教学楼A-101" [ref=e402]:
+                      - generic [ref=e403]: 教学楼A-101
+                    - cell "编辑 删除" [ref=e404]:
+                      - generic [ref=e405]:
+                        - button "编辑" [ref=e406] [cursor=pointer]:
+                          - img [ref=e408]
+                          - generic [ref=e411]: 编辑
+                        - button "删除" [ref=e412] [cursor=pointer]:
+                          - img [ref=e414]
+                          - generic [ref=e416]: 删除
+          - dialog "新增排班" [ref=e445]:
+            - generic [ref=e446]:
+              - generic [ref=e447]:
+                - heading "新增排班" [level=2] [ref=e448]
+                - button "Close this dialog" [ref=e449] [cursor=pointer]:
+                  - img [ref=e451]
+              - generic [ref=e454]:
+                - generic [ref=e455]:
+                  - generic [ref=e456]: "* 课程"
+                  - generic [ref=e459] [cursor=pointer]:
+                    - generic:
+                      - combobox "* 课程" [expanded] [active] [ref=e461]
+                      - generic [ref=e462]: 请选择课程
+                    - img [ref=e465]
+                - generic [ref=e467]:
+                  - generic [ref=e468]: "* 班级"
+                  - generic [ref=e471] [cursor=pointer]:
+                    - generic:
+                      - combobox "* 班级" [ref=e473]
+                      - generic [ref=e474]: 请选择班级
+                    - img [ref=e477]
+                - generic [ref=e479]:
+                  - generic [ref=e480]: 周次
+                  - generic [ref=e481]:
+                    - generic [ref=e482]:
+                      - button "decrease number" [ref=e483] [cursor=pointer]:
+                        - img [ref=e485]
+                      - button "increase number" [ref=e487] [cursor=pointer]:
+                        - img [ref=e489]
+                      - spinbutton "周次" [ref=e493]
+                    - generic [ref=e494]: 不填则表示整学期每周都上课
+                - generic [ref=e495]:
+                  - generic [ref=e496]: "* 星期"
+                  - generic [ref=e499] [cursor=pointer]:
+                    - generic:
+                      - combobox "* 星期" [ref=e501]
+                      - generic [ref=e502]: 星期一
+                    - img [ref=e505]
+                - group "* 上课时间" [ref=e507]:
+                  - generic [ref=e508]: "* 上课时间"
+                  - generic [ref=e509]:
+                    - generic [ref=e510]:
+                      - generic [ref=e512]:
+                        - img [ref=e515]
+                        - combobox "开始时间" [ref=e519]: 08:00:00
+                      - generic [ref=e520]: 至
+                      - generic [ref=e522]:
+                        - img [ref=e525]
+                        - combobox "结束时间" [ref=e529]: 09:40:00
+                    - generic [ref=e530]: 选择课程后自动带入默认时间，可手动修改
+                - generic [ref=e531]:
+                  - generic [ref=e532]: 上课地点
+                  - textbox "上课地点" [ref=e536]:
+                    - /placeholder: 留空则使用课程默认地点
+              - generic [ref=e538]:
+                - button "取消" [ref=e539] [cursor=pointer]:
+                  - generic [ref=e540]: 取消
+                - button "确认" [ref=e541] [cursor=pointer]:
+                  - generic [ref=e542]: 确认
+  - tooltip [ref=e543]:
+    - listbox [ref=e547]:
+      - option "222（李老师）" [ref=e548] [cursor=pointer]
+      - option "操作系统（系统管理员）" [ref=e549] [cursor=pointer]
+      - option "计算机网络（王老师）" [ref=e550] [cursor=pointer]
+      - option "数据结构与算法（李老师）" [ref=e551] [cursor=pointer]
+      - option "程序设计基础（系统管理员）" [ref=e552] [cursor=pointer]

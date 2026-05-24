@@ -1,0 +1,2 @@
+[  298706ms] [ERROR] [vite] SyntaxError: The requested module '/src/api/adminTeaching.js?t=1779607714830' does not provide an export named 'updateScheduleApi' @ http://localhost:5173/@vite/client:881
+[  298707ms] [ERROR] [vite] Failed to reload /src/views/admin/AdminSchedules.vue. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://localhost:5173/@vite/client:881

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "请假记录",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "custom-tabbar": "/components/custom-tabbar/custom-tabbar"
+  }
+}

@@ -1,0 +1,52 @@
+<view class="container">
+  <view wx:if="{{!classId}}">
+    <text class="section-title">选择班级查看考勤</text>
+    <view wx:if="{{classes.length === 0}}" class="empty-text">暂无班级数据</view>
+    <view wx:for="{{classes}}" wx:key="classId" class="card class-item" bindtap="selectClass" data-id="{{item.classId}}" data-name="{{item.className}}">
+      <view class="flex-between">
+        <text class="class-name">{{item.className}}</text>
+        <text class="text-gray menu-arrow">›</text>
+      </view>
+      <text class="text-gray class-code">{{item.classCode}} · {{item.studentCount || 0}}人</text>
+    </view>
+  </view>
+
+  <view wx:if="{{classId}}">
+    <view class="flex-between mb-20">
+      <text class="section-title">{{className}}</text>
+      <text class="text-primary" bindtap="backToList">← 返回</text>
+    </view>
+    <view wx:if="{{records.length === 0}}" class="empty-text">暂无考勤数据</view>
+    <view wx:for="{{records}}" wx:key="userId" class="card record-item">
+      <view class="flex-between">
+        <view>
+          <text class="student-name">{{item.studentName}}</text>
+          <text class="student-no text-gray">{{item.studentNo}}</text>
+        </view>
+        <view class="attend-rate">
+          <text class="rate-text">{{item.attendRate}}%</text>
+          <text class="rate-label text-gray">出勤</text>
+        </view>
+      </view>
+      <view class="attendance-stats">
+        <view class="stat-badge present">
+          <text class="stat-num">{{item.presentCount || 0}}</text>
+          <text class="stat-lbl">正常</text>
+        </view>
+        <view class="stat-badge late">
+          <text class="stat-num">{{item.lateCount || 0}}</text>
+          <text class="stat-lbl">迟到</text>
+        </view>
+        <view class="stat-badge absent">
+          <text class="stat-num">{{item.absentCount || 0}}</text>
+          <text class="stat-lbl">缺勤</text>
+        </view>
+        <view class="stat-badge leave">
+          <text class="stat-num">{{item.leaveCount || 0}}</text>
+          <text class="stat-lbl">请假</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+<custom-tabbar role="TEACHER" currentIndex="{{1}}" />

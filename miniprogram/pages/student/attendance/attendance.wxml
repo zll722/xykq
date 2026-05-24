@@ -1,0 +1,22 @@
+<view class="container">
+  <view class="filter-bar">
+    <view class="filter-item {{currentFilter === 'all' ? 'active' : ''}}" bindtap="setFilter" data-filter="all">全部</view>
+    <view class="filter-item {{currentFilter === 'PRESENT' ? 'active' : ''}}" bindtap="setFilter" data-filter="PRESENT">正常</view>
+    <view class="filter-item {{currentFilter === 'LATE' ? 'active' : ''}}" bindtap="setFilter" data-filter="LATE">迟到</view>
+    <view class="filter-item {{currentFilter === 'ABSENT' ? 'active' : ''}}" bindtap="setFilter" data-filter="ABSENT">缺勤</view>
+  </view>
+
+  <view wx:if="{{filteredRecords.length === 0}}" class="empty-text">暂无考勤记录</view>
+  <view wx:for="{{filteredRecords}}" wx:key="id" class="record-card card">
+    <view class="flex-between">
+      <text class="record-course">{{item.courseName}}</text>
+      <text class="tag {{item.status === 'PRESENT' ? 'tag-success' : (item.status === 'LATE' ? 'tag-warning' : (item.status === 'LEAVE' ? 'tag-info' : 'tag-danger'))}}">
+        {{item.status === 'PRESENT' ? '正常' : (item.status === 'LATE' ? '迟到' : (item.status === 'LEAVE' ? '请假' : '缺勤'))}}
+      </text>
+    </view>
+    <view class="record-info">
+      <text>{{item.attendanceDate}}</text>
+      <text class="ml-20" wx:if="{{item.signedAt}}">签到：{{item.signedAt}}</text>
+    </view>
+  </view>
+</view>

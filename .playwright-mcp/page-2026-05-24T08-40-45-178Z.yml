@@ -1,0 +1,100 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e8]
+      - generic [ref=e12]:
+        - generic [ref=e13]: 智能校园考勤
+        - generic [ref=e14]: 学生任务中心
+    - generic [ref=e15]:
+      - generic [ref=e16]: 高频任务
+      - menubar [ref=e17]:
+        - menuitem "工作台" [ref=e18] [cursor=pointer]:
+          - img [ref=e20]
+          - generic [ref=e22]: 工作台
+        - menuitem "课程与课表" [ref=e23] [cursor=pointer]:
+          - img [ref=e25]
+          - generic [ref=e28]: 课程与课表
+        - menuitem "签到中心" [ref=e29] [cursor=pointer]:
+          - img [ref=e31]
+          - generic [ref=e34]: 签到中心
+        - menuitem "考勤记录" [ref=e35] [cursor=pointer]:
+          - img [ref=e37]
+          - generic [ref=e39]: 考勤记录
+        - menuitem "请假中心" [ref=e40] [cursor=pointer]:
+          - img [ref=e42]
+          - generic [ref=e44]: 请假中心
+        - menuitem "消息通知" [ref=e45] [cursor=pointer]:
+          - img [ref=e47]
+          - generic [ref=e51]: 消息通知
+    - generic [ref=e52]:
+      - generic [ref=e53]: 个人设置
+      - menubar [ref=e54]:
+        - menuitem "个人资料" [ref=e55] [cursor=pointer]:
+          - img [ref=e57]
+          - generic [ref=e60]: 个人资料
+        - menuitem "账号安全" [ref=e61] [cursor=pointer]:
+          - img [ref=e63]
+          - generic [ref=e66]: 账号安全
+  - generic [ref=e67]:
+    - generic [ref=e68]:
+      - generic [ref=e70]: 学生端
+      - button "测试学生" [ref=e73] [cursor=pointer]:
+        - img [ref=e76]
+        - generic [ref=e78]: 测试学生
+        - img [ref=e80]
+    - main [ref=e82]:
+      - generic [ref=e83]:
+        - generic [ref=e84]:
+          - generic [ref=e85]:
+            - paragraph [ref=e86]: 个人设置
+            - heading "维护你的基础信息" [level=1] [ref=e87]
+            - paragraph [ref=e88]: 把常用资料放在一个面板里，头像、姓名、联系方式一次改完，不再分散在多个入口。
+          - generic [ref=e89]:
+            - strong [ref=e90]: 测试学生
+            - generic [ref=e91]: student001
+        - generic [ref=e92]:
+          - generic [ref=e94]:
+            - generic [ref=e97]:
+              - text: 资料编辑
+              - paragraph [ref=e98]: 用户名只读，其他资料改完后统一保存
+            - generic [ref=e100]:
+              - generic [ref=e101]:
+                - generic [ref=e103]:
+                  - generic [ref=e104]: 用户名
+                  - textbox "用户名" [ref=e108]: student001
+                - generic [ref=e110]:
+                  - generic [ref=e111]: 姓名
+                  - textbox "姓名" [ref=e115]:
+                    - /placeholder: 请输入真实姓名
+                    - text: 测试学生
+              - generic [ref=e116]:
+                - generic [ref=e118]:
+                  - generic [ref=e119]: 手机号
+                  - textbox "手机号" [ref=e123]:
+                    - /placeholder: 请输入手机号
+                - generic [ref=e125]:
+                  - generic [ref=e126]: 邮箱
+                  - textbox "邮箱" [ref=e130]:
+                    - /placeholder: 请输入邮箱
+              - generic [ref=e131]:
+                - generic [ref=e132]: 头像地址
+                - textbox "头像地址" [ref=e136]:
+                  - /placeholder: 上传成功后会自动回填
+              - generic [ref=e137]:
+                - button "选择头像" [ref=e138] [cursor=pointer]:
+                  - generic [ref=e139]: 选择头像
+                - generic [ref=e140]:
+                  - strong [ref=e141]: 尚未选择文件
+                  - generic [ref=e142]: 支持先选择再上传，成功后自动回填头像地址
+                - button "上传头像" [disabled] [ref=e143]:
+                  - generic [ref=e144]: 上传头像
+              - button "保存资料" [ref=e146] [cursor=pointer]:
+                - generic [ref=e147]: 保存资料
+          - generic [ref=e149]:
+            - generic [ref=e152]:
+              - text: 填写建议
+              - paragraph [ref=e153]: 便于老师和管理员快速识别你的信息
+            - list [ref=e155]:
+              - listitem [ref=e156]: 姓名建议填写真实姓名，方便审批和签到核对
+              - listitem [ref=e157]: 手机和邮箱建议至少补齐一项，便于接收通知
+              - listitem [ref=e158]: 修改后立即生效，建议保存后回到工作台确认显示是否正确

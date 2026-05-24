@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.attendance.mapper.CounselorMapper">
+
+    <resultMap id="PendingItemMap" type="com.campus.attendance.dto.counselor.CounselorLeavePendingItem">
+        <id property="id" column="id"/>
+        <result property="studentId" column="student_id"/>
+        <result property="studentName" column="student_name"/>
+        <result property="studentNo" column="student_no"/>
+        <result property="className" column="class_name"/>
+        <result property="leaveType" column="leave_type"/>
+        <result property="reason" column="reason"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="proofUrl" column="proof_url"/>
+        <result property="status" column="status"/>
+        <result property="submittedAt" column="submitted_at"/>
+    </resultMap>
+
+    <resultMap id="HistoryItemMap" type="com.campus.attendance.dto.counselor.CounselorLeaveHistoryItem">
+        <id property="id" column="id"/>
+        <result property="studentName" column="student_name"/>
+        <result property="studentNo" column="student_no"/>
+        <result property="className" column="class_name"/>
+        <result property="leaveType" column="leave_type"/>
+        <result property="reason" column="reason"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="status" column="status"/>
+        <result property="submittedAt" column="submitted_at"/>
+        <result property="approverName" column="approver_name"/>
+        <result property="actedAt" column="acted_at"/>
+        <result property="comment" column="comment"/>
+    </resultMap>
+
+    <resultMap id="ClassItemMap" type="com.campus.attendance.dto.counselor.CounselorClassItem">
+        <id property="id" column="id"/>
+        <result property="classCode" column="class_code"/>
+        <result property="className" column="class_name"/>
+        <result property="capacity" column="capacity"/>
+        <result property="studentCount" column="student_count"/>
+        <result property="pendingLeaveCount" column="pending_leave_count"/>
+    </resultMap>
+
+    <resultMap id="StudentItemMap" type="com.campus.attendance.dto.counselor.CounselorClassStudentItem">
+        <result property="userId" column="user_id"/>
+        <result property="studentNo" column="student_no"/>
+        <result property="realName" column="real_name"/>
+        <result property="phone" column="phone"/>
+        <result property="presentCount" column="present_count"/>
+        <result property="absentCount" column="absent_count"/>
+        <result property="lateCount" column="late_count"/>
+        <result property="leaveCount" column="leave_count"/>
+    </resultMap>
+
+    <!-- 辅导员管理班级的待审批请假 -->
+    <select id="listPendingLeaves" resultMap="PendingItemMap">
+        SELECT lr.id,
+               lr.student_id,
+               su.real_name                                    AS student_name,
+               sp.student_no,
+               ci.class_name,
+               lr.leave_type,
+               lr.reason,
+               DATE_FORMAT(lr.start_time, '%Y-%m-%d %H:%i')   AS start_time,
+               DATE_FORMAT(lr.end_time, '%Y-%m-%d %H:%i')     AS end_time,
+               lr.proof_url,
+               lr.status,
+               DATE_FORMAT(lr.submitted_at, '%Y-%m-%d %H:%i') AS submitted_at
+        FROM leave_request lr
+                 JOIN sys_user su ON su.id = lr.student_id
+                 JOIN student_profile sp ON sp.user_id = lr.student_id
+                 JOIN class_info ci ON ci.id = sp.class_id AND ci.head_teacher_id = #{counselorId}
+        WHERE lr.status = 'PENDING'
+        ORDER BY lr.id DESC
+    </select>
+
+    <!-- 辅导员管理班级的请假历史 -->
+    <select id="listLeaveHistory" resultMap="HistoryItemMap">
+        SELECT lr.id,
+               su.real_name                                    AS student_name,
+               sp.student_no,
+               ci.class_name,
+               lr.leave_type,
+               lr.reason,
+               DATE_FORMAT(lr.start_time, '%Y-%m-%d %H:%i')   AS start_time,
+               DATE_FORMAT(lr.end_time, '%Y-%m-%d %H:%i')     AS end_time,
+               lr.status,
+               DATE_FORMAT(lr.submitted_at, '%Y-%m-%d %H:%i') AS submitted_at,
+               approver.real_name                              AS approver_name,
+               DATE_FORMAT(la.acted_at, '%Y-%m-%d %H:%i')     AS acted_at,
+               la.comment
+        FROM leave_request lr
+                 JOIN sys_user su ON su.id = lr.student_id
+                 JOIN student_profile sp ON sp.user_id = lr.student_id
+                 JOIN class_info ci ON ci.id = sp.class_id AND ci.head_teacher_id = #{counselorId}
+                 LEFT JOIN leave_approval la ON la.leave_request_id = lr.id
+                 LEFT JOIN sys_user approver ON approver.id = la.approver_id
+        WHERE lr.status IN ('APPROVED', 'REJECTED')
+        ORDER BY lr.id DESC
+    </select>
+
+    <!-- 辅导员管理的班级列表 -->
+    <select id="listMyClasses" resultMap="ClassItemMap">
+        SELECT ci.id,
+               ci.class_code,
+               ci.class_name,
+               ci.capacity,
+               COUNT(DISTINCT sp.user_id)                                    AS student_count,
+               COUNT(DISTINCT CASE WHEN lr.status = 'PENDING' THEN lr.id END) AS pending_leave_count
+        FROM class_info ci
+                 LEFT JOIN student_profile sp ON sp.class_id = ci.id
+                 LEFT JOIN leave_request lr ON lr.student_id = sp.user_id AND lr.status = 'PENDING'
+        WHERE ci.head_teacher_id = #{counselorId}
+          AND ci.status = 1
+        GROUP BY ci.id, ci.class_code, ci.class_name, ci.capacity
+        ORDER BY ci.id
+    </select>
+
+    <!-- 班级学生列表及考勤统计 -->
+    <select id="listClassStudents" resultMap="StudentItemMap">
+        SELECT su.id                                                              AS user_id,
+               sp.student_no,
+               su.real_name,
+               su.phone,
+               COUNT(CASE WHEN ar.status = 'PRESENT' THEN 1 END)                AS present_count,
+               COUNT(CASE WHEN ar.status = 'ABSENT' THEN 1 END)                 AS absent_count,
+               COUNT(CASE WHEN ar.status = 'LATE' THEN 1 END)                   AS late_count,
+               COUNT(CASE WHEN ar.status = 'LEAVE' THEN 1 END)                  AS leave_count
+        FROM student_profile sp
+                 JOIN sys_user su ON su.id = sp.user_id
+                 JOIN class_info ci ON ci.id = sp.class_id AND ci.head_teacher_id = #{counselorId}
+                 LEFT JOIN attendance_record ar ON ar.student_id = su.id AND ar.class_id = sp.class_id
+        WHERE sp.class_id = #{classId}
+        GROUP BY su.id, sp.student_no, su.real_name, su.phone
+        ORDER BY sp.student_no
+    </select>
+
+    <!-- 辅导员仪表盘统计 -->
+    <select id="getDashboardStats" resultType="java.util.HashMap">
+        <![CDATA[
+        SELECT
+            (SELECT COUNT(*) FROM class_info WHERE head_teacher_id = #{counselorId} AND status = 1) AS classCount,
+            (SELECT COUNT(*) FROM student_profile sp JOIN class_info ci ON ci.id = sp.class_id
+             WHERE ci.head_teacher_id = #{counselorId}) AS studentCount,
+            (SELECT COUNT(*) FROM leave_request lr JOIN student_profile sp ON sp.user_id = lr.student_id
+             JOIN class_info ci ON ci.id = sp.class_id
+             WHERE ci.head_teacher_id = #{counselorId} AND lr.status = 'PENDING') AS pendingLeaveCount,
+            (SELECT COUNT(*) FROM leave_request lr JOIN student_profile sp ON sp.user_id = lr.student_id
+             JOIN class_info ci ON ci.id = sp.class_id
+             WHERE ci.head_teacher_id = #{counselorId}
+               AND lr.status IN ('APPROVED','REJECTED')
+               AND lr.submitted_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)) AS recentHandledCount
+        ]]>
+    </select>
+
+</mapper>

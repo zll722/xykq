@@ -1,0 +1,40 @@
+<view class="container">
+  <view class="profile-header card">
+    <view class="avatar-wrap">
+      <view class="avatar-placeholder counselor">
+        <text class="avatar-text">{{userInfo.realName ? userInfo.realName.slice(0, 1) : '导'}}</text>
+      </view>
+    </view>
+    <text class="profile-name">{{userInfo.realName || '辅导员'}}</text>
+    <text class="profile-role-tag counselor-tag">辅导员</text>
+    <text class="profile-username text-gray">账号：{{userInfo.username || ''}}</text>
+  </view>
+
+  <view class="menu-list">
+    <view class="menu-item card" bindtap="goClasses">
+      <view class="menu-left">
+        <text class="menu-icon">▦</text>
+        <text class="menu-label">班级管理</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item card" bindtap="goHistory">
+      <view class="menu-left">
+        <text class="menu-icon">◧</text>
+        <text class="menu-label">审批历史</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item card" bindtap="goChangePassword">
+      <view class="menu-left">
+        <text class="menu-icon">◎</text>
+        <text class="menu-label">修改密码</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item card logout-item" bindtap="onLogout">
+      <text class="logout-text">退出登录</text>
+    </view>
+  </view>
+</view>
+<custom-tabbar role="COUNSELOR" currentIndex="{{3}}" />

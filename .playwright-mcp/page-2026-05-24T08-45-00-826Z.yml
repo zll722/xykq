@@ -1,0 +1,107 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e8]
+      - generic [ref=e10]:
+        - generic [ref=e11]: 智能校园考勤
+        - generic [ref=e12]: 辅导员工作台
+    - menubar [ref=e13]:
+      - generic [ref=e14]: 工作台
+      - menuitem "总览中心" [ref=e15] [cursor=pointer]:
+        - img [ref=e17]
+        - generic [ref=e19]: 总览中心
+      - generic [ref=e20]: 班级管理
+      - menuitem "我的班级" [ref=e21] [cursor=pointer]:
+        - img [ref=e23]
+        - generic [ref=e27]: 我的班级
+      - generic [ref=e28]: 请假管理
+      - menuitem "待审批请假" [ref=e29] [cursor=pointer]:
+        - img [ref=e31]
+        - generic [ref=e33]: 待审批请假
+      - menuitem "审批历史" [ref=e34] [cursor=pointer]:
+        - img [ref=e36]
+        - generic [ref=e38]: 审批历史
+    - button "陈 陈辅导" [ref=e41] [cursor=pointer]:
+      - generic [ref=e42]: 陈
+      - generic [ref=e43]: 陈辅导
+      - img [ref=e45]
+  - generic [ref=e47]:
+    - generic [ref=e48]:
+      - generic [ref=e50]: 辅导员端
+      - generic [ref=e52]: 陈辅导
+    - main [ref=e53]:
+      - generic [ref=e54]:
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - paragraph [ref=e57]: 待审批请假
+            - heading "学生请假申请审批" [level=1] [ref=e58]
+            - paragraph [ref=e59]: 以下请假申请来自您负责班级的学生，请及时处理。
+          - generic [ref=e60]:
+            - strong [ref=e61]: "1"
+            - generic [ref=e62]: 条待审批
+        - generic [ref=e63]:
+          - generic [ref=e65]:
+            - generic [ref=e66]:
+              - text: 待审批列表
+              - paragraph [ref=e67]: 建议优先处理时间紧急的申请
+            - button "刷新" [ref=e68] [cursor=pointer]:
+              - generic [ref=e69]:
+                - img [ref=e71]
+                - text: 刷新
+          - generic [ref=e75]:
+            - table [ref=e77]:
+              - rowgroup [ref=e88]:
+                - row "申请ID 申请学生 所属班级 请假类型 请假时间 请假原因 证明材料 申请时间 审批操作" [ref=e89]:
+                  - columnheader "申请ID" [ref=e90]:
+                    - generic [ref=e91]: 申请ID
+                  - columnheader "申请学生" [ref=e92]:
+                    - generic [ref=e93]: 申请学生
+                  - columnheader "所属班级" [ref=e94]:
+                    - generic [ref=e95]: 所属班级
+                  - columnheader "请假类型" [ref=e96]:
+                    - generic [ref=e97]: 请假类型
+                  - columnheader "请假时间" [ref=e98]:
+                    - generic [ref=e99]: 请假时间
+                  - columnheader "请假原因" [ref=e100]:
+                    - generic [ref=e101]: 请假原因
+                  - columnheader "证明材料" [ref=e102]:
+                    - generic [ref=e103]: 证明材料
+                  - columnheader "申请时间" [ref=e104]:
+                    - generic [ref=e105]: 申请时间
+                  - columnheader "审批操作" [ref=e106]:
+                    - generic [ref=e107]: 审批操作
+            - table [ref=e112]:
+              - rowgroup [ref=e123]:
+                - row "9 测试学生 20260001 2026级软件工程1班 病假 2026-05-24 08:00 至 2026-05-24 18:00 发烧需要就医 查看 2026-05-24 16:43 通过 驳回" [ref=e124]:
+                  - cell "9" [ref=e125]:
+                    - generic [ref=e126]: "9"
+                  - cell "测试学生 20260001" [ref=e127]:
+                    - generic [ref=e129]:
+                      - strong [ref=e130]: 测试学生
+                      - generic [ref=e131]: "20260001"
+                  - cell "2026级软件工程1班" [ref=e132]:
+                    - generic [ref=e160]: 2026级软件工程1班
+                  - cell "病假" [ref=e134]:
+                    - generic [ref=e162]: 病假
+                  - cell "2026-05-24 08:00 至 2026-05-24 18:00" [ref=e136]:
+                    - generic [ref=e138]: 2026-05-24 08:00 至 2026-05-24 18:00
+                  - cell "发烧需要就医" [ref=e139]:
+                    - generic [ref=e141]: 发烧需要就医
+                  - cell "查看" [ref=e142]:
+                    - button "查看" [ref=e144] [cursor=pointer]:
+                      - generic [ref=e145]: 查看
+                  - cell "2026-05-24 16:43" [ref=e146]:
+                    - generic [ref=e147]: 2026-05-24 16:43
+                  - cell "通过 驳回" [ref=e148]:
+                    - generic [ref=e149]:
+                      - button "通过" [ref=e150] [cursor=pointer]:
+                        - generic [ref=e151]: 通过
+                      - button "驳回" [ref=e152] [cursor=pointer]:
+                        - generic [ref=e153]: 驳回
+        - dialog "证明材料" [ref=e164]:
+          - generic [active] [ref=e165]:
+            - generic [ref=e166]:
+              - heading "证明材料" [level=2] [ref=e167]
+              - button "Close this dialog" [ref=e168] [cursor=pointer]:
+                - img [ref=e170]
+            - img [ref=e174]

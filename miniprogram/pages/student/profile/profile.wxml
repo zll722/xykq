@@ -1,0 +1,40 @@
+<view class="container">
+  <view class="profile-header card">
+    <view class="avatar-wrap">
+      <view class="avatar-placeholder">
+        <text class="avatar-text">{{userInfo.realName ? userInfo.realName.slice(0, 1) : '我'}}</text>
+      </view>
+    </view>
+    <text class="profile-name">{{userInfo.realName || '用户'}}</text>
+    <text class="profile-role-tag">{{userInfo.roleCode === 'USER' ? '学生' : userInfo.roleCode}}</text>
+    <text class="profile-username text-gray">账号：{{userInfo.username || ''}}</text>
+  </view>
+
+  <view class="menu-list">
+    <view class="menu-item card" bindtap="goAttendance">
+      <view class="menu-left">
+        <text class="menu-icon">▤</text>
+        <text class="menu-label">考勤记录</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item card" bindtap="goMessages">
+      <view class="menu-left">
+        <text class="menu-icon">◈</text>
+        <text class="menu-label">消息通知</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item card" bindtap="goChangePassword">
+      <view class="menu-left">
+        <text class="menu-icon">◎</text>
+        <text class="menu-label">修改密码</text>
+      </view>
+      <text class="menu-arrow">›</text>
+    </view>
+    <view class="menu-item card logout-item" bindtap="onLogout">
+      <text class="logout-text">退出登录</text>
+    </view>
+  </view>
+</view>
+<custom-tabbar role="USER" currentIndex="{{3}}" />

@@ -83,14 +83,8 @@
 
             <el-form-item label="证明材料">
               <div class="upload-shell">
-                <el-upload
-                  :auto-upload="false"
-                  :show-file-list="false"
-                  :on-change="handleFileChange"
-                  :before-upload="() => false"
-                >
-                  <el-button>选择文件</el-button>
-                </el-upload>
+                <el-button @click="openFileChooser">选择文件</el-button>
+                <input ref="fileInputRef" type="file" style="display:none" @change="handleFileChange" />
                 <div class="upload-meta">
                   <strong>{{ selectedFileName }}</strong>
                   <span>{{ uploadTip }}</span>
@@ -143,6 +137,7 @@ import { uploadFileApi } from '../../api/file';
 
 const router = useRouter();
 const formRef = ref();
+const fileInputRef = ref();
 const submitting = ref(false);
 const uploading = ref(false);
 const selectedFile = ref(null);
@@ -198,8 +193,12 @@ const applyPreset = (preset) => {
   form.value.endTime = result.endTime;
 };
 
-const handleFileChange = (file) => {
-  selectedFile.value = file.raw;
+const openFileChooser = () => {
+  fileInputRef.value?.click();
+};
+
+const handleFileChange = (e) => {
+  selectedFile.value = e.target.files[0] || null;
 };
 
 const uploadAttachment = async () => {
@@ -207,7 +206,7 @@ const uploadAttachment = async () => {
   uploading.value = true;
   try {
     const data = await uploadFileApi(selectedFile.value);
-    form.value.attachmentUrl = data.url || data.path || '';
+    form.value.attachmentUrl = data || '';
     ElMessage.success('材料上传成功');
   } catch (error) {
     console.error(error);
@@ -222,12 +221,13 @@ const submit = async () => {
   await formRef.value.validate();
   submitting.value = true;
   try {
-    await applyLeaveApi({ ...form.value });
+    const { attachmentUrl, ...rest } = form.value;
+    await applyLeaveApi({ ...rest, proofUrl: attachmentUrl || null });
     ElMessage.success('申请已提交，正在为你跳转到审批进度');
     router.push('/user/leave-progress');
   } catch (error) {
     console.error(error);
-    ElMessage.error('提交失败，请检查时间或稍后重试');
+    ElMessage.error(error.message || '提交失败，请稍后重试');
   } finally {
     submitting.value = false;
   }

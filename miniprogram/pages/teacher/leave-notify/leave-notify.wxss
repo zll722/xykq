@@ -1,0 +1,34 @@
+.notify-item {
+  border-radius: 20rpx;
+  border-left: 6rpx solid #67C23A;
+}
+
+.student-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #222;
+}
+
+.notify-info {
+  font-size: 26rpx;
+  color: #666;
+  margin-top: 10rpx;
+  display: flex;
+  align-items: center;
+}
+
+.notify-reason {
+  margin-top: 12rpx;
+  font-size: 26rpx;
+  color: #888;
+  line-height: 1.5;
+}
+
+.notify-time {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+}
+
+.ml-20 {
+  margin-left: 20rpx;
+}

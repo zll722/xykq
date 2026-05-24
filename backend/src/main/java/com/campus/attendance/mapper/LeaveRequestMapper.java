@@ -25,4 +25,16 @@ public interface LeaveRequestMapper {
 
     List<Long> findTeacherIdsByClassAndTimeRange(@Param("classId") Long classId,
                                                  @Param("leaveDate") LocalDate leaveDate);
+
+    /**
+     * 统计与指定时间段冲突的 PENDING 或 APPROVED 请假数量（用于防止重复提交）。
+     *
+     * @param studentId 学生 ID
+     * @param startTime 新请假开始时间
+     * @param endTime   新请假结束时间
+     * @return 冲突记录数
+     */
+    int countConflict(@Param("studentId") Long studentId,
+                      @Param("startTime") java.time.LocalDateTime startTime,
+                      @Param("endTime") java.time.LocalDateTime endTime);
 }

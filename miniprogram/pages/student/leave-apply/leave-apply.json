@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "请假申请",
+  "usingComponents": {
+    "custom-tabbar": "/components/custom-tabbar/custom-tabbar"
+  }
+}

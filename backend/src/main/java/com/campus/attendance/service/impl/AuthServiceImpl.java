@@ -49,6 +49,7 @@ public class AuthServiceImpl implements AuthService {
         userInfo.setUsername(user.getUsername());
         userInfo.setRealName(user.getRealName());
         userInfo.setRoleCode(user.getRoleCode());
+        userInfo.setAvatarUrl(user.getAvatarUrl());
         response.setUserInfo(userInfo);
         response.setPermissions(permissionMapper.listPermCodesByRoleCode(user.getRoleCode()));
         return response;
@@ -94,6 +95,7 @@ public class AuthServiceImpl implements AuthService {
         userInfo.setUsername(user.getUsername());
         userInfo.setRealName(user.getRealName());
         userInfo.setRoleCode(user.getRoleCode());
+        userInfo.setAvatarUrl(user.getAvatarUrl());
         return userInfo;
     }
 

@@ -1,0 +1,14 @@
+<view class="container">
+  <view wx:if="{{classes.length === 0}}" class="empty-text">暂无管辖班级</view>
+  <view wx:for="{{classes}}" wx:key="id" class="card class-card" bindtap="goStudents" data-id="{{item.id}}" data-name="{{item.className}}">
+    <view class="flex-between">
+      <text class="class-name">{{item.className}}</text>
+      <view class="class-meta">
+        <text class="text-gray">{{item.studentCount || 0}}人</text>
+        <text wx:if="{{item.pendingLeaveCount > 0}}" class="pending-badge">{{item.pendingLeaveCount}}待审</text>
+      </view>
+    </view>
+    <view class="class-code text-gray">{{item.classCode}}</view>
+  </view>
+</view>
+<custom-tabbar role="COUNSELOR" currentIndex="{{1}}" />

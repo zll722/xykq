@@ -1,0 +1,18 @@
+<view class="container">
+  <view class="sign-card card">
+    <text class="course-title">{{courseName || '课程签到'}}</text>
+    <text class="sign-time">当前时间：{{currentTime}}</text>
+
+    <view class="sign-btn-wrap" wx:if="{{!signResult}}">
+      <button class="sign-btn" bindtap="doSignIn" loading="{{loading}}">
+        <text class="sign-btn-text">签 到</text>
+      </button>
+    </view>
+
+    <view class="sign-result" wx:if="{{signResult}}">
+      <text class="result-icon">{{signResult.status === 'NORMAL' ? '✅' : (signResult.status === 'LATE' ? '⚠️' : '❌')}}</text>
+      <text class="result-text">{{signResult.statusText}}</text>
+      <text class="result-time">签到时间：{{signResult.signTime}}</text>
+    </view>
+  </view>
+</view>
