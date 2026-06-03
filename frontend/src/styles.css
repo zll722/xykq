@@ -468,3 +468,97 @@ p {
 .el-button:not(.is-link):not(.is-text):active {
   transform: translateY(0);
 }
+
+/* 6. Tag and Select Tag Enhancements */
+.el-tag {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.el-select__tags {
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+.el-select .el-tag {
+  background-color: #f2f5f9 !important;
+  background-image: none !important;
+  border: 1px solid #dce3eb !important;
+  color: var(--color-text) !important;
+  font-weight: 500 !important;
+  padding-right: 4px !important;
+}
+
+/* Deep reset for tag close buttons, icons, and SVGs to remove any third-party background images, shapes, or pseudo-elements */
+.el-select .el-tag .el-tag__close,
+.el-select .el-tag .el-tag__close *,
+.el-select .el-tag .el-icon,
+.el-select .el-tag .el-icon *,
+.el-select .el-tag svg,
+.el-select .el-tag svg *,
+.el-select__selected-item,
+.el-select__selected-item * {
+  background-image: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.el-select .el-tag .el-tag__close::before,
+.el-select .el-tag .el-tag__close::after,
+.el-select .el-tag .el-icon::before,
+.el-select .el-tag .el-icon::after,
+.el-select .el-tag svg::before,
+.el-select .el-tag svg::after,
+.el-select__selected-item::before,
+.el-select__selected-item::after {
+  background: transparent none !important;
+  background-image: none !important;
+  content: none !important;
+}
+
+/* Re-style the close button container cleanly as a small circle */
+.el-select .el-tag .el-tag__close {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  min-height: 16px !important;
+  max-width: 16px !important;
+  max-height: 16px !important;
+  border-radius: 50% !important;
+  margin: 0 0 0 6px !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  line-height: 1 !important;
+  color: var(--color-text-soft) !important;
+  background-color: transparent !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Hover state for the close button */
+.el-select .el-tag .el-tag__close:hover {
+  background-color: var(--color-danger) !important;
+  color: #ffffff !important;
+}
+
+/* Re-style the SVG icon inside it to ensure it is visible and has correct sizing */
+.el-select .el-tag .el-tag__close svg {
+  width: 10px !important;
+  height: 10px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  display: inline-block !important;
+  fill: currentColor !important;
+  color: currentColor !important;
+}
+
+
+
