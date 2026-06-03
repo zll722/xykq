@@ -20,6 +20,10 @@ public class ScheduleSaveRequest {
     @NotBlank
     private String endTime;
     private String location;
+    private java.math.BigDecimal latitude;
+    private java.math.BigDecimal longitude;
+    private Integer attendanceRadius;
+    private Boolean autoPublishAttendance;
 
     public Long getCourseId() {
         return courseId;
@@ -75,5 +79,37 @@ public class ScheduleSaveRequest {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public java.math.BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(java.math.BigDecimal latitude) {
+        this.latitude = latitude;
+    }
+
+    public java.math.BigDecimal getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(java.math.BigDecimal longitude) {
+        this.longitude = longitude;
+    }
+
+    public Integer getAttendanceRadius() {
+        return attendanceRadius;
+    }
+
+    public void setAttendanceRadius(Integer attendanceRadius) {
+        this.attendanceRadius = attendanceRadius;
+    }
+
+    public Boolean getAutoPublishAttendance() {
+        return autoPublishAttendance;
+    }
+
+    public void setAutoPublishAttendance(Boolean autoPublishAttendance) {
+        this.autoPublishAttendance = autoPublishAttendance;
     }
 }

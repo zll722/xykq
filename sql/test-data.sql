@@ -12,12 +12,12 @@ INSERT INTO sys_role (role_code, role_name, remark)
 VALUES ('COUNSELOR', '辅导员', '辅导员角色，负责审批学生请假、管理所属班级')
 ON DUPLICATE KEY UPDATE role_name = VALUES(role_name), remark = VALUES(remark);
 
--- 为 TEACHER 角色分配查看类权限
+-- 为 TEACHER 角色分配查看类权限和考勤修正权限
 INSERT IGNORE INTO sys_role_permission (role_id, permission_id)
 SELECT r.id, p.id
 FROM sys_role r, sys_permission p
 WHERE r.role_code = 'TEACHER'
-  AND p.perm_code IN ('leave:view');
+  AND p.perm_code IN ('leave:view', 'attendance:adjust', 'attendance:resolve');
 
 -- 为 COUNSELOR 角色分配审批权限
 INSERT IGNORE INTO sys_role_permission (role_id, permission_id)

@@ -37,6 +37,14 @@ public interface AttendanceService {
 
     void resolveException(Long operatorId, Long recordId, AttendanceAdjustRequest request);
 
+    List<AdminAttendanceRecordItem> listTeacherExceptions(Long teacherId, Long courseId, Long classId, String attendanceDate);
+
+    void adjustRecordByTeacher(Long teacherId, Long recordId, AttendanceAdjustRequest request);
+
+    void resolveExceptionByTeacher(Long teacherId, Long recordId, AttendanceAdjustRequest request);
+
+    void publishSessionByTeacher(Long teacherId, Long scheduleId, String signType);
+
     MyOverviewStats myOverview(Long userId);
 
     List<MyCalendarItem> myCalendar(Long userId, LocalDate startDate, LocalDate endDate);

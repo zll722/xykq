@@ -190,11 +190,18 @@
   z-index: 1;
 }
 
+.login-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 32rpx;
+  padding: 0 10rpx;
+}
+
 .register-tip {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 32rpx;
 }
 
 .register-tip-text {

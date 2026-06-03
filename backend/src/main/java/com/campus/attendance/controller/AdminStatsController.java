@@ -89,8 +89,9 @@ public class AdminStatsController {
             header.createCell(2).setCellValue("Class");
             header.createCell(3).setCellValue("StudentId");
             header.createCell(4).setCellValue("Date");
-            header.createCell(5).setCellValue("SignedAt");
-            header.createCell(6).setCellValue("Status");
+            header.createCell(5).setCellValue("SignInTime");
+            header.createCell(6).setCellValue("SignOutTime");
+            header.createCell(7).setCellValue("Status");
 
             for (int i = 0; i < list.size(); i++) {
                 AdminAttendanceRecordItem item = list.get(i);
@@ -100,8 +101,9 @@ public class AdminStatsController {
                 row.createCell(2).setCellValue(item.getClassName());
                 row.createCell(3).setCellValue(item.getStudentId());
                 row.createCell(4).setCellValue(item.getAttendanceDate());
-                row.createCell(5).setCellValue(item.getSignedAt() == null ? "" : item.getSignedAt());
-                row.createCell(6).setCellValue(item.getStatus());
+                row.createCell(5).setCellValue(item.getSignInTime() == null ? "" : item.getSignInTime());
+                row.createCell(6).setCellValue(item.getSignOutTime() == null ? "" : item.getSignOutTime());
+                row.createCell(7).setCellValue(item.getStatus());
             }
 
             String filename = URLEncoder.encode("attendance_export.xlsx", StandardCharsets.UTF_8);

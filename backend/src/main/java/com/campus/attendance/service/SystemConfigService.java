@@ -8,5 +8,7 @@ import java.util.List;
 public interface SystemConfigService {
     List<SystemConfig> list();
 
+    String getConfigValue(String key);
+
     void updateBatch(Long operatorId, List<SystemConfigUpdateItem> items);
 }

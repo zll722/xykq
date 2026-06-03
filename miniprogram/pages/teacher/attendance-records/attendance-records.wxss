@@ -1,0 +1,56 @@
+.filter-section {
+  padding: 10rpx 30rpx 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.filter-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.border-none {
+  border-bottom: none;
+}
+
+.filter-label {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.filter-value {
+  font-size: 28rpx;
+}
+
+.record-card {
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.student-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.record-detail {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.8;
+}
+
+.label {
+  display: inline-block;
+  width: 100rpx;
+}
+
+.btn-small {
+  padding: 0 40rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  font-size: 26rpx;
+  background-color: #f5f5f5;
+  color: #666;
+}

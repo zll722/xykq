@@ -9,11 +9,13 @@ public class AdminUserSaveRequest {
     private String password;
     @NotBlank
     private String realName;
+    private String email;
     @NotBlank
     private String roleCode;
     @NotNull
     private Integer status;
     private Long classId;
+    private String studentNo;
 
     public String getUsername() {
         return username;
@@ -61,5 +63,21 @@ public class AdminUserSaveRequest {
 
     public void setClassId(Long classId) {
         this.classId = classId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getStudentNo() {
+        return studentNo;
+    }
+
+    public void setStudentNo(String studentNo) {
+        this.studentNo = studentNo;
     }
 }

@@ -23,6 +23,12 @@ public class SystemConfigServiceImpl implements SystemConfigService {
     }
 
     @Override
+    public String getConfigValue(String key) {
+        SystemConfig config = systemConfigMapper.findByKey(key);
+        return config != null ? config.getConfigValue() : null;
+    }
+
+    @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateBatch(Long operatorId, List<SystemConfigUpdateItem> items) {
         for (SystemConfigUpdateItem item : items) {

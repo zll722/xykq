@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="teacher-dashboard">
     <section class="page-hero">
       <div>
@@ -51,6 +51,31 @@
     <el-card class="quick-card" shadow="hover" style="margin-top: 18px;">
       <template #header>
         <div class="card-header">
+          <span class="card-title">今日授课排班</span>
+        </div>
+      </template>
+      <el-table :data="todaySchedules" border stripe style="width: 100%">
+        <el-table-column prop="courseName" label="课程" />
+        <el-table-column prop="className" label="班级" />
+        <el-table-column prop="startTime" label="上课时间" width="90" />
+        <el-table-column prop="endTime" label="下课时间" width="90" />
+        <el-table-column prop="location" label="地点" />
+        <el-table-column label="手动考勤发布" width="220" fixed="right">
+          <template #default="{ row }">
+            <el-button type="primary" size="small" @click="handlePublish(row.scheduleId, 'SIGN_IN')">
+              发签到
+            </el-button>
+            <el-button type="warning" size="small" @click="handlePublish(row.scheduleId, 'SIGN_OUT')">
+              发签退
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
+
+    <el-card class="quick-card" shadow="hover" style="margin-top: 18px;">
+      <template #header>
+        <div class="card-header">
           <span class="card-title">快速入口</span>
         </div>
       </template>
@@ -67,10 +92,12 @@ import { onMounted, ref } from 'vue';
 import { Reading, CollectionTag, DocumentChecked, Bell } from '@element-plus/icons-vue';
 import { useAuthStore } from '../../stores/auth';
 import request from '../../utils/request';
+import { ElMessage, ElMessageBox } from 'element-plus';
 
 const authStore = useAuthStore();
 const userInfo = authStore.userInfo;
 const stats = ref({});
+const todaySchedules = ref([]);
 
 const loadStats = async () => {
   try {
@@ -81,7 +108,40 @@ const loadStats = async () => {
   }
 };
 
-onMounted(loadStats);
+const loadTodaySchedules = async () => {
+  try {
+    const res = await request.get('/teacher/schedules/today');
+    todaySchedules.value = res || [];
+  } catch (err) {
+    console.error('Failed to load today schedules:', err);
+  }
+};
+
+const handlePublish = async (scheduleId, signType) => {
+  const typeText = signType === 'SIGN_IN' ? '课前签到' : '课后签退';
+  try {
+    await ElMessageBox.confirm(`确定要手动为该班级发布【${typeText}】吗？发布后有效期为30分钟。`, '手动发布签到', {
+      confirmButtonText: '确定发布',
+      cancelButtonText: '取消',
+      type: 'warning'
+    });
+    
+    await request.post('/teacher/attendance/publish', {
+      scheduleId,
+      signType
+    });
+    ElMessage.success(`${typeText}已成功发布`);
+  } catch (err) {
+    if (err !== 'cancel') {
+      console.error(err);
+    }
+  }
+};
+
+onMounted(() => {
+  loadStats();
+  loadTodaySchedules();
+});
 </script>
 
 <style scoped>

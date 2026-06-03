@@ -17,7 +17,11 @@ Page({
   },
 
   goRegister() {
-    wx.navigateTo({ url: '/pages/register/register' });
+    wx.reLaunch({ url: '/pages/register/register' });
+  },
+
+  goForgot() {
+    wx.reLaunch({ url: '/pages/forgot/forgot' });
   },
 
   async onLogin() {

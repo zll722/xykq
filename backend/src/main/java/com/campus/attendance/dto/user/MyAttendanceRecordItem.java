@@ -5,7 +5,8 @@ public class MyAttendanceRecordItem {
     private Long scheduleId;
     private String courseName;
     private String attendanceDate;
-    private String signedAt;
+    private String signInTime;
+    private String signOutTime;
     private String status;
 
     public Long getId() {
@@ -40,12 +41,20 @@ public class MyAttendanceRecordItem {
         this.attendanceDate = attendanceDate;
     }
 
-    public String getSignedAt() {
-        return signedAt;
+    public String getSignInTime() {
+        return signInTime;
     }
 
-    public void setSignedAt(String signedAt) {
-        this.signedAt = signedAt;
+    public void setSignInTime(String signInTime) {
+        this.signInTime = signInTime;
+    }
+
+    public String getSignOutTime() {
+        return signOutTime;
+    }
+
+    public void setSignOutTime(String signOutTime) {
+        this.signOutTime = signOutTime;
     }
 
     public String getStatus() {

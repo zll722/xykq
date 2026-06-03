@@ -35,8 +35,11 @@
 
           <div class="record-grid">
             <div class="info-block">
-              <span>签到时间</span>
-              <strong>{{ item.signedAt || '未签到' }}</strong>
+              <span>签到/签退时间</span>
+              <div style="font-size: 13px;">
+                <div>入: <strong>{{ item.signInTime || '未签到' }}</strong></div>
+                <div>退: <strong>{{ item.signOutTime || '未签退' }}</strong></div>
+              </div>
             </div>
             <div class="info-block">
               <span>记录标识</span>
@@ -73,6 +76,7 @@ const getStatusLabel = (status) => {
     LATE: '迟到',
     ABSENT: '缺勤',
     LEAVE: '已请假',
+    EARLY_LEAVE: '早退',
     正常: '已正常签到',
     迟到: '迟到',
     缺勤: '缺勤',
@@ -85,6 +89,7 @@ const getStatusType = (status) => {
   if (status === '正常' || status === 'PRESENT') return 'success';
   if (status === '迟到' || status === 'LATE') return 'warning';
   if (status === '缺勤' || status === 'ABSENT') return 'danger';
+  if (status === '早退' || status === 'EARLY_LEAVE') return 'warning';
   if (status === '请假' || status === 'LEAVE') return 'info';
   return 'info';
 };
@@ -95,6 +100,7 @@ const getStatusHint = (status) => {
     LATE: '本次签到已记为迟到，建议关注后续课程签到时间',
     ABSENT: '系统已记为缺勤，如有特殊情况请及时说明',
     LEAVE: '本次课程已按请假处理',
+    EARLY_LEAVE: '未在下课后正常签退，系统已记为早退',
     正常: '本次课程已完成正常签到',
     迟到: '本次签到已记为迟到，建议关注后续课程签到时间',
     缺勤: '系统已记为缺勤，如有特殊情况请及时说明',

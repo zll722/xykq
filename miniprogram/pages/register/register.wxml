@@ -59,6 +59,27 @@
     </view>
 
     <view class="form-item">
+      <text class="form-label">绑定邮箱</text>
+      <view class="input-row">
+        <view class="input-icon-box"><text class="input-icon-txt">邮</text></view>
+        <input class="form-input" placeholder="请输入邮箱（必填）" placeholder-class="input-ph"
+          value="{{email}}" bindinput="onEmailInput" type="text" />
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="form-label">验证码</text>
+      <view class="input-row code-row">
+        <view class="input-icon-box"><text class="input-icon-txt">验</text></view>
+        <input class="form-input code-input" placeholder="请输入6位验证码" placeholder-class="input-ph"
+          value="{{code}}" bindinput="onCodeInput" maxlength="6" />
+        <button class="btn-send-code" hover-class="btn-send-code-hover" disabled="{{countdown > 0 || sendingCode}}" bindtap="sendCode">
+          {{ countdown > 0 ? countdown + 's后重试' : '获取验证码' }}
+        </button>
+      </view>
+    </view>
+
+    <view class="form-item">
       <text class="form-label">登录密码</text>
       <view class="input-row">
         <view class="input-icon-box"><text class="input-icon-txt">锁</text></view>

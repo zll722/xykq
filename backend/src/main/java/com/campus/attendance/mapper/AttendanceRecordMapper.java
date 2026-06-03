@@ -24,7 +24,10 @@ public interface AttendanceRecordMapper {
 
     int updateSignResult(@Param("id") Long id,
                          @Param("status") String status,
-                         @Param("signedAt") LocalDateTime signedAt);
+                         @Param("signInTime") LocalDateTime signInTime,
+                         @Param("signOutTime") LocalDateTime signOutTime,
+                         @Param("signInLocation") String signInLocation,
+                         @Param("signOutLocation") String signOutLocation);
 
     List<MyAttendanceRecordItem> listMyRecords(@Param("studentId") Long studentId);
 
@@ -43,6 +46,14 @@ public interface AttendanceRecordMapper {
                                                             @Param("classId") Long classId,
                                                             @Param("startDate") LocalDate startDate,
                                                             @Param("endDate") LocalDate endDate);
+
+    List<AdminAttendanceRecordItem> listTeacherRecords(@Param("teacherId") Long teacherId,
+                                                       @Param("courseId") Long courseId,
+                                                       @Param("classId") Long classId,
+                                                       @Param("attendanceDate") LocalDate attendanceDate,
+                                                       @Param("status") String status);
+
+    int checkTeacherCourseOwnership(@Param("teacherId") Long teacherId, @Param("recordId") Long recordId);
 
     int updateStatusById(@Param("id") Long id, @Param("status") String status);
 }

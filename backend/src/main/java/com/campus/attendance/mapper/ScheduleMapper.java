@@ -11,6 +11,8 @@ import java.util.List;
 public interface ScheduleMapper {
     List<CourseSchedule> list(@Param("courseId") Long courseId, @Param("classId") Long classId);
 
+    List<CourseSchedule> findByWeekDay(@Param("weekDay") Integer weekDay);
+
     CourseSchedule findById(@Param("id") Long id);
 
     List<MyScheduleItem> listMySchedules(@Param("userId") Long userId);

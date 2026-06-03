@@ -5,8 +5,12 @@
 
     <el-card class="box-card" shadow="hover">
       <div class="toolbar">
-        <el-input v-model.number="filters.courseId" placeholder="课程ID" clearable style="width: 150px" />
-        <el-input v-model.number="filters.classId" placeholder="班级ID" clearable style="width: 150px" />
+        <el-select v-model="filters.courseId" placeholder="选择课程" clearable style="width: 150px">
+          <el-option v-for="c in courses" :key="c.id" :label="c.courseName" :value="c.id" />
+        </el-select>
+        <el-select v-model="filters.classId" placeholder="选择班级" clearable style="width: 150px">
+          <el-option v-for="c in classes" :key="c.id" :label="c.className" :value="c.id" />
+        </el-select>
 
         <el-date-picker
           v-model="filters.attendanceDate"
@@ -29,18 +33,20 @@
       </div>
 
       <el-table :data="list" style="width: 100%" v-loading="loading" stripe border>
-        <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="courseName" label="课程" />
         <el-table-column prop="className" label="班级" />
         <el-table-column label="学生" min-width="140">
           <template #default="{ row }">
-            {{ row.studentName || `学生#${row.studentId}` }}
+            {{ row.studentName || '未命名学生' }}
           </template>
         </el-table-column>
         <el-table-column prop="attendanceDate" label="日期" width="120" />
-        <el-table-column prop="signedAt" label="签到时间" width="180">
+        <el-table-column label="签到/签退时间" width="200">
           <template #default="{ row }">
-            {{ row.signedAt || '-' }}
+            <div style="font-size: 12px; line-height: 1.2;">
+              <div>入: {{ row.signInTime || '-' }}</div>
+              <div>退: {{ row.signOutTime || '-' }}</div>
+            </div>
           </template>
         </el-table-column>
         <el-table-column prop="status" label="状态" width="120">
@@ -63,8 +69,11 @@
 import { onMounted, reactive, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import { exportAttendanceApi, listAdminAttendanceRecordsApi } from '../../api/adminStats';
+import { listClassesApi, listCoursesApi } from '../../api/adminTeaching';
 
 const list = ref([]);
+const classes = ref([]);
+const courses = ref([]);
 const loading = ref(false);
 
 const filters = reactive({
@@ -137,7 +146,11 @@ const getStatusLabel = (status) => {
   return map[status] || status;
 };
 
-onMounted(loadData);
+onMounted(() => {
+  listClassesApi().then(res => classes.value = res);
+  listCoursesApi().then(res => courses.value = res);
+  loadData();
+});
 </script>
 
 <style scoped>

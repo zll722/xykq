@@ -38,6 +38,18 @@
         <text class="quick-icon">◨</text>
         <text class="quick-text">请假通知</text>
       </view>
+      <view class="quick-item card" bindtap="goAttendanceRecords">
+        <text class="quick-icon">≡</text>
+        <text class="quick-text">考勤记录</text>
+      </view>
+      <view class="quick-item card" bindtap="goAttendanceExceptions">
+        <text class="quick-icon">!</text>
+        <text class="quick-text">异常处理</text>
+      </view>
+      <view class="quick-item card" bindtap="goAttendanceAdjustments">
+        <text class="quick-icon">✎</text>
+        <text class="quick-text">考勤修正</text>
+      </view>
     </view>
   </view>
 </view>

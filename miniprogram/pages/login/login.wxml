@@ -36,9 +36,14 @@
     </view>
     <button class="btn-login" bindtap="onLogin" loading="{{loading}}">登 录</button>
 
-    <view class="register-tip" bindtap="goRegister">
-      <text class="register-tip-text">还没有账号？</text>
-      <text class="register-tip-link">立即注册</text>
+    <view class="login-links">
+      <view class="register-tip" bindtap="goForgot">
+        <text class="register-tip-text">忘记密码？</text>
+      </view>
+      <view class="register-tip" bindtap="goRegister">
+        <text class="register-tip-text">还没有账号？</text>
+        <text class="register-tip-link">立即注册</text>
+      </view>
     </view>
   </view>
 

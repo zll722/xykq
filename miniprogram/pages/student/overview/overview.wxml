@@ -57,8 +57,8 @@
           <text class="cal-date">{{item.attendanceDate}}</text>
           <text class="cal-course">{{item.courseName || '未命名课程'}}</text>
         </view>
-        <text class="tag {{item.status === 'PRESENT' ? 'tag-success' : (item.status === 'LATE' ? 'tag-warning' : (item.status === 'LEAVE' ? 'tag-info' : 'tag-danger'))}}">
-          {{item.status === 'PRESENT' ? '正常' : (item.status === 'LATE' ? '迟到' : (item.status === 'LEAVE' ? '请假' : '缺勤'))}}
+        <text class="tag {{item.status === 'PRESENT' ? 'tag-success' : ((item.status === 'LATE' || item.status === 'EARLY_LEAVE') ? 'tag-warning' : (item.status === 'LEAVE' ? 'tag-info' : 'tag-danger'))}}">
+          {{item.status === 'PRESENT' ? '正常' : (item.status === 'LATE' ? '迟到' : (item.status === 'EARLY_LEAVE' ? '早退' : (item.status === 'LEAVE' ? '请假' : '缺勤')))}}
         </text>
       </view>
     </view>

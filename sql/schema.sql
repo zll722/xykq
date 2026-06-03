@@ -117,6 +117,10 @@ CREATE TABLE IF NOT EXISTS course_schedule (
   start_time TIME NOT NULL,
   end_time TIME NOT NULL,
   location VARCHAR(128) NULL,
+  latitude DECIMAL(10,6) NULL COMMENT '教室纬度',
+  longitude DECIMAL(10,6) NULL COMMENT '教室经度',
+  attendance_radius INT NOT NULL DEFAULT 200 COMMENT '考勤半径(米)',
+  auto_publish_attendance TINYINT(1) NOT NULL DEFAULT 0 COMMENT '是否自动发布签到',
   created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   CONSTRAINT fk_schedule_course FOREIGN KEY (course_id) REFERENCES course_info(id),
@@ -140,6 +144,25 @@ CREATE TABLE IF NOT EXISTS attendance_rule (
   updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) COMMENT='考勤规则表';
 
+CREATE TABLE IF NOT EXISTS attendance_session (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  schedule_id BIGINT NOT NULL,
+  course_id BIGINT NOT NULL,
+  class_id BIGINT NOT NULL,
+  attendance_date DATE NOT NULL,
+  sign_type VARCHAR(16) NOT NULL COMMENT 'SIGN_IN/SIGN_OUT',
+  status VARCHAR(16) NOT NULL DEFAULT 'OPEN' COMMENT 'OPEN/CLOSED',
+  start_time DATETIME NOT NULL,
+  end_time DATETIME NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uk_session(schedule_id, attendance_date, sign_type),
+  CONSTRAINT fk_att_session_schedule FOREIGN KEY (schedule_id) REFERENCES course_schedule(id),
+  CONSTRAINT fk_att_session_course FOREIGN KEY (course_id) REFERENCES course_info(id),
+  CONSTRAINT fk_att_session_class FOREIGN KEY (class_id) REFERENCES class_info(id),
+  INDEX idx_session_query(course_id, class_id, attendance_date)
+) COMMENT='考勤发布场次表';
+
 CREATE TABLE IF NOT EXISTS attendance_record (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   schedule_id BIGINT NOT NULL,
@@ -147,7 +170,10 @@ CREATE TABLE IF NOT EXISTS attendance_record (
   class_id BIGINT NOT NULL,
   student_id BIGINT NOT NULL COMMENT 'sys_user.id',
   attendance_date DATE NOT NULL,
-  signed_at DATETIME NULL,
+  sign_in_time DATETIME NULL,
+  sign_out_time DATETIME NULL,
+  sign_in_location VARCHAR(255) NULL,
+  sign_out_location VARCHAR(255) NULL,
   status VARCHAR(16) NOT NULL COMMENT 'PRESENT/LATE/LEAVE/EARLY_LEAVE/ABSENT',
   source VARCHAR(16) NOT NULL DEFAULT 'AUTO' COMMENT 'AUTO/MANUAL',
   makeup_reason VARCHAR(255) NULL,
@@ -339,10 +365,14 @@ VALUES
   ('system_name', '智能校园考勤系统', '系统名称', '前台展示名称'),
   ('sign_remind_enabled', 'true', '签到提醒开关', '是否启用签到提醒'),
   ('default_sign_start_offset_min', '-15', '默认签到开始偏移(分钟)', '课程开始前可签到分钟数'),
-  ('default_sign_end_offset_min', '15', '默认签到结束偏移(分钟)', '课程开始后可签到分钟数')
+  ('default_sign_end_offset_min', '15', '默认签到结束偏移(分钟)', '课程开始后可签到分钟数'),
+  ('attendance_center_lng', '116.397428', '考勤中心经度', '中心点位置(默认北京)'),
+  ('attendance_center_lat', '39.90923', '考勤中心纬度', '中心点位置(默认北京)'),
+  ('attendance_radius_meters', '500', '考勤误差半径(米)', '允许的打卡最大距离')
 ON DUPLICATE KEY UPDATE
   config_value = VALUES(config_value),
   config_name = VALUES(config_name),
   remark = VALUES(remark);
 
 SET FOREIGN_KEY_CHECKS = 1;
+

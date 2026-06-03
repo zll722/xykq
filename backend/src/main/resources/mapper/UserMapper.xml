@@ -27,6 +27,13 @@
         LIMIT 1
     </select>
 
+    <select id="findByEmail" resultMap="SysUserMap">
+        SELECT <include refid="BaseColumns"/>
+        FROM sys_user
+        WHERE email = #{email} AND deleted = 0
+        LIMIT 1
+    </select>
+
     <select id="findById" resultMap="SysUserMap">
         SELECT <include refid="BaseColumns"/>
         FROM sys_user
@@ -94,6 +101,7 @@
     <update id="updateBasic">
         UPDATE sys_user
         SET real_name = #{realName},
+            email = #{email},
             role_code = #{roleCode},
             status = #{status}
         WHERE id = #{id} AND deleted = 0
@@ -103,6 +111,12 @@
         UPDATE sys_user
         SET status = #{status}
         WHERE id = #{id} AND deleted = 0
+    </update>
+
+    <update id="updateEmail">
+        UPDATE sys_user
+        SET email = #{email}
+        WHERE id = #{userId} AND deleted = 0
     </update>
 
     <update id="softDelete">

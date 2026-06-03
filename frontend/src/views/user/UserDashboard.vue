@@ -66,8 +66,8 @@
                 <h3>{{ item.courseName || '未命名课程' }}</h3>
                 <p>{{ item.className || '未分配班级' }} · {{ item.location || '地点待定' }}</p>
               </div>
-              <div class="agenda-side">
-                <el-tag :type="item.signStatus === 'OPEN' ? 'success' : 'info'">{{ item.signStatusText || '查看详情' }}</el-tag>
+              <div class="schedule-actions">
+                <el-tag :type="(item.signStatus === 'OPEN_SIGN_IN' || item.signStatus === 'OPEN_SIGN_OUT') ? 'success' : 'info'">{{ item.signStatusText || '查看详情' }}</el-tag>
               </div>
             </div>
           </div>
@@ -145,19 +145,9 @@ const latestApprovalHint = computed(() => {
 });
 
 const signStatus = computed(() => {
-  if (!todaySchedules.value.length) {
-    return {
-      title: '今日无待签课程',
-      description: '如果你认为应该能签到，先检查课程安排和签到开放时间'
-    };
-  }
-  const openCourse = todaySchedules.value.find((item) => item.signStatus === 'OPEN');
-  if (openCourse) {
-    return {
-      title: '可立即签到',
-      description: `${openCourse.courseName || '当前课程'} 已开放签到`
-    };
-  }
+  if (!todaySchedules.value.length) return { title: '今日无课', description: '好好休息，充实自己' };
+  const openCourse = todaySchedules.value.find((item) => item.signStatus === 'OPEN_SIGN_IN' || item.signStatus === 'OPEN_SIGN_OUT');
+  if (openCourse) return { title: '有待签到的课程', description: `【${openCourse.courseName}】正在签到中` };
   return {
     title: '暂未开放',
     description: '今天有课程，但当前时间段暂不可签到'

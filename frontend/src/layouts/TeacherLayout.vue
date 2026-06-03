@@ -71,6 +71,9 @@ const route = useRoute();
 const primaryNav = [
   { path: '/teacher/dashboard', label: '工作台', icon: 'House' },
   { path: '/teacher/attendance-report', label: '考勤报表', icon: 'DataAnalysis' },
+  { path: '/teacher/attendance-records', label: '考勤记录', icon: 'Document' },
+  { path: '/teacher/attendance-exceptions', label: '异常处理', icon: 'Warning' },
+  { path: '/teacher/attendance-adjustments', label: '修正记录', icon: 'Edit' },
   { path: '/teacher/leave-notifications', label: '请假通知', icon: 'Bell' }
 ];
 

@@ -4,9 +4,11 @@ public class UserSummary {
     private Long id;
     private String username;
     private String realName;
+    private String email;
     private String roleCode;
     private Integer status;
     private Long classId;
+    private String studentNo;
 
     public Long getId() {
         return id;
@@ -54,5 +56,21 @@ public class UserSummary {
 
     public void setClassId(Long classId) {
         this.classId = classId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getStudentNo() {
+        return studentNo;
+    }
+
+    public void setStudentNo(String studentNo) {
+        this.studentNo = studentNo;
     }
 }

@@ -20,4 +20,6 @@ public interface TeacherMapper {
 
     List<Map<String, Object>> listClassAttendance(@Param("classId") Long classId,
                                                    @Param("teacherId") Long teacherId);
+
+    List<Map<String, Object>> listTodaySchedules(@Param("teacherId") Long teacherId, @Param("weekDay") Integer weekDay);
 }

@@ -1,0 +1,97 @@
+.filter-section {
+  padding: 10rpx 30rpx 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.filter-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.border-none {
+  border-bottom: none;
+}
+
+.filter-label {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.filter-value {
+  font-size: 28rpx;
+}
+
+.record-card {
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.flex-align-center {
+  display: flex;
+  align-items: center;
+}
+
+.ml-10 {
+  margin-left: 10rpx;
+}
+
+.priority-badge {
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 6rpx;
+  color: #fff;
+}
+
+.bg-danger { background-color: #f56c6c; color: #f56c6c; }
+.bg-warning { background-color: #e6a23c; color: #e6a23c; }
+.bg-info { background-color: #909399; color: #909399; }
+
+.priority-badge.bg-danger { color: #fff; }
+.priority-badge.bg-warning { color: #fff; }
+.priority-badge.bg-info { color: #fff; }
+
+.status-text {
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.student-name {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.record-detail {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.8;
+  background-color: #f9f9f9;
+  padding: 20rpx;
+  border-radius: 8rpx;
+}
+
+.label {
+  display: inline-block;
+  width: 100rpx;
+}
+
+.action-bar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-small {
+  padding: 0 40rpx;
+  height: 60rpx;
+  line-height: 60rpx;
+  font-size: 26rpx;
+  background-color: #f5f5f5;
+  color: #666;
+}

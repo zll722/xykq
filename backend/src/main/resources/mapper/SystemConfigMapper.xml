@@ -20,6 +20,12 @@
         ORDER BY id ASC
     </select>
 
+    <select id="findByKey" resultMap="SystemConfigMap">
+        SELECT id, config_key, config_value, config_name, remark, updated_by, updated_at
+        FROM sys_config
+        WHERE config_key = #{configKey}
+    </select>
+
     <update id="updateValue">
         UPDATE sys_config
         SET config_value = #{configValue},

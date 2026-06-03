@@ -51,8 +51,9 @@
     <el-dialog
       v-model="dialogVisible"
       :title="formMode === 'create' ? '新增排班' : '编辑排班'"
-      width="520px"
+      width="620px"
       @close="closeDialog"
+      @opened="onDialogOpen"
     >
       <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
         <el-form-item label="课程" prop="courseId">
@@ -76,9 +77,8 @@
             v-model="form.classIds"
             placeholder="请选择班级"
             style="width: 100%"
-            :multiple="formMode === 'create'"
-            collapse-tags
-            collapse-tags-tooltip
+            multiple
+            :multiple-limit="formMode === 'create' ? 0 : 1"
           >
             <el-option
               v-for="item in classOptions"
@@ -123,7 +123,31 @@
         </el-form-item>
 
         <el-form-item label="上课地点">
-          <el-input v-model.trim="form.location" placeholder="留空则使用课程默认地点" />
+          <el-input v-model.trim="form.location" placeholder="留空则使用课程默认地点（仅用于展示）" />
+        </el-form-item>
+
+        <el-form-item label="考勤中心点">
+          <div style="width: 100%; border: 1px solid #dcdfe6; border-radius: 4px; padding: 10px; background: #fcfcfc;">
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+              <el-input id="map-search-input" v-model="searchKeyword" placeholder="输入关键字搜索地点，例如：计算机大楼" style="flex: 1" />
+              <el-button @click="clearMapSelection">清除坐标</el-button>
+            </div>
+            <div id="schedule-map-container" style="width: 100%; height: 260px; border-radius: 4px; border: 1px solid #ebeef5;"></div>
+            <div style="margin-top: 10px; display: flex; gap: 10px;">
+              <el-input v-model="form.longitude" placeholder="选中经度" readonly style="flex: 1" />
+              <el-input v-model="form.latitude" placeholder="选中纬度" readonly style="flex: 1" />
+            </div>
+            <div style="font-size:12px;color:#909399;margin-top:4px;margin-bottom:10px;">在地图上点击以选取精准考勤中心点。这会覆盖原有的手动输入。</div>
+            <div style="display: flex; align-items: center; gap: 15px;">
+              <span style="font-size:14px;color:#606266;white-space:nowrap;">有效打卡范围(米):</span>
+              <el-slider v-model="form.attendanceRadius" :min="50" :max="1000" :step="10" show-input style="flex: 1;" />
+            </div>
+          </div>
+        </el-form-item>
+
+        <el-form-item label="自动发布签到">
+          <el-switch v-model="form.autoPublishAttendance" />
+          <div style="font-size:12px;color:#909399;margin-left:10px">开启后，系统将在上课前自动生成考勤会话</div>
         </el-form-item>
       </el-form>
 
@@ -138,8 +162,9 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, nextTick } from 'vue';
 import { ElMessage } from 'element-plus';
+import AMapLoader from '@amap/amap-jsapi-loader';
 import {
   createScheduleApi,
   deleteScheduleApi,
@@ -158,6 +183,12 @@ const formRef = ref(null);
 const courseOptions = ref([]);
 const classOptions = ref([]);
 
+const searchKeyword = ref('');
+let mapInstance = null;
+let markerInstance = null;
+let placeSearchInstance = null;
+let autoInstance = null;
+
 const form = reactive({
   id: null,
   courseId: null,
@@ -166,7 +197,11 @@ const form = reactive({
   weekDay: 1,
   startTime: '08:00:00',
   endTime: '09:40:00',
-  location: ''
+  location: '',
+  latitude: null,
+  longitude: null,
+  attendanceRadius: 200,
+  autoPublishAttendance: false
 });
 
 const rules = {
@@ -217,11 +252,16 @@ const resetForm = () => {
   form.startTime = '08:00:00';
   form.endTime = '09:40:00';
   form.location = '';
+  form.latitude = null;
+  form.longitude = null;
+  form.attendanceRadius = 200;
+  form.autoPublishAttendance = false;
 };
 
 const openCreate = async () => {
   formMode.value = 'create';
   resetForm();
+  searchKeyword.value = '';
   await loadOptions();
   dialogVisible.value = true;
 };
@@ -229,6 +269,7 @@ const openCreate = async () => {
 const openEdit = async (row) => {
   formMode.value = 'edit';
   resetForm();
+  searchKeyword.value = '';
   await loadOptions();
   form.id = row.id;
   form.courseId = row.courseId ? Number(row.courseId) : null;
@@ -238,11 +279,106 @@ const openEdit = async (row) => {
   form.startTime = row.startTime;
   form.endTime = row.endTime;
   form.location = row.location || '';
+  form.latitude = row.latitude || null;
+  form.longitude = row.longitude || null;
+  form.attendanceRadius = row.attendanceRadius || 200;
+  form.autoPublishAttendance = !!row.autoPublishAttendance;
   dialogVisible.value = true;
+};
+
+const onDialogOpen = () => {
+  initMap();
+};
+
+const initMap = async () => {
+  window._AMapSecurityConfig = {
+    securityJsCode: 'b74c5eec05ff45977b2f1c4e27069317'
+  };
+  try {
+    const AMap = await AMapLoader.load({
+      key: '8db8eb37ebc870eca7f23d81e4a81c38',
+      version: '2.0',
+      plugins: ['AMap.PlaceSearch', 'AMap.AutoComplete']
+    });
+
+    const center = (form.longitude && form.latitude) 
+      ? [form.longitude, form.latitude] 
+      : [116.397428, 39.90923];
+
+    mapInstance = new AMap.Map('schedule-map-container', {
+      zoom: 15,
+      center: center
+    });
+
+    if (form.longitude && form.latitude) {
+      markerInstance = new AMap.Marker({
+        position: center,
+        map: mapInstance
+      });
+    }
+
+    mapInstance.on('click', (e) => {
+      const lng = e.lnglat.getLng();
+      const lat = e.lnglat.getLat();
+      updateMarker(AMap, lng, lat);
+    });
+
+    autoInstance = new AMap.AutoComplete({
+      input: 'map-search-input'
+    });
+    placeSearchInstance = new AMap.PlaceSearch({
+      map: mapInstance
+    });
+    
+    autoInstance.on('select', (e) => {
+      placeSearchInstance.setCity(e.poi.adcode);
+      placeSearchInstance.search(e.poi.name, (status, result) => {
+        if (status === 'complete' && result.poiList && result.poiList.pois.length > 0) {
+           const poi = result.poiList.pois[0];
+           updateMarker(AMap, poi.location.lng, poi.location.lat);
+        }
+      });
+    });
+
+  } catch (e) {
+    console.error('地图加载失败', e);
+  }
+};
+
+const updateMarker = (AMap, lng, lat) => {
+  form.longitude = lng;
+  form.latitude = lat;
+  if (!markerInstance) {
+    markerInstance = new AMap.Marker({
+      map: mapInstance
+    });
+  }
+  markerInstance.setPosition([lng, lat]);
+  mapInstance.setCenter([lng, lat]);
+};
+
+const clearMapSelection = () => {
+  form.longitude = null;
+  form.latitude = null;
+  searchKeyword.value = '';
+  if (markerInstance) {
+    markerInstance.setMap(null);
+    markerInstance = null;
+  }
+  if (placeSearchInstance) {
+    placeSearchInstance.clear();
+  }
 };
 
 const closeDialog = () => {
   dialogVisible.value = false;
+  if (mapInstance) {
+    mapInstance.destroy();
+    mapInstance = null;
+    markerInstance = null;
+    placeSearchInstance = null;
+    autoInstance = null;
+  }
 };
 
 const submitForm = async () => {
@@ -264,7 +400,11 @@ const submitForm = async () => {
       weekDay: form.weekDay,
       startTime: form.startTime,
       endTime: form.endTime,
-      location: form.location || null
+      location: form.location || null,
+      latitude: form.latitude ? Number(form.latitude) : null,
+      longitude: form.longitude ? Number(form.longitude) : null,
+      attendanceRadius: form.attendanceRadius,
+      autoPublishAttendance: form.autoPublishAttendance
     };
 
     if (formMode.value === 'create') {

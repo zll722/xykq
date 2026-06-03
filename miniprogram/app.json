@@ -2,6 +2,7 @@
   "pages": [
     "pages/login/login",
     "pages/register/register",
+    "pages/forgot/forgot",
     "pages/student/index/index",
     "pages/student/schedule/schedule",
     "pages/student/sign-in/sign-in",
@@ -16,6 +17,9 @@
     "pages/teacher/classes/classes",
     "pages/teacher/courses/courses",
     "pages/teacher/attendance-report/attendance-report",
+    "pages/teacher/attendance-records/attendance-records",
+    "pages/teacher/attendance-exceptions/attendance-exceptions",
+    "pages/teacher/attendance-adjustments/attendance-adjustments",
     "pages/teacher/leave-notify/leave-notify",
     "pages/teacher/profile/profile",
     "pages/counselor/index/index",

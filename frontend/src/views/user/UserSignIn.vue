@@ -57,7 +57,8 @@
                 </div>
                 <el-tag v-if="item.signStatus === 'ON_LEAVE'" size="small" effect="dark" type="warning">已请假</el-tag>
                 <el-tag v-else-if="item.signStatus === 'SIGNED'" size="small" effect="dark" type="success">已签到</el-tag>
-                <el-tag v-else-if="item.signStatus === 'OPEN'" size="small" effect="dark" type="info">待签到</el-tag>
+                <el-tag v-else-if="item.signStatus === 'OPEN_SIGN_IN'" size="small" effect="dark" type="info">待签到(上课)</el-tag>
+                <el-tag v-else-if="item.signStatus === 'OPEN_SIGN_OUT'" size="small" effect="dark" type="info">待签退(下课)</el-tag>
                 <el-tag v-else size="small" effect="plain" type="info">未开放</el-tag>
               </div>
 
@@ -81,11 +82,11 @@
                 size="large"
                 class="submit-button"
                 data-testid="sign-in-submit"
-                :disabled="item.signStatus !== 'OPEN'"
+                :disabled="item.signStatus !== 'OPEN_SIGN_IN' && item.signStatus !== 'OPEN_SIGN_OUT'"
                 :loading="submittingId === item.scheduleId"
-                @click="submitSignIn(item.scheduleId)"
+                @click="submitSignIn(item)"
               >
-                {{ item.signStatus === 'SIGNED' ? '已完成签到' : '立即签到' }}
+                {{ item.signStatus === 'SIGNED' ? '已完成' : (item.signStatus === 'OPEN_SIGN_OUT' ? '立即签退' : '立即签到') }}
               </el-button>
             </article>
           </el-col>
@@ -99,6 +100,7 @@
 import { computed, onMounted, ref } from 'vue';
 import { ElMessage } from 'element-plus';
 import { listMySchedulesApi, signInApi } from '../../api/attendance';
+import AMapLoader from '@amap/amap-jsapi-loader';
 
 const schedules = ref([]);
 const result = ref(null);
@@ -142,19 +144,55 @@ const loadSchedules = async () => {
   }
 };
 
-const submitSignIn = async (scheduleId) => {
+const submitSignIn = async (item) => {
   result.value = null;
   error.value = '';
-  submittingId.value = scheduleId;
+  submittingId.value = item.scheduleId;
+  const signType = item.signStatus === 'OPEN_SIGN_OUT' ? 'SIGN_OUT' : 'SIGN_IN';
   try {
-    const res = await signInApi({ scheduleId: Number(scheduleId) });
-    result.value = res;
-    ElMessage.success(statusLabelMap[res?.status] || '签到成功');
-    await loadSchedules();
+    window._AMapSecurityConfig = {
+      securityJsCode: 'b74c5eec05ff45977b2f1c4e27069317'
+    };
+    const AMap = await AMapLoader.load({
+      key: '8db8eb37ebc870eca7f23d81e4a81c38',
+      version: '2.0',
+      plugins: ['AMap.Geolocation']
+    });
+
+    const geolocation = new AMap.Geolocation({
+      enableHighAccuracy: true,
+      timeout: 10000,
+    });
+
+    geolocation.getCurrentPosition(async (status, aMapResult) => {
+      if (status === 'complete') {
+        try {
+          const payload = {
+            scheduleId: Number(item.scheduleId),
+            signType,
+            latitude: aMapResult.position.lat,
+            longitude: aMapResult.position.lng,
+            address: aMapResult.formattedAddress || ''
+          };
+          const res = await signInApi(payload);
+          result.value = res;
+          ElMessage.success(statusLabelMap[res?.status] || '签到/签退成功');
+          await loadSchedules();
+        } catch (e) {
+          error.value = e?.message || '签到/签退失败';
+          ElMessage.error(error.value);
+        } finally {
+          submittingId.value = null;
+        }
+      } else {
+        error.value = '无法获取当前位置，请检查定位权限。';
+        ElMessage.error(error.value);
+        submittingId.value = null;
+      }
+    });
   } catch (e) {
-    error.value = e?.message || '签到失败';
+    error.value = '地图组件加载失败，请重试';
     ElMessage.error(error.value);
-  } finally {
     submittingId.value = null;
   }
 };

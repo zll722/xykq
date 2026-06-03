@@ -32,11 +32,15 @@
 
     <el-card class="filter-card" shadow="hover">
       <el-form :inline="true" class="filter-form">
-        <el-form-item label="课程ID">
-          <el-input v-model="filters.courseId" placeholder="可选" clearable />
+        <el-form-item label="课程">
+          <el-select v-model="filters.courseId" placeholder="选择课程" clearable style="width: 150px">
+            <el-option v-for="c in courses" :key="c.id" :label="c.courseName" :value="c.id" />
+          </el-select>
         </el-form-item>
-        <el-form-item label="班级ID">
-          <el-input v-model="filters.classId" placeholder="可选" clearable />
+        <el-form-item label="班级">
+          <el-select v-model="filters.classId" placeholder="选择班级" clearable style="width: 150px">
+            <el-option v-for="c in classes" :key="c.id" :label="c.className" :value="c.id" />
+          </el-select>
         </el-form-item>
         <el-form-item label="日期">
           <el-date-picker
@@ -79,7 +83,11 @@
         </el-table-column>
         <el-table-column label="课程" prop="courseName" min-width="150" />
         <el-table-column label="班级" prop="className" min-width="170" />
-        <el-table-column label="学生ID" prop="studentId" width="96" />
+        <el-table-column label="学生" prop="studentName" min-width="120">
+          <template #default="{ row }">
+            {{ row.studentName || '未命名学生' }}
+          </template>
+        </el-table-column>
         <el-table-column label="日期" prop="attendanceDate" width="120" />
         <el-table-column label="签到时间" min-width="170">
           <template #default="{ row }">
@@ -147,6 +155,7 @@ import { computed, onMounted, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { listAttendanceExceptionsApi, resolveAttendanceExceptionApi } from '../../api/adminAttendanceManage';
+import { listClassesApi, listCoursesApi } from '../../api/adminTeaching';
 
 const router = useRouter();
 const loading = ref(false);
@@ -154,6 +163,8 @@ const visible = ref(false);
 const submitting = ref(false);
 const selected = ref(null);
 const list = ref([]);
+const classes = ref([]);
+const courses = ref([]);
 const filters = reactive({
   courseId: '',
   classId: '',
@@ -295,7 +306,11 @@ const submit = async () => {
   }
 };
 
-onMounted(loadData);
+onMounted(() => {
+  listClassesApi().then(res => classes.value = res);
+  listCoursesApi().then(res => courses.value = res);
+  loadData();
+});
 </script>
 
 <style scoped>

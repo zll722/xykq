@@ -45,6 +45,8 @@ class AttendanceServiceImplTest {
     private AttendanceAdjustmentMapper attendanceAdjustmentMapper;
     @Mock
     private NotifyMessageMapper notifyMessageMapper;
+    @Mock
+    private SystemConfigService systemConfigService;
 
     private AttendanceServiceImpl attendanceService;
 
@@ -56,7 +58,8 @@ class AttendanceServiceImplTest {
                 scheduleMapper,
                 studentProfileMapper,
                 attendanceAdjustmentMapper,
-                notifyMessageMapper
+                notifyMessageMapper,
+                systemConfigService
         );
     }
 
@@ -82,6 +85,7 @@ class AttendanceServiceImplTest {
         SignInRequest req = new SignInRequest();
         req.setScheduleId(1L);
         req.setAttendanceDate(LocalDate.now().toString());
+        req.setSignType("SIGN_IN");
         SignInResponse resp = attendanceService.signIn(userId, req);
 
         Assertions.assertEquals("PRESENT", resp.getStatus());

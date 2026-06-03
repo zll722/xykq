@@ -6,5 +6,8 @@ const getClasses = () => get('/auth/classes');
 const getMe = () => get('/auth/me');
 const getPermissions = () => get('/auth/permissions');
 const changePassword = (data) => post('/auth/change-password', data);
+const sendRegisterCode = (data) => post('/auth/send-register-code', data);
+const sendResetCode = (data) => post('/auth/send-reset-code', data);
+const resetPassword = (data) => post('/auth/reset-password', data);
 
-module.exports = { login, register, getClasses, getMe, getPermissions, changePassword };
+module.exports = { login, register, getClasses, getMe, getPermissions, changePassword, sendRegisterCode, sendResetCode, resetPassword };

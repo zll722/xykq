@@ -9,7 +9,10 @@
         <result property="scheduleId" column="schedule_id"/>
         <result property="studentId" column="student_id"/>
         <result property="attendanceDate" column="attendance_date"/>
-        <result property="signedAt" column="signed_at"/>
+        <result property="signInTime" column="sign_in_time"/>
+        <result property="signOutTime" column="sign_out_time"/>
+        <result property="signInLocation" column="sign_in_location"/>
+        <result property="signOutLocation" column="sign_out_location"/>
         <result property="status" column="status"/>
         <result property="source" column="source"/>
         <result property="remark" column="remark"/>
@@ -24,7 +27,8 @@
         <result property="studentId" column="student_id"/>
         <result property="studentName" column="student_name"/>
         <result property="attendanceDate" column="attendance_date"/>
-        <result property="signedAt" column="signed_at"/>
+        <result property="signInTime" column="sign_in_time"/>
+        <result property="signOutTime" column="sign_out_time"/>
         <result property="status" column="status"/>
     </resultMap>
 
@@ -42,14 +46,17 @@
     </select>
 
     <insert id="insert" parameterType="com.campus.attendance.domain.AttendanceRecord" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO attendance_record (schedule_id, course_id, class_id, student_id, attendance_date, signed_at, status, source)
-        VALUES (#{scheduleId}, #{courseId}, #{classId}, #{studentId}, #{attendanceDate}, #{signedAt}, #{status}, #{source})
+        INSERT INTO attendance_record (schedule_id, course_id, class_id, student_id, attendance_date, sign_in_time, sign_out_time, sign_in_location, sign_out_location, status, source)
+        VALUES (#{scheduleId}, #{courseId}, #{classId}, #{studentId}, #{attendanceDate}, #{signInTime}, #{signOutTime}, #{signInLocation}, #{signOutLocation}, #{status}, #{source})
     </insert>
 
     <update id="updateSignResult">
         UPDATE attendance_record
         SET status = #{status},
-            signed_at = #{signedAt}
+            sign_in_time = #{signInTime},
+            sign_out_time = #{signOutTime},
+            sign_in_location = #{signInLocation},
+            sign_out_location = #{signOutLocation}
         WHERE id = #{id}
     </update>
 
@@ -64,12 +71,12 @@
                ci.course_name AS courseName,
                cl.class_name AS className,
                ar.attendance_date AS attendanceDate,
-               ar.signed_at AS signedAt,
+               ar.sign_in_time AS signInTime,
+               ar.sign_out_time AS signOutTime,
                ar.status AS status
         FROM attendance_record ar
-        JOIN course_schedule cs ON cs.id = ar.schedule_id
-        JOIN course_info ci ON ci.id = cs.course_id
-        JOIN class_info cl ON cl.id = cs.class_id
+        LEFT JOIN course_info ci ON ci.id = ar.course_id
+        LEFT JOIN class_info cl ON cl.id = ar.class_id
         WHERE ar.student_id = #{studentId}
         ORDER BY ar.attendance_date DESC, ar.id DESC
     </select>
@@ -89,7 +96,7 @@
                ar.status,
                ci.course_name
         FROM attendance_record ar
-        JOIN course_info ci ON ci.id = ar.course_id
+        LEFT JOIN course_info ci ON ci.id = ar.course_id
         WHERE ar.student_id = #{studentId}
           <if test="startDate != null">AND ar.attendance_date &gt;= #{startDate}</if>
           <if test="endDate != null">AND ar.attendance_date &lt;= #{endDate}</if>
@@ -98,26 +105,26 @@
 
     <select id="listAdminRecords" resultMap="AdminAttendanceRecordMap">
         SELECT ar.id,
-               cs.course_id,
+               ar.course_id,
                ci.course_name,
-               cs.class_id,
+               ar.class_id,
                cl.class_name,
                ar.student_id,
                su.real_name AS student_name,
                ar.attendance_date,
-               ar.signed_at,
+               ar.sign_in_time,
+               ar.sign_out_time,
                ar.status
         FROM attendance_record ar
-        JOIN course_schedule cs ON cs.id = ar.schedule_id
-        JOIN course_info ci ON ci.id = cs.course_id
-        JOIN class_info cl ON cl.id = cs.class_id
+        LEFT JOIN course_info ci ON ci.id = ar.course_id
+        LEFT JOIN class_info cl ON cl.id = ar.class_id
         LEFT JOIN sys_user su ON su.id = ar.student_id
         WHERE 1 = 1
         <if test="courseId != null">
-            AND cs.course_id = #{courseId}
+            AND ar.course_id = #{courseId}
         </if>
         <if test="classId != null">
-            AND cs.class_id = #{classId}
+            AND ar.class_id = #{classId}
         </if>
         <if test="attendanceDate != null">
             AND ar.attendance_date = #{attendanceDate}
@@ -130,26 +137,26 @@
 
     <select id="listAdminRecordsByRange" resultMap="AdminAttendanceRecordMap">
         SELECT ar.id,
-               cs.course_id,
+               ar.course_id,
                ci.course_name,
-               cs.class_id,
+               ar.class_id,
                cl.class_name,
                ar.student_id,
                su.real_name AS student_name,
                ar.attendance_date,
-               ar.signed_at,
+               ar.sign_in_time,
+               ar.sign_out_time,
                ar.status
         FROM attendance_record ar
-        JOIN course_schedule cs ON cs.id = ar.schedule_id
-        JOIN course_info ci ON ci.id = cs.course_id
-        JOIN class_info cl ON cl.id = cs.class_id
+        LEFT JOIN course_info ci ON ci.id = ar.course_id
+        LEFT JOIN class_info cl ON cl.id = ar.class_id
         LEFT JOIN sys_user su ON su.id = ar.student_id
         WHERE 1 = 1
         <if test="courseId != null">
-            AND cs.course_id = #{courseId}
+            AND ar.course_id = #{courseId}
         </if>
         <if test="classId != null">
-            AND cs.class_id = #{classId}
+            AND ar.class_id = #{classId}
         </if>
         <if test="startDate != null">
             AND ar.attendance_date <![CDATA[>=]]> #{startDate}
@@ -158,5 +165,44 @@
             AND ar.attendance_date <![CDATA[<=]]> #{endDate}
         </if>
         ORDER BY ar.attendance_date DESC, ar.id DESC
+    </select>
+
+    <select id="listTeacherRecords" resultMap="AdminAttendanceRecordMap">
+        SELECT ar.id,
+               ar.course_id,
+               ci.course_name,
+               ar.class_id,
+               cl.class_name,
+               ar.student_id,
+               su.real_name AS student_name,
+               ar.attendance_date,
+               ar.sign_in_time,
+               ar.sign_out_time,
+               ar.status
+        FROM attendance_record ar
+        LEFT JOIN course_info ci ON ci.id = ar.course_id
+        LEFT JOIN class_info cl ON cl.id = ar.class_id
+        LEFT JOIN sys_user su ON su.id = ar.student_id
+        WHERE ci.teacher_id = #{teacherId}
+        <if test="courseId != null">
+            AND ar.course_id = #{courseId}
+        </if>
+        <if test="classId != null">
+            AND ar.class_id = #{classId}
+        </if>
+        <if test="attendanceDate != null">
+            AND ar.attendance_date = #{attendanceDate}
+        </if>
+        <if test="status != null and status != ''">
+            AND ar.status = #{status}
+        </if>
+        ORDER BY ar.attendance_date DESC, ar.id DESC
+    </select>
+
+    <select id="checkTeacherCourseOwnership" resultType="int">
+        SELECT COUNT(1)
+        FROM attendance_record ar
+        JOIN course_info ci ON ci.id = ar.course_id
+        WHERE ar.id = #{recordId} AND ci.teacher_id = #{teacherId}
     </select>
 </mapper>

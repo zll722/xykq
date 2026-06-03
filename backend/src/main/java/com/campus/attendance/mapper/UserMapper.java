@@ -12,6 +12,8 @@ import java.util.List;
 public interface UserMapper {
     SysUser findByUsername(@Param("username") String username);
 
+    SysUser findByEmail(@Param("email") String email);
+
     SysUser findById(@Param("id") Long id);
 
     int insertUser(SysUser user);
@@ -30,10 +32,13 @@ public interface UserMapper {
 
     int updateBasic(@Param("id") Long id,
                     @Param("realName") String realName,
+                    @Param("email") String email,
                     @Param("roleCode") String roleCode,
                     @Param("status") Integer status);
 
     int updateStatus(@Param("id") Long id, @Param("status") Integer status);
+
+    int updateEmail(@Param("userId") Long userId, @Param("email") String email);
 
     int softDelete(@Param("id") Long id);
 }

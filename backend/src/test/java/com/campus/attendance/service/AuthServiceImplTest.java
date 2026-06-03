@@ -9,7 +9,9 @@ import com.campus.attendance.exception.BizException;
 import com.campus.attendance.mapper.PermissionMapper;
 import com.campus.attendance.mapper.UserMapper;
 import com.campus.attendance.security.JwtTokenProvider;
+import com.campus.attendance.service.EmailService;
 import com.campus.attendance.service.impl.AuthServiceImpl;
+import com.github.benmanes.caffeine.cache.Cache;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,6 +39,10 @@ class AuthServiceImplTest {
     private PermissionMapper permissionMapper;
     @Mock
     private JwtTokenProvider jwtTokenProvider;
+    @Mock
+    private EmailService emailService;
+    @Mock
+    private Cache<String, String> emailCodeCache;
 
     private PasswordEncoder passwordEncoder;
     private AuthServiceImpl authService;
@@ -44,7 +50,7 @@ class AuthServiceImplTest {
     @BeforeEach
     void setUp() {
         this.passwordEncoder = new BCryptPasswordEncoder();
-        this.authService = new AuthServiceImpl(userMapper, permissionMapper, passwordEncoder, jwtTokenProvider);
+        this.authService = new AuthServiceImpl(userMapper, permissionMapper, passwordEncoder, jwtTokenProvider, emailService, emailCodeCache);
     }
 
     @Test

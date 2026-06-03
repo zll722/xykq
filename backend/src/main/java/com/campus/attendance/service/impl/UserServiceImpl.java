@@ -69,6 +69,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(request.getUsername());
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         user.setRealName(request.getRealName());
+        user.setEmail(request.getEmail());
         user.setRoleCode(request.getRoleCode());
         user.setStatus(request.getStatus());
         userMapper.insertUser(user);
@@ -80,7 +81,7 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = Exception.class)
     public void updateAdminUser(Long id, AdminUserSaveRequest request) {
         validateClassBinding(request);
-        userMapper.updateBasic(id, request.getRealName(), request.getRoleCode(), request.getStatus());
+        userMapper.updateBasic(id, request.getRealName(), request.getEmail(), request.getRoleCode(), request.getStatus());
         saveStudentProfile(id, request);
     }
 
@@ -112,9 +113,12 @@ public class UserServiceImpl implements UserService {
         if (!"USER".equals(request.getRoleCode())) {
             return;
         }
-        String studentNo = studentProfileMapper.findStudentNoByUserId(userId);
+        String studentNo = request.getStudentNo();
         if (studentNo == null || studentNo.isBlank()) {
-            studentNo = "AUTO" + userId;
+            studentNo = studentProfileMapper.findStudentNoByUserId(userId);
+            if (studentNo == null || studentNo.isBlank()) {
+                studentNo = "AUTO" + userId;
+            }
         }
         studentProfileMapper.upsertByUserId(userId, studentNo, request.getClassId());
     }
@@ -124,10 +128,12 @@ public class UserServiceImpl implements UserService {
         summary.setId(user.getId());
         summary.setUsername(user.getUsername());
         summary.setRealName(user.getRealName());
+        summary.setEmail(user.getEmail());
         summary.setRoleCode(user.getRoleCode());
         summary.setStatus(user.getStatus());
         if ("USER".equals(user.getRoleCode())) {
             summary.setClassId(studentProfileMapper.findClassIdByUserId(user.getId()));
+            summary.setStudentNo(studentProfileMapper.findStudentNoByUserId(user.getId()));
         }
         return summary;
     }

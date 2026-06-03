@@ -10,6 +10,12 @@ import java.util.List;
 public interface AuthService {
     LoginResponse login(LoginRequest request);
 
+    void sendRegisterCode(String email);
+
+    void sendResetCode(String username, String email);
+
+    void resetPassword(String username, String email, String code, String newPassword);
+
     void register(RegisterRequest request);
 
     void changePassword(Long userId, ChangePasswordRequest request);

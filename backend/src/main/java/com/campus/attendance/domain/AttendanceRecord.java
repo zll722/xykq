@@ -10,7 +10,10 @@ public class AttendanceRecord {
     private Long classId;
     private Long studentId;
     private LocalDate attendanceDate;
-    private LocalDateTime signedAt;
+    private LocalDateTime signInTime;
+    private LocalDateTime signOutTime;
+    private String signInLocation;
+    private String signOutLocation;
     private String status;
     private String source;
     private String remark;
@@ -65,12 +68,36 @@ public class AttendanceRecord {
         this.attendanceDate = attendanceDate;
     }
 
-    public LocalDateTime getSignedAt() {
-        return signedAt;
+    public LocalDateTime getSignInTime() {
+        return signInTime;
     }
 
-    public void setSignedAt(LocalDateTime signedAt) {
-        this.signedAt = signedAt;
+    public void setSignInTime(LocalDateTime signInTime) {
+        this.signInTime = signInTime;
+    }
+
+    public LocalDateTime getSignOutTime() {
+        return signOutTime;
+    }
+
+    public void setSignOutTime(LocalDateTime signOutTime) {
+        this.signOutTime = signOutTime;
+    }
+
+    public String getSignInLocation() {
+        return signInLocation;
+    }
+
+    public void setSignInLocation(String signInLocation) {
+        this.signInLocation = signInLocation;
+    }
+
+    public String getSignOutLocation() {
+        return signOutLocation;
+    }
+
+    public void setSignOutLocation(String signOutLocation) {
+        this.signOutLocation = signOutLocation;
     }
 
     public String getStatus() {

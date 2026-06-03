@@ -12,6 +12,10 @@ public class RegisterRequest {
     private String username;
     @NotBlank
     private String password;
+    @NotBlank
+    private String email;
+    @NotBlank
+    private String code;
     @NotNull
     private Long classId;
 
@@ -53,5 +57,21 @@ public class RegisterRequest {
 
     public void setClassId(Long classId) {
         this.classId = classId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

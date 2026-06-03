@@ -9,6 +9,8 @@ import java.util.List;
 @Mapper
 public interface SystemConfigMapper {
     List<SystemConfig> listAll();
+    
+    SystemConfig findByKey(@Param("configKey") String configKey);
 
     int updateValue(@Param("configKey") String configKey,
                     @Param("configValue") String configValue,

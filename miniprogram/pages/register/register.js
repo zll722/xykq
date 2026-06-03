@@ -6,12 +6,17 @@ Page({
     studentNo: '',
     classId: '',
     username: '',
+    email: '',
+    code: '',
     password: '',
     confirmPassword: '',
     classes: [],
     classIndex: -1,
     classNames: [],
-    loading: false
+    loading: false,
+    sendingCode: false,
+    countdown: 0,
+    timer: null
   },
 
   onLoad() {
@@ -31,6 +36,8 @@ Page({
   onRealNameInput(e) { this.setData({ realName: e.detail.value }); },
   onStudentNoInput(e) { this.setData({ studentNo: e.detail.value }); },
   onUsernameInput(e) { this.setData({ username: e.detail.value }); },
+  onEmailInput(e) { this.setData({ email: e.detail.value }); },
+  onCodeInput(e) { this.setData({ code: e.detail.value }); },
   onPasswordInput(e) { this.setData({ password: e.detail.value }); },
   onConfirmPasswordInput(e) { this.setData({ confirmPassword: e.detail.value }); },
 
@@ -39,9 +46,36 @@ Page({
     this.setData({ classIndex: index, classId: this.data.classes[index].id });
   },
 
+  async sendCode() {
+    const { email } = this.data;
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailPattern.test(email)) {
+      wx.showToast({ title: '请输入正确的邮箱', icon: 'none' });
+      return;
+    }
+    this.setData({ sendingCode: true });
+    try {
+      await authApi.sendRegisterCode({ email });
+      wx.showToast({ title: '验证码已发送', icon: 'success' });
+      this.setData({ countdown: 60 });
+      this.data.timer = setInterval(() => {
+        if (this.data.countdown <= 1) {
+          clearInterval(this.data.timer);
+          this.setData({ countdown: 0 });
+        } else {
+          this.setData({ countdown: this.data.countdown - 1 });
+        }
+      }, 1000);
+    } catch (e) {
+      wx.showToast({ title: e.message || '发送失败', icon: 'none' });
+    } finally {
+      this.setData({ sendingCode: false });
+    }
+  },
+
   async onRegister() {
-    const { realName, studentNo, classId, username, password, confirmPassword } = this.data;
-    if (!realName || !studentNo || !classId || !username || !password || !confirmPassword) {
+    const { realName, studentNo, classId, username, email, code, password, confirmPassword } = this.data;
+    if (!realName || !studentNo || !classId || !username || !email || !code || !password || !confirmPassword) {
       wx.showToast({ title: '请填写所有字段', icon: 'none' });
       return;
     }
@@ -56,7 +90,7 @@ Page({
 
     this.setData({ loading: true });
     try {
-      await authApi.register({ realName, studentNo, classId, username, password });
+      await authApi.register({ realName, studentNo, classId, username, email, code, password });
       wx.showToast({ title: '注册成功', icon: 'success' });
       setTimeout(() => wx.reLaunch({ url: '/pages/login/login' }), 1500);
     } catch (err) {

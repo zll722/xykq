@@ -120,6 +120,10 @@ public class AdminTeachingServiceImpl implements AdminTeachingService {
         schedule.setStartTime(LocalTime.parse(request.getStartTime()));
         schedule.setEndTime(LocalTime.parse(request.getEndTime()));
         schedule.setLocation(request.getLocation());
+        schedule.setLatitude(request.getLatitude());
+        schedule.setLongitude(request.getLongitude());
+        schedule.setAttendanceRadius(request.getAttendanceRadius() != null ? request.getAttendanceRadius() : 200);
+        schedule.setAutoPublishAttendance(request.getAutoPublishAttendance() != null ? request.getAutoPublishAttendance() : false);
         scheduleMapper.insert(schedule);
         return schedule.getId();
     }
@@ -135,6 +139,10 @@ public class AdminTeachingServiceImpl implements AdminTeachingService {
         schedule.setStartTime(LocalTime.parse(request.getStartTime()));
         schedule.setEndTime(LocalTime.parse(request.getEndTime()));
         schedule.setLocation(request.getLocation());
+        schedule.setLatitude(request.getLatitude());
+        schedule.setLongitude(request.getLongitude());
+        schedule.setAttendanceRadius(request.getAttendanceRadius() != null ? request.getAttendanceRadius() : 200);
+        schedule.setAutoPublishAttendance(request.getAutoPublishAttendance() != null ? request.getAutoPublishAttendance() : false);
         scheduleMapper.update(schedule);
     }
 

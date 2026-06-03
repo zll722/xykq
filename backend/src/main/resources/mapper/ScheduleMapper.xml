@@ -15,6 +15,10 @@
         <result property="startTime" column="start_time"/>
         <result property="endTime" column="end_time"/>
         <result property="location" column="location"/>
+        <result property="latitude" column="latitude"/>
+        <result property="longitude" column="longitude"/>
+        <result property="attendanceRadius" column="attendance_radius"/>
+        <result property="autoPublishAttendance" column="auto_publish_attendance"/>
     </resultMap>
 
     <select id="list" resultMap="ScheduleMap">
@@ -27,7 +31,11 @@
                cs.week_day,
                cs.start_time,
                cs.end_time,
-               cs.location
+               cs.location,
+               cs.latitude,
+               cs.longitude,
+               cs.attendance_radius,
+               cs.auto_publish_attendance
         FROM course_schedule cs
         LEFT JOIN course_info ci ON ci.id = cs.course_id
         LEFT JOIN class_info cl ON cl.id = cs.class_id
@@ -41,6 +49,27 @@
         ORDER BY cs.id DESC
     </select>
 
+    <select id="findByWeekDay" resultMap="ScheduleMap">
+        SELECT cs.id,
+               cs.course_id,
+               ci.course_name,
+               cs.class_id,
+               cl.class_name,
+               cs.week_no,
+               cs.week_day,
+               cs.start_time,
+               cs.end_time,
+               cs.location,
+               cs.latitude,
+               cs.longitude,
+               cs.attendance_radius,
+               cs.auto_publish_attendance
+        FROM course_schedule cs
+        LEFT JOIN course_info ci ON ci.id = cs.course_id
+        LEFT JOIN class_info cl ON cl.id = cs.class_id
+        WHERE cs.week_day = #{weekDay}
+    </select>
+
     <select id="findById" resultMap="ScheduleMap">
         SELECT cs.id,
                cs.course_id,
@@ -51,7 +80,11 @@
                cs.week_day,
                cs.start_time,
                cs.end_time,
-               cs.location
+               cs.location,
+               cs.latitude,
+               cs.longitude,
+               cs.attendance_radius,
+               cs.auto_publish_attendance
         FROM course_schedule cs
         LEFT JOIN course_info ci ON ci.id = cs.course_id
         LEFT JOIN class_info cl ON cl.id = cs.class_id
@@ -76,10 +109,21 @@
                          AND lr.start_time &lt;= TIMESTAMP(DATE(NOW()), cs.end_time)
                          AND lr.end_time &gt;= TIMESTAMP(DATE(NOW()), cs.start_time)
                    ) THEN 'ON_LEAVE'
-                   WHEN DATE(NOW()) = DATE(ar.attendance_date) AND ar.status = 'PRESENT' THEN 'SIGNED'
-                   WHEN DATE(NOW()) = DATE(ar.attendance_date) AND ar.status = 'LATE' THEN 'SIGNED'
-                   WHEN NOW() BETWEEN TIMESTAMP(DATE(NOW()), cs.start_time) - INTERVAL 15 MINUTE
-                       AND TIMESTAMP(DATE(NOW()), cs.start_time) + INTERVAL 15 MINUTE THEN 'OPEN'
+                   WHEN (ar.status = 'PRESENT' OR (ar.status = 'LATE' AND ar.sign_out_time IS NOT NULL) OR (ar.status = 'EARLY_LEAVE' AND ar.sign_out_time IS NOT NULL)) THEN 'SIGNED'
+                   WHEN EXISTS (
+                       SELECT 1 FROM attendance_session s
+                       WHERE s.schedule_id = cs.id
+                         AND s.attendance_date = DATE(NOW())
+                         AND s.status = 'OPEN'
+                         AND s.sign_type = 'SIGN_IN'
+                   ) AND ar.sign_in_time IS NULL THEN 'OPEN_SIGN_IN'
+                   WHEN EXISTS (
+                       SELECT 1 FROM attendance_session s
+                       WHERE s.schedule_id = cs.id
+                         AND s.attendance_date = DATE(NOW())
+                         AND s.status = 'OPEN'
+                         AND s.sign_type = 'SIGN_OUT'
+                   ) AND ar.sign_out_time IS NULL THEN 'OPEN_SIGN_OUT'
                    ELSE 'CLOSED'
                END AS sign_status
         FROM course_schedule cs
@@ -94,8 +138,8 @@
     </select>
 
     <insert id="insert" parameterType="com.campus.attendance.domain.CourseSchedule" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO course_schedule (course_id, class_id, week_no, week_day, start_time, end_time, location)
-        VALUES (#{courseId}, #{classId}, #{weekNo}, #{weekDay}, #{startTime}, #{endTime}, #{location})
+        INSERT INTO course_schedule (course_id, class_id, week_no, week_day, start_time, end_time, location, latitude, longitude, attendance_radius, auto_publish_attendance)
+        VALUES (#{courseId}, #{classId}, #{weekNo}, #{weekDay}, #{startTime}, #{endTime}, #{location}, #{latitude}, #{longitude}, #{attendanceRadius}, #{autoPublishAttendance})
     </insert>
 
     <update id="update" parameterType="com.campus.attendance.domain.CourseSchedule">
@@ -106,7 +150,11 @@
             week_day = #{weekDay},
             start_time = #{startTime},
             end_time = #{endTime},
-            location = #{location}
+            location = #{location},
+            latitude = #{latitude},
+            longitude = #{longitude},
+            attendance_radius = #{attendanceRadius},
+            auto_publish_attendance = #{autoPublishAttendance}
         WHERE id = #{id}
     </update>
 

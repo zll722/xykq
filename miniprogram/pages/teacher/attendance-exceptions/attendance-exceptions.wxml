@@ -1,0 +1,54 @@
+<view class="container">
+  <view class="filter-section card">
+    <picker mode="selector" range="{{courses}}" range-key="courseName" value="{{courseIndex}}" bindchange="bindCourseChange">
+      <view class="filter-item">
+        <text class="filter-label">课程</text>
+        <text class="filter-value {{courseIndex >= 0 ? '' : 'text-gray'}}">{{courseIndex >= 0 ? courses[courseIndex].courseName : '选择课程'}}</text>
+      </view>
+    </picker>
+    <picker mode="selector" range="{{classes}}" range-key="className" value="{{classIndex}}" bindchange="bindClassChange">
+      <view class="filter-item">
+        <text class="filter-label">班级</text>
+        <text class="filter-value {{classIndex >= 0 ? '' : 'text-gray'}}">{{classIndex >= 0 ? classes[classIndex].className : '选择班级'}}</text>
+      </view>
+    </picker>
+    <picker mode="date" value="{{date}}" bindchange="bindDateChange">
+      <view class="filter-item">
+        <text class="filter-label">日期</text>
+        <text class="filter-value {{date ? '' : 'text-gray'}}">{{date || '选择日期'}}</text>
+      </view>
+    </picker>
+    <picker mode="selector" range="{{statusOptions}}" range-key="label" value="{{statusIndex}}" bindchange="bindStatusChange">
+      <view class="filter-item border-none">
+        <text class="filter-label">类型</text>
+        <text class="filter-value {{statusIndex >= 0 ? '' : 'text-gray'}}">{{statusIndex >= 0 ? statusOptions[statusIndex].label : '选择异常类型'}}</text>
+      </view>
+    </picker>
+    <view class="flex-end mt-20">
+      <button class="btn btn-small" bindtap="clearFilters">重置</button>
+    </view>
+  </view>
+
+  <view wx:if="{{records.length === 0}}" class="empty-text">无符合条件的异常记录</view>
+  
+  <view wx:for="{{records}}" wx:key="id" class="card record-card">
+    <view class="flex-between align-center">
+      <view class="flex-align-center">
+        <view class="priority-badge {{item.pColor}}">{{item.pLabel}}</view>
+        <text class="student-name ml-10">{{item.studentName || '未命名学生'}}</text>
+      </view>
+      <text class="status-text {{item.pColor}}">{{item.sLabel}}</text>
+    </view>
+    
+    <view class="record-detail mt-20">
+      <view class="detail-row"><text class="text-gray label">课程：</text>{{item.courseName}}</view>
+      <view class="detail-row"><text class="text-gray label">班级：</text>{{item.className}}</view>
+      <view class="detail-row"><text class="text-gray label">日期：</text>{{item.attendanceDate}}</view>
+      <view class="detail-row"><text class="text-gray label">签到：</text>{{item.signInTime || '-'}}</view>
+    </view>
+    
+    <view class="action-bar mt-20">
+      <button class="btn btn-primary" data-item="{{item}}" bindtap="goResolve">去处理</button>
+    </view>
+  </view>
+</view>

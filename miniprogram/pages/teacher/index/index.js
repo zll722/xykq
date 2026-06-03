@@ -44,6 +44,18 @@ Page({
     wx.reLaunch({ url: '/pages/teacher/leave-notify/leave-notify' });
   },
 
+  goAttendanceRecords() {
+    wx.navigateTo({ url: '/pages/teacher/attendance-records/attendance-records' });
+  },
+
+  goAttendanceExceptions() {
+    wx.navigateTo({ url: '/pages/teacher/attendance-exceptions/attendance-exceptions' });
+  },
+
+  goAttendanceAdjustments() {
+    wx.navigateTo({ url: '/pages/teacher/attendance-adjustments/attendance-adjustments' });
+  },
+
   onPullDownRefresh() {
     this.loadData().then(() => wx.stopPullDownRefresh());
   }

@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <div class="layout login-layout">
     <section class="login-visual">
       <div class="visual-grid" />
@@ -37,7 +37,10 @@
         </div>
 
         <div class="field">
-          <label for="password">密码</label>
+          <div class="password-label-row">
+            <label for="password">密码</label>
+            <span class="forgot-password-link" @click="showForgotModal = true">忘记密码？</span>
+          </div>
           <input
             id="password"
             v-model="form.password"
@@ -48,13 +51,58 @@
           />
         </div>
 
-        <button data-testid="login-submit" class="btn-login" @click="submit">登录</button>
+        <button data-testid="login-submit" class="btn-login" @click="submit" :disabled="loading">
+          {{ loading ? '登录中...' : '登录' }}
+        </button>
         <p v-if="error" class="error-text">{{ error }}</p>
         <p class="register-link">
           还没有账号？<router-link to="/register">立即注册</router-link>
         </p>
       </div>
     </section>
+
+    <!-- 忘记密码弹窗 -->
+    <el-dialog
+      v-model="showForgotModal"
+      title="重置密码"
+      width="440px"
+      append-to-body
+      @close="closeForgotDialog"
+    >
+      <el-form :model="forgotForm" :rules="forgotRules" ref="forgotFormRef" label-position="top">
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model.trim="forgotForm.username" placeholder="请输入您的登录账号" />
+        </el-form-item>
+
+        <el-form-item label="绑定邮箱" prop="email">
+          <el-input v-model.trim="forgotForm.email" placeholder="请输入绑定的邮箱" />
+        </el-form-item>
+
+        <el-form-item label="验证码" prop="code">
+          <div class="code-input-wrap">
+            <el-input v-model.trim="forgotForm.code" placeholder="请输入6位验证码" />
+            <el-button type="primary" :disabled="forgotCountdown > 0 || sendingForgotCode" @click="sendForgotCode">
+              {{ forgotCountdown > 0 ? `${forgotCountdown}s后重试` : '获取验证码' }}
+            </el-button>
+          </div>
+        </el-form-item>
+
+        <el-form-item label="新密码" prop="newPassword">
+          <el-input v-model="forgotForm.newPassword" type="password" show-password placeholder="请输入新密码（最少6位）" />
+        </el-form-item>
+
+        <el-form-item label="确认新密码" prop="confirmPassword">
+          <el-input v-model="forgotForm.confirmPassword" type="password" show-password placeholder="请再次输入新密码" />
+        </el-form-item>
+      </el-form>
+
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="closeForgotDialog">取消</el-button>
+          <el-button type="primary" @click="submitResetPassword" :loading="resettingPassword">重置密码</el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -62,16 +110,141 @@
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../stores/auth';
+import { sendResetCodeApi, resetPasswordApi } from '../../api/auth';
+import { ElMessage } from 'element-plus';
 
 const form = reactive({ username: '', password: '' });
 const error = ref('');
+const loading = ref(false);
 const router = useRouter();
 const authStore = useAuthStore();
 
+// 忘记密码弹窗逻辑
+const showForgotModal = ref(false);
+const resettingPassword = ref(false);
+const sendingForgotCode = ref(false);
+const forgotCountdown = ref(0);
+const forgotFormRef = ref(null);
+let forgotTimer = null;
+
+const forgotForm = reactive({
+  username: '',
+  email: '',
+  code: '',
+  newPassword: '',
+  confirmPassword: ''
+});
+
+const validateConfirmPass = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('请再次输入新密码'));
+  } else if (value !== forgotForm.newPassword) {
+    callback(new Error('两次输入密码不一致!'));
+  } else {
+    callback();
+  }
+};
+
+const forgotRules = {
+  username: [
+    { required: true, message: '请输入用户名', trigger: 'blur' }
+  ],
+  email: [
+    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
+  ],
+  code: [
+    { required: true, message: '请输入验证码', trigger: 'blur' },
+    { len: 6, message: '验证码为6位数字', trigger: 'blur' }
+  ],
+  newPassword: [
+    { required: true, message: '请输入新密码', trigger: 'blur' },
+    { min: 6, message: '密码不能少于6位', trigger: 'blur' }
+  ],
+  confirmPassword: [
+    { required: true, validator: validateConfirmPass, trigger: 'blur' }
+  ]
+};
+
+const sendForgotCode = async () => {
+  if (!forgotForm.username) {
+    ElMessage.warning('请输入用户名');
+    return;
+  }
+  if (!forgotForm.email) {
+    ElMessage.warning('请输入邮箱');
+    return;
+  }
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(forgotForm.email)) {
+    ElMessage.warning('请输入正确的邮箱格式');
+    return;
+  }
+
+  sendingForgotCode.value = true;
+  try {
+    await sendResetCodeApi({ username: forgotForm.username, email: forgotForm.email });
+    ElMessage.success('验证码已发送，请查收邮箱');
+    forgotCountdown.value = 60;
+    forgotTimer = setInterval(() => {
+      forgotCountdown.value--;
+      if (forgotCountdown.value <= 0) {
+        clearInterval(forgotTimer);
+      }
+    }, 1000);
+  } catch (e) {
+    ElMessage.error(e.message || '发送验证码失败');
+  } finally {
+    sendingForgotCode.value = false;
+  }
+};
+
+const closeForgotDialog = () => {
+  showForgotModal.value = false;
+  if (forgotFormRef.value) forgotFormRef.value.resetFields();
+  forgotForm.username = '';
+  forgotForm.email = '';
+  forgotForm.code = '';
+  forgotForm.newPassword = '';
+  forgotForm.confirmPassword = '';
+  if (forgotTimer) {
+    clearInterval(forgotTimer);
+    forgotTimer = null;
+  }
+  forgotCountdown.value = 0;
+};
+
+const submitResetPassword = async () => {
+  if (!forgotFormRef.value) return;
+  const valid = await forgotFormRef.value.validate().catch(() => false);
+  if (!valid) return;
+
+  resettingPassword.value = true;
+  try {
+    await resetPasswordApi({
+      username: forgotForm.username,
+      email: forgotForm.email,
+      code: forgotForm.code,
+      newPassword: forgotForm.newPassword
+    });
+    ElMessage.success('密码重置成功，请使用新密码登录');
+    closeForgotDialog();
+  } catch (e) {
+    ElMessage.error(e.message || '重置密码失败');
+  } finally {
+    resettingPassword.value = false;
+  }
+};
+
 const submit = async () => {
   error.value = '';
+  loading.value = true;
   try {
+    if (!form.username || !form.password) {
+      throw new Error('请输入用户名和密码');
+    }
     await authStore.login(form.username, form.password);
+
     const roleCode = authStore.userInfo?.roleCode;
     if (roleCode === 'ADMIN') {
       router.push('/admin/dashboard');
@@ -84,6 +257,8 @@ const submit = async () => {
     }
   } catch (e) {
     error.value = e.message || '登录失败';
+  } finally {
+    loading.value = false;
   }
 };
 </script>
@@ -249,16 +424,34 @@ h1 {
   line-height: 1.12;
 }
 
-.field + .field {
-  margin-top: 14px;
+.password-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
-.field label {
-  display: inline-block;
-  margin-bottom: 8px;
-  color: #35506b;
-  font-size: 0.94rem;
+.forgot-password-link {
+  font-size: 0.88rem;
+  color: #3a7bd5;
+  cursor: pointer;
   font-weight: 600;
+  transition: color 0.2s;
+}
+
+.forgot-password-link:hover {
+  color: #0d2f55;
+  text-decoration: underline;
+}
+
+.code-input-wrap {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.code-input-wrap :deep(.el-input) {
+  flex: 1;
 }
 
 .btn-login {

@@ -14,11 +14,15 @@
 
     <el-card class="filter-card" shadow="hover">
       <el-form :inline="true" class="filter-form">
-        <el-form-item label="课程ID">
-          <el-input v-model="filters.courseId" placeholder="可选" />
+        <el-form-item label="课程">
+          <el-select v-model="filters.courseId" placeholder="选择课程" clearable style="width: 150px">
+            <el-option v-for="c in courses" :key="c.id" :label="c.courseName" :value="c.id" />
+          </el-select>
         </el-form-item>
-        <el-form-item label="班级ID">
-          <el-input v-model="filters.classId" placeholder="可选" />
+        <el-form-item label="班级">
+          <el-select v-model="filters.classId" placeholder="选择班级" clearable style="width: 150px">
+            <el-option v-for="c in classes" :key="c.id" :label="c.className" :value="c.id" />
+          </el-select>
         </el-form-item>
         <el-form-item label="考勤日期">
           <el-date-picker v-model="filters.attendanceDate" type="date" value-format="YYYY-MM-DD" placeholder="选择日期" />
@@ -40,12 +44,11 @@
       </template>
 
       <el-table :data="records" border stripe>
-        <el-table-column label="记录ID" prop="id" width="90" />
         <el-table-column label="课程" prop="courseName" min-width="160" />
         <el-table-column label="班级" prop="className" min-width="180" />
         <el-table-column label="学生" min-width="140">
           <template #default="{ row }">
-            {{ row.studentName || `学生#${row.studentId}` }}
+            {{ row.studentName || '未命名学生' }}
           </template>
         </el-table-column>
         <el-table-column label="日期" prop="attendanceDate" width="120" />
@@ -94,6 +97,7 @@ import { useRoute } from 'vue-router';
 import { ElMessage } from 'element-plus';
 import { listAdminAttendanceRecordsApi } from '../../api/adminStats';
 import { adjustAttendanceRecordApi } from '../../api/adminAttendanceManage';
+import { listClassesApi, listCoursesApi } from '../../api/adminTeaching';
 
 const route = useRoute();
 const filters = reactive({
@@ -102,6 +106,8 @@ const filters = reactive({
   attendanceDate: ''
 });
 const records = ref([]);
+const classes = ref([]);
+const courses = ref([]);
 const visible = ref(false);
 const submitting = ref(false);
 const selected = ref(null);
@@ -158,6 +164,8 @@ const submit = async () => {
 };
 
 onMounted(() => {
+  listClassesApi().then(res => classes.value = res);
+  listCoursesApi().then(res => courses.value = res);
   applyRouteFilters();
   loadRecords();
 });

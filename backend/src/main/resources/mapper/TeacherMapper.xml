@@ -130,4 +130,22 @@
         ]]>
     </select>
 
+    <!-- 教师今日排班 -->
+    <select id="listTodaySchedules" resultType="java.util.HashMap">
+        SELECT
+            cs.id          AS scheduleId,
+            co.course_name AS courseName,
+            ci.class_name  AS className,
+            TIME_FORMAT(cs.start_time, '%H:%i') AS startTime,
+            TIME_FORMAT(cs.end_time, '%H:%i')   AS endTime,
+            cs.location
+        FROM course_schedule cs
+        JOIN course_info co ON co.id = cs.course_id
+        JOIN class_info ci ON ci.id = cs.class_id
+        WHERE co.teacher_id = #{teacherId}
+          AND cs.week_day = #{weekDay}
+          AND co.status = 1
+        ORDER BY cs.start_time
+    </select>
+
 </mapper>

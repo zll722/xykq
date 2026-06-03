@@ -19,6 +19,19 @@ spring:
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+  mail:
+    host: smtp.qq.com
+    port: 465
+    username: 1879445386@qq.com
+    password: wkbrnrtishfmbaie
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: true
+            required: true
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.campus.attendance.domain
@@ -33,3 +46,7 @@ security:
 app:
   upload:
     base-dir: ../uploads
+  amap:
+    web-service-key: 367ef0c3089939f654637df999074bbc
+    web-js-key: 8db8eb37ebc870eca7f23d81e4a81c38
+    security-code: b74c5eec05ff45977b2f1c4e27069317

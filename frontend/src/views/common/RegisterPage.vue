@@ -64,6 +64,36 @@
         </div>
 
         <div class="field">
+          <label for="email">绑定邮箱</label>
+          <div class="code-input-group">
+            <input
+              id="email"
+              v-model="form.email"
+              type="email"
+              placeholder="请输入邮箱（必填）"
+            />
+            <button
+              class="btn-send-code"
+              type="button"
+              :disabled="countdown > 0 || sendingCode"
+              @click="sendCode"
+            >
+              {{ countdown > 0 ? `${countdown}s后重试` : '获取验证码' }}
+            </button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="code">验证码</label>
+          <input
+            id="code"
+            v-model="form.code"
+            placeholder="请输入6位验证码"
+            maxlength="6"
+          />
+        </div>
+
+        <div class="field">
           <label for="password">登录密码</label>
           <input
             id="password"
@@ -102,13 +132,15 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { registerApi, getClassesApi } from '../../api/auth';
+import { registerApi, getClassesApi, sendRegisterCodeApi } from '../../api/auth';
 
 const form = reactive({
   realName: '',
   studentNo: '',
   classId: '',
   username: '',
+  email: '',
+  code: '',
   password: '',
   confirmPassword: ''
 });
@@ -116,6 +148,8 @@ const classes = ref([]);
 const error = ref('');
 const success = ref(false);
 const loading = ref(false);
+const sendingCode = ref(false);
+const countdown = ref(0);
 const router = useRouter();
 
 onMounted(async () => {
@@ -127,11 +161,41 @@ onMounted(async () => {
   }
 });
 
+const sendCode = async () => {
+  error.value = '';
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!form.email || !emailPattern.test(form.email)) {
+    error.value = '请先输入正确的邮箱格式';
+    return;
+  }
+  
+  sendingCode.value = true;
+  try {
+    await sendRegisterCodeApi({ email: form.email });
+    countdown.value = 60;
+    const timer = setInterval(() => {
+      countdown.value--;
+      if (countdown.value <= 0) {
+        clearInterval(timer);
+      }
+    }, 1000);
+  } catch (e) {
+    error.value = e.message || '发送验证码失败';
+  } finally {
+    sendingCode.value = false;
+  }
+};
+
 const submit = async () => {
   error.value = '';
-  const { realName, studentNo, classId, username, password, confirmPassword } = form;
-  if (!realName || !studentNo || !classId || !username || !password || !confirmPassword) {
+  const { realName, studentNo, classId, username, email, code, password, confirmPassword } = form;
+  if (!realName || !studentNo || !classId || !username || !email || !code || !password || !confirmPassword) {
     error.value = '请填写所有字段';
+    return;
+  }
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailPattern.test(email)) {
+    error.value = '请输入正确的邮箱格式';
     return;
   }
   if (password.length < 6) {
@@ -144,7 +208,7 @@ const submit = async () => {
   }
   loading.value = true;
   try {
-    await registerApi({ realName, studentNo, classId, username, password });
+    await registerApi({ realName, studentNo, classId, username, email, code, password });
     success.value = true;
     setTimeout(() => router.push('/login'), 1500);
   } catch (e) {
@@ -328,6 +392,34 @@ h1 {
   color: #35506b;
   font-size: 0.94rem;
   font-weight: 600;
+}
+
+.code-input-group {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-send-code {
+  flex-shrink: 0;
+  width: 120px;
+  background: #f1f5f9;
+  border: 1.5px solid #c8d8e8;
+  border-radius: 10px;
+  color: #3a7bd5;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-send-code:hover:not(:disabled) {
+  background: #e2e8f0;
+  border-color: #3a7bd5;
+}
+
+.btn-send-code:disabled {
+  color: #94a3b8;
+  cursor: not-allowed;
+  background: #f8fafc;
 }
 
 .select-input {

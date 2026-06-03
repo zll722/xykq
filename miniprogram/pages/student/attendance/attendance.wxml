@@ -16,6 +16,7 @@
     <view class="filter-item {{currentFilter === 'all' ? 'active' : ''}}" bindtap="setFilter" data-filter="all">全部</view>
     <view class="filter-item {{currentFilter === 'PRESENT' ? 'active' : ''}}" bindtap="setFilter" data-filter="PRESENT">正常</view>
     <view class="filter-item {{currentFilter === 'LATE' ? 'active' : ''}}" bindtap="setFilter" data-filter="LATE">迟到</view>
+    <view class="filter-item {{currentFilter === 'EARLY_LEAVE' ? 'active' : ''}}" bindtap="setFilter" data-filter="EARLY_LEAVE">早退</view>
     <view class="filter-item {{currentFilter === 'ABSENT' ? 'active' : ''}}" bindtap="setFilter" data-filter="ABSENT">缺勤</view>
   </view>
 
@@ -23,8 +24,8 @@
   <view wx:for="{{filteredRecords}}" wx:key="id" class="record-card card">
     <view class="flex-between">
       <text class="record-course">{{item.courseName}}</text>
-      <text class="tag {{item.status === 'PRESENT' ? 'tag-success' : (item.status === 'LATE' ? 'tag-warning' : (item.status === 'LEAVE' ? 'tag-info' : 'tag-danger'))}}">
-        {{item.status === 'PRESENT' ? '正常' : (item.status === 'LATE' ? '迟到' : (item.status === 'LEAVE' ? '请假' : '缺勤'))}}
+      <text class="tag {{item.status === 'PRESENT' ? 'tag-success' : ((item.status === 'LATE' || item.status === 'EARLY_LEAVE') ? 'tag-warning' : (item.status === 'LEAVE' ? 'tag-info' : 'tag-danger'))}}">
+        {{item.status === 'PRESENT' ? '正常' : (item.status === 'LATE' ? '迟到' : (item.status === 'EARLY_LEAVE' ? '早退' : (item.status === 'LEAVE' ? '请假' : '缺勤')))}}
       </text>
     </view>
     <view class="record-info">

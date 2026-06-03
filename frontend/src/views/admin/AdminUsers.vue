@@ -37,7 +37,13 @@
       <el-table :data="list" style="width: 100%" v-loading="loading" stripe border>
         <el-table-column prop="id" label="ID" width="80" />
         <el-table-column prop="username" label="用户名" />
+        <el-table-column prop="email" label="邮箱" min-width="150" />
         <el-table-column prop="realName" label="姓名" />
+        <el-table-column prop="studentNo" label="学号">
+          <template #default="{ row }">
+            {{ row.roleCode === 'USER' ? (row.studentNo || '-') : '-' }}
+          </template>
+        </el-table-column>
         <el-table-column label="班级 / 课程" min-width="200">
           <template #default="{ row }">
             <span v-if="row.roleCode === 'USER'">{{ getClassName(row.classId) }}</span>
@@ -115,6 +121,10 @@
           />
         </el-form-item>
 
+        <el-form-item label="邮箱" prop="email">
+          <el-input v-model.trim="form.email" placeholder="请输入邮箱" />
+        </el-form-item>
+
         <el-form-item label="姓名" prop="realName">
           <el-input v-model.trim="form.realName" placeholder="请输入真实姓名" />
         </el-form-item>
@@ -126,6 +136,10 @@
             <el-radio value="TEACHER">授课教师</el-radio>
             <el-radio value="ADMIN">管理员</el-radio>
           </el-radio-group>
+        </el-form-item>
+
+        <el-form-item v-if="form.roleCode === 'USER'" label="学号" prop="studentNo">
+          <el-input v-model.trim="form.studentNo" placeholder="请输入学号（留空则自动生成）" />
         </el-form-item>
 
         <el-form-item v-if="form.roleCode === 'USER'" label="班级" prop="classId">
@@ -189,15 +203,20 @@ const formMode = ref('create');
 const form = reactive({
   id: null,
   username: '',
+  email: '',
   password: '',
   realName: '',
   roleCode: 'USER',
   classId: null,
+  studentNo: '',
   status: 1
 });
 
 const rules = computed(() => ({
   username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+  email: [
+    { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
+  ],
   password: formMode.value === 'create' ? [{ required: true, message: '请输入密码', trigger: 'blur' }] : [],
   realName: [{ required: true, message: '请输入真实姓名', trigger: 'blur' }],
   classId: form.roleCode === 'USER' ? [{ required: true, message: '请选择班级', trigger: 'change' }] : []
@@ -265,16 +284,19 @@ const resetForm = () => {
   }
   form.id = null;
   form.username = '';
+  form.email = '';
   form.password = '';
   form.realName = '';
   form.roleCode = 'USER';
   form.classId = null;
+  form.studentNo = '';
   form.status = 1;
 };
 
 const handleRoleChange = (roleCode) => {
   if (roleCode !== 'USER') {
     form.classId = null;
+    form.studentNo = '';
   }
 };
 
@@ -291,10 +313,12 @@ const openEdit = async (item) => {
   await loadClassOptions();
   form.id = item.id;
   form.username = item.username;
+  form.email = item.email || '';
   form.password = '';
   form.realName = item.realName;
   form.roleCode = item.roleCode;
   form.classId = form.roleCode === 'USER' ? (item.classId != null ? Number(item.classId) : null) : null;
+  form.studentNo = item.studentNo || '';
   form.status = item.status;
   editorVisible.value = true;
 };
@@ -313,11 +337,16 @@ const submitEditor = async () => {
   try {
     const payload = {
       username: form.username,
+      email: form.email || null,
       realName: form.realName,
       roleCode: form.roleCode,
-      status: form.status,
-      classId: form.roleCode === 'USER' ? form.classId ?? null : null
+      status: form.status
     };
+
+    if (form.roleCode === 'USER') {
+      payload.classId = form.classId ?? null;
+      payload.studentNo = form.studentNo || null;
+    }
 
     if (form.password) {
       payload.password = form.password;
