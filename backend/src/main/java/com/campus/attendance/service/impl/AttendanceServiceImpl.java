@@ -141,25 +141,33 @@ public class AttendanceServiceImpl implements AttendanceService {
             rule = FALLBACK_RULE;
         }
 
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime classStart = LocalDateTime.of(attendanceDate, schedule.getStartTime());
-        LocalDateTime classEnd = LocalDateTime.of(attendanceDate, schedule.getEndTime());
+        // Check if there is an active session
+        com.campus.attendance.domain.AttendanceSession activeSession = attendanceSessionMapper.findActiveSession(schedule.getId(), attendanceDate, request.getSignType());
         
-        if ("SIGN_IN".equals(request.getSignType())) {
-            LocalDateTime windowStart = classStart.plusMinutes(rule.getSignInStartOffsetMin());
-            LocalDateTime windowEnd = classStart.plusMinutes(rule.getSignInEndOffsetMin());
-            if (now.isBefore(windowStart) || now.isAfter(windowEnd)) {
-                throw new BizException(4001, "当前不在课前签到时间范围");
+        if (activeSession == null) {
+            // If no active manual or automatic session, enforce strict time windows
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime classStart = LocalDateTime.of(attendanceDate, schedule.getStartTime());
+            LocalDateTime classEnd = LocalDateTime.of(attendanceDate, schedule.getEndTime());
+            
+            if ("SIGN_IN".equals(request.getSignType())) {
+                LocalDateTime windowStart = classStart.plusMinutes(rule.getSignInStartOffsetMin());
+                LocalDateTime windowEnd = classStart.plusMinutes(rule.getSignInEndOffsetMin());
+                if (now.isBefore(windowStart) || now.isAfter(windowEnd)) {
+                    throw new BizException(4001, "当前不在课前签到时间范围，且教师尚未手动发布签到");
+                }
+            } else if ("SIGN_OUT".equals(request.getSignType())) {
+                LocalDateTime windowStart = classEnd.minusMinutes(5);
+                LocalDateTime windowEnd = classEnd.plusMinutes(5);
+                if (now.isBefore(windowStart) || now.isAfter(windowEnd)) {
+                    throw new BizException(4001, "当前不在课后签退时间范围，且教师尚未手动发布签退");
+                }
+            } else {
+                throw new BizException(4001, "未知的签到类型");
             }
-        } else if ("SIGN_OUT".equals(request.getSignType())) {
-            LocalDateTime windowStart = classEnd.minusMinutes(5);
-            LocalDateTime windowEnd = classEnd.plusMinutes(5);
-            if (now.isBefore(windowStart) || now.isAfter(windowEnd)) {
-                throw new BizException(4001, "当前不在课后签退时间范围");
-            }
-        } else {
-            throw new BizException(4001, "未知的签到类型");
         }
+
+        LocalDateTime now = LocalDateTime.now();
 
         AttendanceRecord record = existing != null ? existing : new AttendanceRecord();
         if (existing == null) {
