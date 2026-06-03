@@ -404,9 +404,9 @@ const submit = async () => {
 }
 
 .login-card {
-  width: min(460px, 100%);
-  padding: 36px;
-  border-radius: 24px;
+  width: min(540px, 100%);
+  padding: 48px 56px;
+  border-radius: 28px;
 }
 
 .login-kicker {
@@ -415,13 +415,31 @@ const submit = async () => {
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 }
 
 h1 {
-  margin: 12px 0 26px;
-  font-size: clamp(2rem, 3vw, 2.55rem);
-  line-height: 1.12;
+  margin: 16px 0 36px;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  line-height: 1.15;
+}
+
+.field {
+  margin-bottom: 28px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #2c4a68;
+  font-size: 0.95rem;
+}
+
+.field input {
+  min-height: 50px;
+  padding: 12px 18px;
+  font-size: 1.02rem;
 }
 
 .password-label-row {
@@ -429,6 +447,11 @@ h1 {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  margin-bottom: 10px;
+}
+
+.password-label-row label {
+  margin-bottom: 0;
 }
 
 .forgot-password-link {
@@ -455,10 +478,10 @@ h1 {
 }
 
 .btn-login {
-  margin-top: 22px;
+  margin-top: 32px;
   width: 100%;
-  min-height: 52px;
-  font-size: 1rem;
+  min-height: 56px;
+  font-size: 1.1rem;
   font-weight: 700;
 }
 

@@ -366,3 +366,105 @@ p {
   color: #6f88a2;
   font-size: 13px;
 }
+
+/* --- UI/UX Overhaul Enhancements --- */
+
+/* 1. Global Message Toast Override (Top-floating Pill) */
+.el-message {
+  box-shadow: 0 8px 24px rgba(16, 42, 72, 0.12) !important;
+  border-radius: 999px !important; /* Pill shape */
+  padding: 12px 28px !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  color: #17324d !important;
+}
+
+/* Make ElMessage icons match the pill style slightly better */
+.el-message .el-message__icon {
+  font-size: 1.1rem !important;
+}
+
+/* 2. Dialog Enhancements (Glassmorphism + Rounded Corners) */
+.el-dialog {
+  border-radius: var(--radius-xl) !important;
+  box-shadow: var(--shadow-lg) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  overflow: hidden;
+}
+
+.el-dialog__header {
+  margin-right: 0 !important;
+  padding: 24px 24px 16px !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04) !important;
+}
+
+.el-dialog__body {
+  padding: 24px !important;
+}
+
+.el-dialog__footer {
+  padding: 16px 24px 24px !important;
+  border-top: none !important;
+  background: transparent !important;
+}
+
+/* 3. Card Enhancements */
+.el-card {
+  border-radius: var(--radius-lg) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+  box-shadow: var(--shadow-sm) !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+.el-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* 4. Table Enhancements */
+.el-table {
+  border-radius: var(--radius-md) !important;
+  overflow: hidden !important;
+  border: none !important;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.06) !important;
+}
+
+.el-table th.el-table__cell {
+  background: linear-gradient(125deg, #edf5ff 0%, #ebf8f2 100%) !important;
+  color: #32506d !important;
+  font-weight: 700 !important;
+  border-bottom: 1px solid #dbe6f1 !important;
+}
+
+.el-table td.el-table__cell {
+  border-bottom: 1px solid #edf1f5 !important;
+  transition: background-color 0.2s ease;
+}
+
+.el-table--striped .el-table__body tr.el-table__row--striped td.el-table__cell {
+  background: rgba(247, 251, 255, 0.5) !important;
+}
+
+.el-table__body tr:hover > td.el-table__cell {
+  background: #eef6ff !important;
+}
+
+/* 5. Button Enhancements (Smooth interactions) */
+.el-button {
+  border-radius: var(--radius-md) !important;
+  transition: all 0.2s ease !important;
+}
+
+.el-button:not(.is-link):not(.is-text):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+.el-button:not(.is-link):not(.is-text):active {
+  transform: translateY(0);
+}
